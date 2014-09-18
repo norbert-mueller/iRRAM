@@ -122,7 +122,7 @@ AX_CXX_COMPILE_STDCXX_11
 AC_SUBST(CPPFLAGS)                                                           
 AC_SUBST(CPPFLAGS_INST)                                                           
 AC_SUBST(CXXFLAGS)                                                           
-AC_SUBST(AM_CPPFLAGS)
+AC_SUBST(INCLUDES)
 AC_SUBST(LDADD)
 AC_SUBST(LDFLAGS)
 AC_SUBST(LIBS)
