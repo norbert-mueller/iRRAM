@@ -390,6 +390,7 @@ The configuration, compilation and installation of iRRAM will start now!
 "
 make clean 2> /dev/null
 
+autoreconf -v -s
 ./configure ${configure_params} ${installed} --${INST_PREF} $OPTIONS $VERBOSE; error_code=$?
 if [ "$error_code" == "100" ]; then 
   echo -e "\nSorry, configuring iRRAM failed because of missing or unusable GMP\n"
