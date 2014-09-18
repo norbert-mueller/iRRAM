@@ -1,0 +1,625 @@
+Jan 2013
+  Many major changes: 
+    Removal of all backends with exception of MPFR
+    Restructuring the directory structure
+    Preparations for a "usual" installation process
+
+Sep 2009
+  Several internal changes and simplifications leading to a threadsafe version
+  Initial interface to using threads
+  Correction of a small bug concerning I/O when working outside of the iRRAM
+  Replacing references to GMP and MPFR to their newest versions.
+
+Aug 2009
+  Correction of a silly bug in the interface to MPFR on 64-bit machines
+
+Nov 2008
+  Correction of a silly bug concerning scaling of rational numbers
+
+Sep 2007
+  Using gcc 4.2.1, activating the sse2 extension did not work as before.
+  Now there is a configure option "-disable-sse2" that can be used on older machines without sse2
+
+Aug 2006 - Aug 2007
+  Corrected sign errors in the intialization of RATIONAL (only showed up using 64bit) 
+  Added copy constructor for COMPLEX
+  Added of some testing routines in subdirectory "tests", use: cd tests;make check
+  Changing version to 2007-01
+  Workaround for compile time  warnings about PACKAGE in gmp-impl.h
+  Minor modifications due to gcc and concering shared libs:
+    Change "char*" to "const char*" due to warning from gcc 4.1.3
+    Changes due to newer autoconf/automake
+    QUICK_INSTALL now uses newer versions of GMP and MPFR
+
+Jul 2006 
+  Correcting a bug in the interval version of the cosine
+
+Mar 2006
+  Changed form of runtime parameters from eg. "-debug=10" to "--debug=10"
+  Added new runtime parameter "--prec_skip" influencing the heuristic for the
+  estimation of the correct precision
+ 
+Feb 2006
+  Modified examples/Makefile.am to use a relative path to the iRRAM libraries.
+  Modified configure.in and user_programs/Makefile.in to simplify compilation
+  of programs in case that the libraries for gmp and iRRAM are in different directories.
+  Conversion to a namespace "iRRAM"
+
+Dec 2005 
+  corrected the interfaces for LRGMP and cGMP to work on x86_64
+
+Nov 2005
+  integration of mpfr-2.2.x as backend instead of the gmp-4.1.4-internal mpfr
+  removed two bugs in the interface between LRGMP and INTEGER
+
+Apr 2005 - Nov 2005
+  many small changes, like improving hyperbolic function or tan
+
+Mar 2005
+  complex sine function corrected
+
+Aug 2004 - Feb 2005 
+  Added an example implementation for algebraic number using BFMS zero bounds 
+  Small corrections, eg. for mpf_get_str returning which imprecise results
+  Removed INTMPF again, will be a separate example on top of the iRRAM
+  
+Jul 2004 - Aug 2004
+  REAL(double d): added exception in case of NaN or infinities
+  added I/O in C++ style (cout/cin, streams), removed the old c+style IO
+  added converions from REAL to strings from C++, removed conversion to char*
+
+Dec 2003 - Jul 2004
+  Additional backend INTMPF (for educational purposes, not fully finished)
+  Additional backend cGMP (with caching strategy, could be an improvement
+                           for interval applications)
+  Port of GMP-Backend to Athlon-64
+  Simplifications, Cleanups
+ 
+Aug 2003 - Dec 2003 
+   Small modifications for simplified programming
+   Addition of many functions for automatic type conversions
+   Caches for multivalued tests grow dynamically up to 1000000000 values
+   New functions arg(z) and log(z) for complex numbers z
+
+Aug 2002 - Aug 2003
+  
+   Necessary modifications due to GCC 3.2, automake 1.6,...
+
+   Addition of LAZY_BOOLEAN
+   - src/LAZY_BOOLEAN.cc
+   - modification of configure.in and of obj/*/Makefile.am
+   
+   Restructuring the directory structure/compile commands:
+   - adding files from backend/* to obj/*
+   - corresponding changes to configure.in and to many Makefiles
+   - removing backend/*   
+
+   Introduction of shared libaries
+   - added a compile time flag "do_not_activate_iRRAM_control"
+     in case that the iRRAM is used as a backend itself (see e.g
+     timings-MPFR-iRRAM.c)
+
+   Addition of an I/O-function rwritee(x,w) that prints a real number
+   in halflogarithmic ("scientific") notation with a width of w.
+   Of course, we must have x<>0, otherwise we get an infinite loop!
+   
+   Addition of a lipschitz(f,l,x) operator that uses the lipschitz value
+   l(x) to improve the error propagation for f(x)
+   
+   Addition of a class of REAL intervals on top of REAL
+
+   Removing backend LR (no time to keep it running...)
+   
+   Numerous small changes to MPFR interface to make it exception-safe
+   
+   Changes to DYADIC, removing some silly bugs. Modified setting of precision
+   
+   Significant simplification of the exception based iteration schemes
+   
+   Introduction of first numeric exceptions that are catch-able
+
+Tue Jul 01 2002
+
+  Neccessary modification for GMP 4.1 / MPFR 2.x:
+   - changed behaviour when mixing C and C++
+   -  mpfr_round
+   -  mpfr_sgn(x)
+   - mocked implementation of conversion from mpfr_t to mpz_t
+  Beware: Conversion to mpz not implemented in MPFR! (not! mpfr_get_z_exp) 
+
+
+Tue Sep 10 2001
+
+  Backends LRGMP and MPFR enabled for the current version,
+  backend LR still disabled (because of missing INTEGER functions) 
+
+Thu Aug 16 2001
+   
+  Changed base of iterations from C-style longjmp to
+  C++-style exceptions, so automatically destructors are applied 
+  to anything on the stack!
+
+Feb-July
+
+  Addition of types INTEGER and RATIONAL for backend GMP
+   (by Tom Diessen)
+
+
+Mon Feb 05 2001
+
+  reduced includes to
+       #include "iRRAM.h"
+  modifed all examples and all sources to reflect this change
+
+------------------------------------------------------
+
+Tue Jan 08 - Jan 23 2001
+
+  prepared package for autoconf/automake/configure:
+  - renaming of many files
+  - choice of backend via make-parameter
+  - many new files (Makefile.in, Makefile.am...)
+  
+-----------------------------------------------------
+
+Wed Dec 20 2000
+
+  operators += and *= for REALs, with use
+  in many functions
+  
+  changed indexing of the array "konvert"
+  
+  first start of an export of the iRRAM to the MP packages
+
+-----------------------------------------------------
+
+Fri Dec 15 2000
+
+  optimization of exponentiation
+
+  small bug in round() fixed
+
+
+-----------------------------------------------------
+Fri Dec 8 2000
+
+Restructured Directories:
+ (1) all external libraries/includes in ./external
+ (2) own .h-files in ./include
+ (3) own libraries in ./lib
+ 
+Interface to MPFR now seems to be functional,
+ although it is still too slow sometimes 
+
+
+-----------------------------------------------------
+Mon Dec 4 2000
+
+Changed management of free variables in GMP_ext.c:
+  Now using an array to store free variables instead of a
+  linked list with misused entries, so increased stability
+  for possible changes in GMP.
+  
+Fixed bug in GMP_ext:ext_gmp_Size:
+   (z->_mp_d)[abs(z->_mp_size-1)]
+changed to
+   (z->_mp_d)[abs(z->_mp_size)-1]
+   
+   
+----------------------------------------------------
+Okt 2000 - Nov 2000
+
+Interface to MPFR   
+   
+----------------------------------------------------
+Sat Sep 17 2000
+
+Further optimaization of exp: 
+ now using Talyor series, but with the evaluation of four 
+ coefficients at a time (similar to the idea of Brent for
+ the fast evaluation of Taylor series) giving about 10%-20%
+ improvement
+
+----------------------------------------------------
+Mon Sep 04 2000
+
+Optimization of sqrt, exp, log
+especially using 
+  - new operator iterate for AGM iteration
+  - new hint precision_policy(relative) for AGM
+   
+Additional form for rwrite:   rwrite(x,w) writes 
+  either "  0 ...."  if x is smaller than 10^{-w+8}
+  or     an approximation to x with w-8 decimals
+  or iterates the computation
+
+Corresponding modification of most of the examples...
+
+----------------------------------------------------
+
+Tue Aug 22 2000
+
+Corrected small error in REALcore:sizetype_normalize
+Speedup in REALS:size(x)
+Started addition of MPFR as backend
+
+-----------------------------------------------------
+Fri Aug 18 2000
+
+General cleanup
+
+-----------------------------------------------------
+Wed Jun 28 2000
+
+Implementation of log using AGM iteration
+ (using pi(), ln2(), and 1 (one!) additional AGM evaluation)
+
+-----------------------------------------------------
+Tue Jun 27 2000
+
+Preliminary implementation of pi() and ln2()
+using global variables (giving the maximal used
+precision)
+
+-----------------------------------------------------
+Mon Jun 19 2000
+
+Implementation of pi() using an AGM method
+
+Arrays for the recording of multi-valued results removed from 
+ITERATION_STACK and defined as global variables
+
+Improved version of the sqrt (in case there is no MP function sqrt).
+
+-----------------------------------------------------
+Sat Jun 16 2000
+
+Type of comparion operators changed from int to bool
+
+Major change of the structure of "main()":
+- Split into iRRAM_initialize() and iRRAM_exec() such that
+  multiple instances of the iRRAM can be run one after the other
+- main can also be user-defined!
+- iRRAM can be used as a library e.g. with global DYADICs such
+  that set of MP functions can easily be enhanced!
+
+
+
+-----------------------------------------------------
+Jul 1998 - May 2000: 
+Too many changes.....
+
+e.g.: switch to GMP 3.xx, new backend LRGMP, 
+function set enhanced (tan,log,...) or improved (sin,cos,...)
+new initialization procedures for int, double, and string.
+corrected comparison operator in LR ......
+
+------------------------------------------------------
+Tue Jul  7 1998
+
+Improved version of sparse matrices.
+
+Added a function atoREAL(s) as a simplified form of strtoREAL(s,p)
+
+------------------------------------------------------
+Fri Jul  3 1998
+
+Reversed the change of format from the previous: Now the format is
+again like the  output of GMP: +.10000E0001 for a REAL(1), for
+a better possibility to compare the results.
+
+Added a preliminary version of sparse matrices.
+
+Added a pair of functions stiff_begin() / stiff_end() that locally 
+force a higher precision (mainly of interest e.g. for strtoREAL,
+where the inputs are precise, but the algorithm itself produces 
+impreciseness. 
+
+------------------------------------------------------
+Thu Jul  2 1998
+
+Fixed (at least i hope) a bug in the basic LR package: under certain 
+circumstances ,routine LRTODEC gave wrong results. At the same time, 
+changed the format of the output in that routine: it now uses rounded 
+results and e.g.  REAL(1) will always show up as +1.0000E0000  and not 
+as +.10000E0001 or even as +.9999E0000.  
+
+------------------------------------------------------
+Mon Jun 29 1998
+
+Addition of function  strtoREAL in REALLIB.
+It converts a string to a REAL in a way similar to strtod.
+
+Correction of silly error in REALLIB.cc:
+  REAL max_approx (long prec, const REAL& x, const REAL& y){
+-    if ( upperbound(x-y) <prec ) return x; 
++    if ( positive(x-y,prec) ) return x;
+
+Removed #include <string.h> where not necessary
+
+
+------------------------------------------------------
+Tue Jun 22 1998
+
+Changed implementation of steady_state such that less memory is used.
+Now (at least well conditioned) Markov chains with 1000 states can be handled.
+
+------------------------------------------------------
+Tue May 26 1998
+
+Changed implementation of matrix division such that x/y is
+allowed as soon as x  and  y have the same number of rows.
+The number of columns need not be the same.
+
+------------------------------------------------------
+
+Thu Feb 19 1998
+
+(1) Changed deallocation of metric objects (now in order of allocation,
+    so a matrix is deallocated before its entries are deallocated.
+    Consequence: Example matrix1 with LR now works up to size 250,
+    using 170 MB. Unfortunately, using the interface to GMP, there is still
+    a seg fault for larger arrays.
+
+(2) Minor internal error in REALMATRIX fixed (wrong #define ELEMENT )
+
+(3) New routine steady_state(p) computing the steady state distribution
+    of an irreducible discrete homogeneous Markov chain,  where $p$ 
+    is the transition matrix, based on the Grassmann algorithm with
+    state elimination.
+
+    Examples: 400 states, P(i,j)=1/400 (i.e. independent from i,j)
+    max MP-memory used: 32500 kB
+    maximal precision:  -100
+    user    4m45.350s  (PPro200, 256 MB)
+    user    11m22.140s (K5PR100, 64 MB)
+    (but a lot more conventional memory was used, total about 60 MB)
+
+(4) To simplify comparison of algorithms, there is a new DOUBLE_INTERFACE.
+    Here double* is used instead of GMP resp. LR.
+    Of course, the errors are not controlled!
+    The implementation is preliminary (and might stay so forever..)
+    
+------------------------------------------------------
+
+Dec 1997 - Jan 1998
+
+(1) sources are split
+    new: DYADIC.cc, REALlimits.cc, COMPLEX.cc
+
+(2) new class METRIC_OBJECT: 
+     will be base class for REAL, COMPLEX, ..(and maybe other metric spaces??)
+     aim: unification of the limit-operators for different objects
+
+(3) new class ITERATION_STACK controlling the relevant parameters of iterations
+      metric objects are stored in a doubly linked list in the actual 
+      iteration stack 
+      on reiterations, all objects in this list are cleared, so at least 
+      storage occupied by the MP-packages is freed again on longjmp's
+      still lost: any other memory not on the stack...
+
+------------------------------------------------------
+
+Mon Dec 29 1997
+
+new limit operator
+   limit_mv for multi-valued functions
+implemented for REALMATRIX
+
+implementation of COMPLEX square root
+
+------------------------------------------------------
+
+Mon Dec 22 1997
+
+new conversion operator: 
+    round(x), returning k or k+1 where  k <= x <= k+1
+but only rough implementation
+needs to be revisited!
+
+new function modulus(x,y) returning the remainder of x divided by y
+
+modification of sin and cos using modulus(x,2*pi) instead of x
+
+correction of size:
++    ergsize.mantissa=ergsize.mantissa>>1 +1;
+-    ergsize.mantissa=ergsize.mantissa<<1;
+
+correction of cos:
++    REAL z=1,y=1;
++    REAL z=dummy,y=1;
+
+class COMPLEX as subclass of REALMATRIX
+
+------------------------------------------------------
+
+Wed Dec 17 1997
+
+sin and cos stopped working for argument REAL(0): 
+   segmentation fault in division of 0 by another number.
+-> Determination of precision in division changed back to `absolute'
+
+------------------------------------------------------
+Tue Dec 16 1997
+
+New limit operators: limit_hint
+New operator for Lipschitz-cont functions
+
+------------------------------------------------------
+Fri Nov 21 1997
+
+Determination of precision of multiplications and division changed
+to a somewhat `relative' precision: 
+local_prec now depends on actual_precision+dependencies of parameters.
+Seems to improve error propagation in matrix1.
+
+------------------------------------------------------
+Wed Nov 19 1997
+
+Found bug in LR_GETSIZE (implementation of MP_getsize for LR),
+with a precision of -10888, test procedure itsyst now can
+compute the value x_5780 (previously: x_4510),
+now we loose only (z->_mp_d)[abs(z->_mp_size-1)]1.884 bits per value
+
+------------------------------------------------------
+Thu Aug 21 1997
+
+Error information in REALS changed to structure `sizetype',
+error propagation is now defined using functions on sizetype.
+
+At least for multiplication this is an improvement. 
+With a precision of -10888, test procedure itsyst now can
+compute the value x_5140 (previously: x_4510), now we loose
+2.040 bits per value in contrast to 2.414 bits.
+
+Neccessary: New function MP_getsize delivering more bits of the mantissa.
+
+All of the basic functions must be checked again! 
+Error propagation in the division seems to be (slightly) broken!
+------------------------------------------------------
+Mon Aug 11 1997
+
+Fixed bug in interface to GMP, MP_size was totally broken...
+Now interface to GMP seems functional :-)
+
+------------------------------------------------------
+Fri Aug 8 1997
+
+New file REALcore.h with for private routines that are needed by
+  REALS.cc and by REALMATRIX.cc. So limit of matrices again 
+  implemented in REALMATRIX.cc.
+
+------------------------------------------------------
+Thu Aug 7 1997
+
+Bug: w >> p is w / 2**(-p %32) and not w / 2**(-p) !
+  Consequence: Errors are calculated too big if the arguments are
+    very different in size.
+  Solution: new inline function  scale(w,p)
+------------------------------------------------------
+Wed Aug 6 1997
+
+In LR/Dyadic_Base.c, the division is improved by a handcoded assembler
+  in the innermost loops for i386. This gives a enormous speedup of 
+  about 50% for this routine.
+
+------------------------------------------------------
+Tue Jul 29 1997
+
+Implementation of:
+  exp(matrix)
+
+  limit-operator for matrices
+
+  rwrite, rshow for matrices
+
+------------------------------------------------------
+Sat Jul 26 1997
+
+Implementation of:
+  exp(x), final version(?), using Taylor series for |x|<1, 
+       else using recursion exp(x)=exp(x/2)^2
+
+  sqrt(x), preliminary, using normal limit operator
+
+  rshow(x,w), showing the value x in a field of at most max(9,w) characters 
+        the shown result is correct, however the last might differ by 1.
+        In addition, an denormalized output in the form e.g. ".*E-0003" 
+        just indicates that the value of x is below 10^(-3).
+
+Cleaning up: old implementations of limit1 and sum deleted.
+
+Renaming of write to rwrite. 
+
+In LR/Dyadic_Base.c, the division is improved by a few changes
+  to the innermost loops (working with pointer arithmetic instead of arrays).
+  This gives a speedup of about 10% for this routine.
+
+------------------------------------------------------
+Fri Jul 25 1997
+
+Handcoding the central iteration of the multiplication in LR in assembler 
+gives a speedup of almost 50% for the test program "itsyst". The assembler
+routines are automatically chosen if compilation is done on a Linux machine
+(beware of other architectures!!!)
+If there are any changes to Dyadic_Base.c, the patch can be applied to the
+new source with
+  cd LR
+  gcc -O3 -m486 -mwide-multiply -S Dyadic_Base.c 
+  patch -p0 < Dyadic_Base.patch
+  cp Dyadic_Base.s Dyadic_Base-LINUX-i386.s
+
+In consequence, GMP and LR are almost of the same speed for this test.
+
+The import of GMP is still erroneus, "matrix" and computing the sin function
+lead to infinite loops. Maybe error in conversion long->REAL ?
+Additionally, "matrix1" with matrix size of 50 leads to a segmentation fault.
+
+Starting "matrix1" using  LR leads to:
+	time echo 50 | examples/matrix1 -d
+
+	....
+	Maximum-Norm +.13E+0162
+	....
+
+	RealRAM ending 
+	   variables in use:   127542
+	   memory in use:      6912 kB
+	   stored tests:       0 
+	   stored conversions: 0 
+	   stored inputs:      4 
+	   number of outputs:  15160 
+
+	real    2m50.229s
+	user    2m41.250s
+	sys     0m0.750s
+
+gprof examples/matrix1  shows
+
+	 time   seconds   seconds    calls  ms/call  ms/call  name    
+	 49.41     77.52    77.52  1350045     0.06     0.06  Dyadic_Base_SysMul
+	  9.97     93.17    15.65   383798     0.04     0.04  Dyadic_Base_SysDiv
+	  8.96    107.23    14.06                             mcount
+
+so the multiplication is the most important procedure in this example!
+Additionally we have the following numbers of essential function calls in
+our arithmetic:
+1337056     operator*
+1217054     operator-
+55546       operator/
+125000      operator+
+i.e. 2734656 million operations corresponding to 17 KFlops (with high precision)
+
+
+time sine -d -prec_init=-55 yields a user time of 0m3.570s and gprof shows
+ 33.95% overhead by profiling leading to 175468 operations with about 74 KFlops
+
+------------------------------------------------------
+Thu Jul 24 1997
+
+Unification of the Makefiles for LR and GMP, choice of the MP interface is 
+done via "make LR" or "make GMP" for the very first compilation.
+Subsequent compilations use the chosen interface.
+
+------------------------------------------------------
+July 1997
+
+Implementing first versions of limits with lipschitz-conditions,
+used for REALLIB: sine, cosine and maximum.
+
+REALMATRIX is enhanced by an initial (erroneus!) version of 
+matrix exponentiation.
+
+Starting the integration of GMP. In consequence, the interface to the
+MP library becomes clearer.
+
+------------------------------------------------------
+June 1997
+
+Implementation of the following parameters:
+
+ -debug=p	Level of Debug: 0=errors, 1= main iterations, 2= limits
+ -d		Starting debugging with level 1
+ -prec_init=p	Modifikation of the starting precision ( usually negative!)
+ -prec_inc=b	Modifikation of the inkrement (usually positive!)
+ -prec_factor=d	Modifikation of the factor ( >1,double)

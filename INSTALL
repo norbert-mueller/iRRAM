@@ -1,0 +1,95 @@
+                              INSTALL-FILE for the iRRAM, 
+                  a software package for exact real arithmetic in C++
+                                 version 2014_01.
+
+###############################################################################
+
+This version is released and maintained by Norbert Mueller (mueller@uni-trier.de).
+
+A description of the package and the underlying theory can be found in
+
+   doc/irram.ps
+          (presented at the
+           Workshop on Computability and Complexity in Analysis,
+           2000, Swansea/UK)
+
+
+Additionally you might have a look at 
+
+          http://www.informatik.uni-trier.de/iRRAM/
+
+for new versions and enhanced documentation...
+
+#############################################################################
+
+COMPILATON
+
+- untar the package in some directory "$BASEDIR":
+
+  cd $BASEDIR; tar xvf iRRAM_2014_01.tar.bz2   
+  
+- If you are impatient, just run 
+	./QUICKINSTALL_run_me 
+  from within the iRRAM directory.
+ 
+- If you want to know more of the details, please read on and/or read the FAQ!
+
+- Compilation should be possible with a recent g++ on Linux, simply try the usual
+  
+  cd iRRAM_2014_01
+  ./configure
+  make
+  make install
+
+  This will also check your system for the availability of the multiple precision libraries 
+  GMP and MPFR. If these libraries are not installed in the usual places, you may use the 
+  following options for the configuration:
+
+    --with-include-path=DIR    additional path for includes
+    --with-lib-path=DIR        additional path for libraries
+
+  So if you have installed both the gmp- and the mpfr-libraries as well as the 
+  additional include files in a directory MY_MP_INST, then
+
+     ./configure --with-include-path=MY_MP_INST/include --with-lib-path=MY_MP_INST/lib
+
+  should be sufficient. Be careful: At runtime you might need an extra
+
+     export LD_LIBRARY_PATH=MY_MP_INST/lib
+     
+  to use the installed shared libraries! Again please have a look a the FAQ!
+
+- In $BASEDIR/iRRAM/examples so will find some examples, e.g.:
+
+  etest:        compute a number of decimals of e=2.718281... 
+  pi_example:   explained in the introduction is doc/irram.ps
+  matrix:       a few simple applications of matrix arithmetic 
+  hilbert:      Inversion of the badly conditioned hilbert matrix
+  itsyst:       compute the iteration x=3.75 (1-x)x for 
+  swanseatest,swanseatest-2: a few tests for a competition at the
+                CCA2000 workshop in Swansea/Wales
+  timings-iRRAM gives timings for basic function using the choosen backend
+  timings-MPFR-iRRAM gives timings for MPFR, but with
+                extensions, showing how the iRRAM itself can be used 
+                from within other software!
+
+You should call these examples once in the form 
+  
+   program 
+
+to hide the iterations and once simply as 
+
+   program -d
+
+to see the iterations.
+
+
+- The easiest way to compile an own program "my_first_test.cc" is as follows:
+  Put the program into the directory  "$BASEDIR/iRRAM/examples/" 
+  and just call
+
+     make my_first_test
+
+-----------------------------------------------------------------------------
+
+COPYRIGHT: LGPL

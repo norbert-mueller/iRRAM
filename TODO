@@ -1,0 +1,323 @@
+Bugs:
+ - The scaling function scale(INTEGER i, int n) for n<0 will be wrong if  MP_shift in undefined
+ - The input "cin >> d" (in STREAMS.cc, line 254) for DYADIC d is commented out as 
+   there is no conversion from string to DYADIC
+ - Verify the implementation of the division operator: In the actual implementation,
+   the error approximation contains a multiplication in the denominator
+   that is rounding UP instead of rounding DOWN. The arithmetic of sizetype should
+   be checked again and verified at every place where it is used!
+   Also sqrt() has to be checked!
+ - size(REAL(0)) results in the smallest representable size! Although this is a
+   natural setting, this is definitely not correct! The only correct solution can be
+   an endless loop! A better solution could be to define the semantic of "size" according to the implemented behaviour.
+ - Correct power(x,n) for n=minint (=-2147......). At the moment, we use an inversion
+   n=-n, which leads to a wrong exponent!
+
+
+
+Very urgent:
+ - the (multi-valued!) conversion from REAL to double uses a DYADIC as intermediate value. As a consequence, 
+   such a conversion needs quite a large amount of memory in the multi-value cache. This should be reduced 
+   to just caching the resulting double value 
+ - "cout << -1*double(REAL(1))+1.0" gives a small non-zero value. 
+   Check whether this is can be improved: 
+	The conversion "double(REAL(1))" is allowed to have at most 1 ulp error, so the behaviour is not an error.
+	But the conversion could have an error of e.g. <0.65 ulp UNLESS the value is exactly 0. 
+	Even then a result of 0 would be OK with a corresponding semantics like: 
+		Conversion of REAL::x to double::d returns a value d such that there is no other double::e
+		with |x-e| < 1.5 |x-d|  (or something similar)
+ - STREAMS should be extended by "open", "close", "is_open" and a public default constructor that does not
+   open a file. The corresponding interface has already been added to iRRAM_STREAMS.h
+ - The macros in STREAMS.cc should be converted to templates, if possible...
+ - Check that the output of swrite is correct to 0.65ulp in any case.
+   At the moment, we can be sure for GMP only(!!!) to have 0.51ulp decimal conversion error,
+   but the interval error has to be checked again!  Check which effect this has on the underlying double layer:
+   We should need one bit more to get an output. 
+ - Verify all uses of the "vsize" componenet of REAL variables whether it really works correctly
+   at all with the double intervals.
+ - The use of SSE2 should  be activated for more cases (in iRRAM_REAL.h)
+
+Urgent:
+ - LAZY_BOOLEAN positive should be optimized for REAL in doulbe-interval-form 
+ - Change the conversion
+      LAZY_BOOLEAN(int b){ value=b; }
+    to 
+      LAZY_BOOLEAN(int b){ value=(b!=0); }
+   and add an explicit constant LAZY_BOOLEAN BOTTOM to conform with the ususal interpretation of
+   values !=0 as TRUE. 
+ - Is it really good that an assignment to a REAL implemented as double interval from an MP real
+   stays double precision (question arose during the use of a chaching strategy)?
+ - Check whether there is an unnecessary call to getsize in the default constructor of REAL variables 
+ - rename continous_begin/end to continuous_begin/end
+ - continous_begin/end should be inlined!
+ - All applications of mp_conv() should be inspected very carefully, as it uses a const_cast
+ - A version of the sqrt routine for double intervals should be added.
+ - More double versions should be modified to allow SSE2  
+ - sqrt.cc and pi_ln2.cc still have access to the internal data structures of REAL, sqrt should be moved
+   to REALS.cc, the dependencies in pi_ln2.cc should be removed. 
+ - Change the limit and lipschitz routines to use a DYADIC x_new
+ - the iteration routine (introduced for the Nijmegen contest) should be tested better
+   a good description is missing, as well as a proof. 
+   It could also be converted to a template.
+ - The range reduction in the sin_cos routines has been modified by a hack, that
+   allows better evaluation of very large arguments (like 10^50). This hack should be
+   changed to a cleaner solution! 
+ - implement sizetype as a public type, and e.g. implement a higher-precision
+   size function that is of value sizetype. The can be used e.g. for 
+   approximations in limits
+ - modify the debugging structure to use cerr instead of fprintf
+ - modify the INTERVAL part to use the "choose"-operator e.g. to distinguish between the
+   different cases for borders of an interval multiplication
+ - modify the INTERVAL tan(I) so that it always does a proper interval extension even if
+   the argument interval I crosses a singularity of tan(x)
+ - add a conversion from RATIONAL to INTEGER
+ - add INTEGER ceiling(RATIONAL q) and INTEGER floor(RATIONAL q) 
+   (should be faster than a home-made implementation using numerator/denominator)
+ - GMP_min and GMP_max should go to the interface definitions!
+ - implement test on equality of RATIONAL using the special rational equality test from GMP
+ - add a sign(RATIONAL) using the GMP-internal sign-function   
+ - add (partial) function LAZY_BOOLEAN positive(const REAL& x), LAZY_BOOLEAN negative(const REAL& x)
+ - modify the INTERVAL mignitude function to use a continous region together with
+         "switch (choose( positive(low),negative(upp),TRUE))...."
+   this could be faster/more precise than the current implementation
+
+ - verify the semantics of the conversion swrite(REAL,w,p) 
+   (i.e. when does the conversion switch to "0" instead of a valid value?)
+
+ - there can be underflows for the actual_precision in the limit templates ????
+ - verify the getsize-routines for 64-bit-machines
+ - the templates for limits should be moved from limits.cc to something like iRRAM_limits.h
+   This file should only be included if people need to additional limits that are not predefined!   
+ - change the macros in the interface definition to inline functions whenever
+   an argument is referenced more than once: current version lead to a nasty
+   error in cGMP, where an argument of form "x[i++]" was evaluated twice...
+
+ - reduction of the number of limit operators by using a special operator
+   with a lot of additional information (on domain etc.) and reducing other
+   limit operators to this special form  
+
+ - verify REAL::operator double const ().
+ 
+ - rewrite the code so that all smaller internal functions are inlined. 
+ 
+ - verify getsize(0)=(0,min_exponent) for all backends
+ 
+ - in GMP_ext.h, many calls to ext_gmp_size appear. There are similar calls
+   in REALS.cc. Can we easily reduce the number of calls (->speedup for
+   low-precision)? Perhaps sizetype-arithmetic could be changed to
+   something like (INTEGER exponent, double mantissa), with normalised
+   mantissa. GCC 3.4 could be a lot faster here than gcc 33, as ldexp and frexp
+   are __builtin__ now!
+ 
+ - in exp_log.cc, function iterate uses a reference to ACTUAL_STACK that
+   should be removed!
+
+ - all  foreign classes with static variables will give problems when 
+   exceptions are raised! 
+   Essentially: libraries should be at least be thread-safe to be 
+   useable within the iRRAM!?  
+
+ - the function module(f,x,n) in stack.cc should be converted to a template 
+
+ - check for overflows /underflows e.g. in the case of scale(...) 
+   and for the complete sizetype-arithmetic in iRRAM_core.h  
+
+ - check the cases where  iRRAM_core.h:sizetype_normalize() gives the warning
+        "small exponent found"
+ 
+ - check which backends work correctly on Athlon-64
+ 
+ - try arctan2 to improve arctan, asin, acos and esp. arg(COMPLEX)!
+
+ - Check RATIONAL / INTEGER parts, might contain superfluous or incorrect
+     functions...
+
+ - Optimise INTEGER/RATIONAL parts, there are many cases where inlines could be used!
+
+ - Add a fast test for INTEGER/RATIONAL sign: int sign(INTEGER),int sign(RATIONAL)
+
+ - Access to the mpz-part of an INTEGER should be private again...
+
+ - Parameter type of choice in limit_mv should be changed to 'int&' instead of 'int*' 
+
+ - n-th root of real numbers should be improved and implemented as a Lipschitz limit
+
+ - in the sine function there is a REAL sin_sign that should better be of type int.
+
+ - the INTERVAL tan should better throw an exception or run into an infinite loop
+   if the argument value contains a singularity
+
+ - make check in tests only tests the default backend
+
+
+Obsolete:(?)
+
+ -  Division of type: long/REAL
+ 
+ -  in GMP_interface.h: replace  functions like int_gmp_int2long
+    with direct calls to the functions and simplify GMP_int_ext.c accordingly
+
+Bugs: 
+
+ - conversion to long or double from a CONST REAL is not allowed,
+   so we need to copy the argument first.
+
+
+Modify: 
+ -  Add a documentation for how to call (and interpret) the tests:
+	cd test; make check BACKEND=xyz
+ -  Add a version of compute() in the form of 
+	int compute(int argc, char *argv[])
+    for easier passing of parameters like "-h" for help...
+ -  Change all example function simila to the style of "algebraic_BFMS.cc"
+ -  The interface to the type conversions is quite inconsistent: there is a REAL.as_double(), 
+    but no similar function for other types.
+ -  The default width for the output of REAL should be reduced such that simple computations
+    can be performed just using the double layer (e.g. just 5 decimals mantissa...)
+ -  replace gmp_extension.cc and mpfr_extension.cc by the better iRRAM_exec method
+ -  complex functions like cosine and sine can be improved
+ -  the complex type should not be derived from from REALMATRIX, 
+    to have better implicit type conversions
+ -  take the version of complex square root from the lectures
+ -  upperbound (speeding up the log2 part)
+ -  maximum and minimum could be improved
+ -  == and != could be improved
+ -  interval sin and interval cos could be improved
+ -  the number of cache entries for the complex function arg() could be 
+    perhaps be reduced?   
+ -  change the conversion from REALS to double and vice-versa to be consistent
+    with the IEEE standard concerning extra values like NaN e.g.
+ -  For (normal and sparse) matrices M, there is bound(M,k) 
+    as an extension of bound(x,k), which is still of type "int" and not LAZY_BOOLEAN
+ -  Change BOTTOM from LAZY_BOOLEAN from a "#define" to a (hidden) constant
+       
+    
+Add:
+ -  Add a function "int %(const INTEGER, int)"
+
+ -  Add/improve the prototype implementation of ALGEBRAIC numbers from the lecture in 2004/5
+ 
+ -  Add a new LAZY_BOOLEAN choose-operator, where the arguments are only evaluated if the
+    corresponding value is used in the actual evaluation. This could be done
+    using a macro that can access the private parts of LAZY_BOOLEANS like 
+    #define CHOOSE(a,b) {continous_begin();LAZY_BOOLEAN tmp_a,tmp_b;
+                   tmp_a=a; if (tmp_a.val==true) return_val=1; 
+                   else {tmp_b.val=b; if (tmp_b.val==true) return_val=2;
+		   else {tmp_a.val==false && tmp_b.val==false) return_val=0;
+		   else REITERATE; cache_add (return_val); continous_end();}  
+    Perhaps a function "INTERNAL_VALUE(tmp_a)" could be used here instead of making
+    tmp_a.val a public value.
+    As an alternative, we could try templates, but they are much harder to use.
+    As an application, the zerotest of ALGEBRAIC numbers can be used.
+    
+ -  new function sin_cos(x) returning both sin(x) and cos(x)
+    use this function in tan(x) and for certain complex functions
+    (could give about a factor of 2 in speed, as sin can then be computed 
+    from cos and viceversa.
+ -  similar function min_max(x,y)
+ 
+ -  converting the real numbers to a flat dcpo could be interesting:
+    a division 1/0 would not lead to a loop immediately, but would
+    yield a NaN as value (as bottom element). All arithmetic operations 
+    could (easily?) be extended to use this value, e.g. 1 + NaN = NaN
+    Logical operators on NaN would always yield the BOTTOM value,
+    e.g. "1 < NaN" would be BOTTOM
+    Conversion from a double having a nonfinite value (e.g. +inf, -inf or NaN)
+    could lead to a REAL NaN. However, a conversion from a REAL NaN to a double
+    must still lead to an infinite loop (as a double NaN can be tested!)    
+  
+ -  intervals could be extended by empty or infinite intervals, but maybe a
+    type for arbitrary closed sets would be better
+
+Check/Shorten: 
+
+ -  All function of type (REAL,long), there are unnecessary parts 
+    concerning sizetype, compare to REAL operator + (const REAL& x, long n)
+ -  Normal limits have to be checked carefully, there might be an error
+    corresponding to a missing limnew_error ??????
+    Logic of the iterations wrt. firsttime seems questionable!
+
+Near future:
+        
+ -  compare the theory of multi-valued functions and of lazy boolean commands
+
+Near future:
+
+ -  Try to optimize the exp function using precomputed values of e^(2^i) (table lookup)
+    For low pecision, the exp is a facor of 1000 slower than a multiplication, so that
+    enourmous speedups could be acchieved!
+
+ -  implement REAL numbers additionally as computation diagrams
+
+ -  implement COMPLEX intervals 
+
+ -  convert the iRRAM to an "object", i.e. define a class iRRAM
+    - the interface to the normal computation would be changed
+    - the computation should live in a thread of its own
+    - everything has to be thread-save
+
+ -  implement REAL numbers in a logarithmic representation to catch 
+    very large numbers that arise e.g. when computing the maxima of analytic functions
+
+ -  implement SSE2-extensions to the double filters
+
+ -  implement additional types like ALGEBRAIC numbers
+ 
+ -  implement additional types like ANALYTIC functions
+ 
+ -  implement further functions for COMPLEX
+ 
+ -  implement class iRRAM_BLOCK
+      iRRAM_BLOCK mark (iRRAM_absolute|iRRAM_relative)
+      iRRAM_BLOCK mark (iRRAM_lazy|iRRAM_strict)   
+      iRRAM_BLOCK assert (iRRAM_continuous)
+    without default constructor, just with the constructors as above and 
+    a destructor, that switches the behaviour of the iRRAM as long as the
+    variable is visible.
+    lazy,strict,continuous,absolute,relative etc should be flags, 
+    there is no complement for continuous
+
+ -  Implement further functions for the DYADIC type, like ADDi, MULi etc.   
+ 
+ -  Implement a further backend with unrestricted exponents size (i.e. an
+    INTEGER instead of an int like in GMP/MPFR). This backend could perhaps
+    replace LRGMP. The algorithms should be based on my lecture on computer
+    arithmetic. Program verification could be simpler then as a further
+    verified independent level is introduced.
+ 
+ -  Is it possible to implement structures similar to filters? 
+    I.e. there is a very fast initial approximation to values 
+    (e.g. similar to the  sizetype) to allow the computation 
+    of the control path. The more expensive precise computations could 
+    be computed later when necessary (or an a second cpu ...)
+    
+ -  Check whether the sizetype arithmetic in iRRAM_core.h can be
+    improven, e.g. using macros/ideas from GMP (e.g. count_leading_zeros)
+
+ -  Another possibility could be to use a pair (double,int) or even
+    (double,long long) as sizetype, as the necessary normalisation
+    of the mantissa gets easier (and perhaps faster)
+    
+ -  The sizetype arithmetic could be transformed to 64bit, while the
+    stored values still are 32bit. The would reduce the necessity of 
+    many intermediate normalisations.
+ 
+ -  Add a double-double layer
+
+ -  Is it possible to transform the iRRAM to an "object"? There could be local
+    variables of type REAL and some import/export functions for the local objects.
+    Modifications of the values could perhaps be done via the call of derived member functions.
+    The trace of the computation could be done via a computation list. This would
+    allow for a better integration of the iRRAM into sequential programs and give 
+    a cleaner interface. We could remove all I/O to outside of the iRRAM.
+
+ -  Similar to iRRAM_exec we could add a call iRRAM_external for the call 
+    to routines that should not be recomputed in iterations. 
+    It should be allowed only on the upmost iteration level (like the IO-functions).
+    Any IO could be encapsuled by this call.
+
+ Very far:
+ 
+ -  uncountably many extensions (what do YOU need/want?)
+
+

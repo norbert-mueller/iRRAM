@@ -1,0 +1,79 @@
+Version 2014-01
+ - moving to github
+ - significant changes in the FUNCTION interface, 
+    which even needs an increased major library version
+
+Version 2013-01
+ - new build structure allowing a system wide installation
+ - uncountably ;-) many small changes
+ 
+Version 2009-01 
+ - removed rarely used backends LRGMP and cGMP
+
+Version 2007-01
+ - fixes some bugs in the RATIONAL interface
+ - small modifications due to warnings from gcc version 4.1.3
+ - small changes in the build process for the static/dynamic libraries
+
+Version 2006-01
+ - small modifications to the build process
+
+Version 2005-03
+ - port of backends LRGMP and cGMP to x86_64
+
+Version 2005-02
+ - added support for MPFR version 2.2.x
+
+Version 2005-01:
+ - many functions have been optimized and converted to inline
+ - some bugs fixed
+
+Version 2004-02:
+ - complete change of the I/O routines from C-style to C++-style
+ - port to x86_64
+ - almost all "long" variables have been converted to "int"
+
+ - new backend cGMP with hashing techniques (impressive benchmarks...)
+ - small changes in data structure of REAL (size is precomputed)
+ - initial steps to catch over/underflow
+
+Version 2003-07:
+ - sizes of caches for multi-valued function now grow dynamically
+ - added function arg(z) and log(z) for complex arguments z
+
+Version 2003-06:
+ - small changes in the Makefile-structures
+ - correction of the Makefile in user_programs to allow profiling
+
+Version 2003-05:
+ - many additional functions for type changes
+ - esp. new constructors RATIONAL(RATIONAL) and INTEGER(INTEGER)
+   
+Version 2003-03:
+
+ - type INTERVAL for intervals of exact real numbers
+ - LR backend removed, LRGMP backend fixed
+ - shared libraries
+
+Version 2003-01:
+
+ - type LAZY_BOOLEAN
+
+Versions 2002-xxx
+
+  - only small cosmetic improvements
+
+Version 2001c:
+
+ - types INTEGER and RATIONAL 
+ - many aditional COMPLEX functions
+ - LR backend disable (at the moment...)
+
+Version 2001a/b:
+
+ - new backend: MPFR (use at least MPFR 2001!)
+ - configure script
+ - choice of backend at configure or compile time 
+ - possibility of reexport of computed functions to backends GMP and MPFR,
+   but still in experimental form (no NaNs etc.)
+ 

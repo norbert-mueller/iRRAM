@@ -1,0 +1,23 @@
+The iRRAM library was developed at the department of computer science at the 
+University of Trier, Germany.
+
+Authors and contributors are:
+
+- Norbert Mueller<mueller@uni-trier.de>
+  wrote the main parts except the following:
+
+- Thomas van Diessen<diessen@castor.Uni-Trier.DE> 
+  wrote the INTEGER and RATIONAL interface to the GMP library and
+  many of the non-basic COMPLEX functions.
+
+- Shao Qi 
+  assisted in the interval extensions on top of iRRAM
+
+All communication should go to:
+
+Norbert Mueller                                            
+Tel: ..49-(0)651-201-2845        http://www.informatik.uni-trier.de/~mueller/ 
+Fax: ..49-(0)651-201-3805        email: mueller@uni-trier.de          
+FB IV - Abteilung Informatik     Universitaet Trier *  D-54286 Trier (Germany)
+
+

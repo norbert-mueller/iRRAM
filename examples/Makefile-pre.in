@@ -1,0 +1,33 @@
+# Makefile for user_programs
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+
+CC = @CC@
+CFLAGS = @CFLAGS@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS_INST@ -I@includedir@
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXFLAGS = @CXXFLAGS@
+LDFLAGS = -Xlinker -rpath -Xlinker @libdir@
+LDLIBS =  -L@libdir@ -liRRAM @LIBS_INST@
+
+all:	euler e_example swanseatest-2 itsyst itsyst2 itsyst3 factorial \
+        mp_extension pi_example rational_sep sinus probe \
+        swanseatest hilbert matrix timings-iRRAM jmmuller jmmuller2 \
+        float_extension test_module limit_example harmonic \
+        test_values test_exceptions test_round test_DYADIC test_INTEGER \
+        interval_test test_commandline test_strings gamma_bernoulli \
+        lambov analytic fileio algebraic-BFMS thread_test test-MPFR-iRRAM timings-MPFR-iRRAM
+
+distclean: clean
+	rm -f Makefile
+
+clean:
+	shopt -s nullglob; \
+	for i in *.c ; do rm -vf `basename $$i .c` ; done;  \
+	for i in *.cc ; do rm -vf `basename $$i .cc` ; done;  \
+	for i in *.cpp ; do rm -vf `basename $$i .cpp` ; done
+
+install:

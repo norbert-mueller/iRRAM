@@ -1,0 +1,121 @@
+FAQ
+
+Q1: How can I compile GMP, MPFR, and iRRAM together?
+Q2: How to compile my own programs?
+Q3: How can I do profiling?
+
+###########################################################################
+
+
+
+Q1: How can I compile iRRAM (and perhaps GMP and MPFR, too)?
+
+A1: There are several answers.
+
+    ************************************************************************
+    The easiest answer is: Please try the script "./QUICKINSTALL_run_me" ...
+    ************************************************************************
+
+    If you want to do it on your own:
+      (a) Install GMP and MPFR on your system, then do 
+	      ./configure --prefix=_absolute_path_for_installation_ 
+	      make
+	      make install
+
+      (b) If GMP and MPFR are yet not installed in your system 
+          and you are not allowed to install them globally, 
+	  you could install them locally and add the
+          corresponding path to the configure parameters, like in
+	      ./configure --with-installed=_where_to find_GMP_MPFR \
+			  --prefix=_absolute_path_for_installation_
+	      make
+	      make install
+
+         If you do not know how to install GMP and MPFR: have a look at
+	 the script "QUICKINSTALL_run_me" ...
+
+###########################################################################
+
+Q2: How to compile my own programs?
+
+A2: Again, there is an easy and a more complicated solution:
+
+  Most important: You need a line 
+  #include "iRRAM.h" 
+  at the top of your program...
+ 
+  Now to the easy solution: If possible, put your program into the directory 
+  "examples" and  use "make", e.g. if your program is  "my_program.cc", 
+  then simply call "make my_program". Finished...
+
+  If you cannot do this, it is a bit more complicated, so please read on:
+
+  Take the Makefile in "examples" as an example for what you need 
+  to compile and to care for the shared libraries. 
+
+  Suppose, GMP/MPFR and iRRAM were installed with "make install prefix=$INST", 
+  so INST points to your installation directory. Then use the following command:
+  (Depending on your installation, it might be neccessary to replace "lib" by "lib64")
+  g++ -o my_program myprogram.cc \
+  -Xlinker -rpath -Xlinker $INST/lib
+  -I$INST/include -L$INST/lib -lgmp -lmpfr -liRRAM -lm -lpthread
+
+  The option "-rpath $INST/lib", that is passed to the linker via the 
+  Xlinker options, ensures that the shared libraries will be found 
+  during runtime.
+
+###########################################################################
+
+
+Q3: How can I do profiling? 
+
+A3(a): First you have to create libraries that allow profiling:
+
+    I would recommend to install a profiling version in an own directory, like
+       ".../iRRAM_2014_01_profile/..."
+    instead of the  usual 
+       ".../iRRAM_2014_01/..."
+    i.e. after unpacking the sources, rename the directory!
+
+    **********************************************************************
+    Then the easiest answer is: Try the following three commands:
+
+      export OPTIONS="--enable-profiling=gprof"
+      export CFLAGS=" -pg -g -O2 -DGMP -static"
+      ./QUICKINSTALL_run_me
+
+    **********************************************************************
+
+    Compiling GMP with "--enable-profiling ..." leads to a version of gmp 
+    that does not use the option -fomit-frame-pointer (that doesn't allow profiling). 
+    So the results will be somewhat slower (about 20%), 
+    but at least you get an idea where all your precious time is lost. 
+    Additionally, 
+      export INST=.../installed-prof
+    creates a new directory for the profiling versions, so later you can easily
+    switch between profiling and non-profiling versions of GMP/MPFR and iRRAM 
+    choosing the right libraries to link with (and using the switch "-pg" when
+    compiling and linking your own programs).
+
+A3(b): As soon as you have profiling versions of the libraries, 
+    do the following:
+
+    To compile own programs in the subdirectory "examples",
+    just change the Makefile in that directory to use 
+
+      CXXFLAGS = -pg -g -O2 -static
+      LDLIBS = ../installed/lib/libiRRAM-GMP.a \
+	      ../installed/lib/libmpfr.a \
+	      ../installed/lib/libgmp.a
+
+    or 
+      CXXFLAGS = -pg -g -O2 -static
+      LDLIBS = ../installed/lib64/libiRRAM-GMP.a \
+	      ../installed/lib64/libmpfr.a \
+	      ../installed/lib64/libgmp.a
+
+    instead of the given values.
+
+    After compiling and running a program, use e.g. gprof to analyse its 
+    results.
+

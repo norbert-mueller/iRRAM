@@ -1,0 +1,28 @@
+                              README-FILE for the iRRAM, 
+                  a software package for exact real arithmetic in C++
+                                 version 2014_01.
+
+###############################################################################
+
+This version is released and maintained by Norbert Mueller (mueller@uni-trier.de).
+
+Please note that currently the iRRAM is only maintained on Linux (with architecture i386 or x86_64)!
+
+
+A description of the package with its theoretical background can be found in
+
+   doc/irram.ps
+          (presented at the
+           Workshop on Computability and Complexity in Analysis,
+           2000, Swansea/UK)
+
+
+Additionally you might have a look at 
+
+          http://www.informatik.uni-trier.de/iRRAM/
+
+for new versions and enhanced documentation...
+
+#############################################################################
+
+COPYRIGHT: LGPL

@@ -1,0 +1,1 @@
+main_sources = REALS.cc REALmain.cc REALLIB.cc limits.cc errno.cc convert.cc stack.cc STREAMS.cc DYADIC.cc COMPLEX.cc Integer.cc RATIONAL.cc LAZY_BOOLEAN.cc sqrt.cc exp_log.cc sin_cos.cc pi_ln2.cc REALMATRIX.cc SPARSEREALMATRIX.cc INTERVAL.cc GMP_int_ext.c GMP_rat_ext.c

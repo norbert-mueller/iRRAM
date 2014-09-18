@@ -1,0 +1,481 @@
+#! /bin/bash
+#
+# This is a shell script for a quick (but not dirty) compilation
+# and installation of iRRAM together with GMP....
+#
+# if this script is called with second parameter "full",
+# not only the shared version of the GMP backend is actually compiled
+# but even all possible backends in shared and unshared versions
+#
+if [ "x$1" == "x-verbose" ]; then 
+   VERBOSE="--disable-silent-rules"
+fi
+
+BASEDIR=`pwd`
+
+INST=$BASEDIR/installed
+mkdir -p $INST
+
+echo -e "
++------- QUICK-INSTALL for the iRRAM package ----------------------------------
+|
+| For the compilation of the iRRAM package, you need the packages GMP and MPFR:
+|
+|  (1) you can use versions of GMP and MPFR already installed on 
+|      your system (if available) 
+|
+| or
+|
+|  (2) this script can download and compile own versions (installed locally).
+|      The self-compiled versions might be a bit faster than those already 
+|      contained in your system.
++------------------------------------------------------------------------------
+"
+
+answer=""
+until [ "$answer" == "1" -o "$answer" == "2" ]; do 
+  echo -e -n "\nWhich option do you prefer?  (1/2) "
+  read answer
+done
+
+use_system=$answer
+  echo -e "... using option $use_system...\n\n"
+
+if [ "$use_system" = "2" ] ; then
+
+  GMP_DIR=gmp-5.1.3
+  MPFR_DIR=mpfr-3.1.2
+
+  GMP_SRC=${GMP_DIR}.tar.bz2
+  MPFR_SRC=${MPFR_DIR}.tar.bz2
+
+  echo "Where do you want GMP, MPFR and iRRAM to be installed?
+Please enter an existing directory name (where you have write access).
+Default value is '$INST'...
+"
+
+answer=""
+until [ -d "$answer" ]; do 
+  echo -e -n "\nInstallation prefix : "
+  read -e -i "$INST" answer
+done
+INST=$answer
+
+
+  if [ -e "${INST}/include/gmp.h" ] ; then
+    echo -e "
+It looks like you already used this script to compile a local version of GMP.
+"
+  already_GMP=""
+  until [ "$already_GMP" == "y" -o "$already_GMP" == "n" ]; do 
+  echo -e -n "Do you want to reuse the previous GMP compilation? (y/n) "
+    read already_GMP
+  done
+  fi  
+
+
+  if [ ! "$already_GMP" = "y" ] ; then
+    if [ -e $GMP_SRC ] ; then
+      echo -e -n "
+There seems to be a set of current sources in this directory:
+
+              $GMP_SRC
+
+(presumably from a previous run of this script).
+Do you want to use this one? (y/n) "
+    read answer
+    fi  
+    if [ ! "$answer" = y ] || [ ! -e $GMP_SRC ] 
+       then
+      echo "
+This script can either: 
+(a) try to find the sources within your home directory or
+(b) download GMP sources from the university of Trier.
+"
+      echo -e -n "Do you want this script to search for $GMP_DIR in your home directory? (y/n) "
+      read answer
+      if [ "$answer" = y ] 
+      then
+        echo ...searching GMP sources locally...
+        GMP_LOC=`find ~ -name "$GMP_DIR*.tar.bz2"`
+        if [ ! "$GMP_LOC" = "" ]
+        then
+          echo -e "
+The following versions of GMP were found :\n
+$GMP_LOC
+
+You may now choose which version of gmp should be used.
+"
+          for i in $GMP_LOC ; do
+            echo -e -n "Do you want to use $i ? (y/n) " 
+            read answer
+            if [ "$answer" = y ] 
+            then
+              cp $i .
+              GMP_SRC=$i
+              break
+            fi
+          done  
+        else
+          echo -e "\nThe search for $GMP_DIR failed...\n"
+        fi
+      else
+        echo -e -n "Do you want the script to download a copy from iRRAM.uni-trier.de? (y/n) "
+        read answer
+        if [ "$answer" = y ] 
+        then
+          echo -e "Trying to retrieve GMP sources from the internet..."
+          rm -f $GMP_SRC 
+          wget http://iRRAM.uni-trier.de/$GMP_SRC 
+          if [ ! -e $GMP_SRC ]
+          then
+            echo "Download of  $GMP_SRC not successfull..."
+          fi
+        else
+          echo -e "In this case, download $GMP_SRC manually into THIS directory!"
+          echo -e "\nGiving up...."
+          exit
+        fi
+      fi
+    fi
+
+    GMP_DIR=`basename $GMP_SRC .tar.bz2`
+
+
+    if [ ! -e $GMP_SRC ]
+    then
+      echo -e "Download $GMP_SRC manually into THIS directory!"
+      echo -e "\nGiving up...."
+      exit
+    fi
+
+    echo -e -n "
+The script will now extract, configure, and compile $GMP_DIR
+The resulting files will be installed locally in the directory
+      $INST
+
+Is this OK? (y/n) "
+    read answer
+    if [ "$answer" != y ] 
+    then
+      echo "
+In this case, you should consider reading the FAQ and/or INSTALL
+Giving up....
+"
+      exit
+    fi
+
+    if ( ! tar xvf $GMP_SRC )
+    then
+      echo "Extracting $GMP_SRC failed..."
+      echo "Giving up...."
+      exit
+    fi
+
+    mkdir -p $INST/include
+    cd $BASEDIR/$GMP_DIR
+    make clean 2> /dev/null
+    ./configure $GMPOPTIONS $OPTIONS --prefix=$INST $VERBOSE
+    make
+    make check
+    if ( ! make install) 
+    then
+      echo "Errors during configuration/compilation/installion of $GMP_SRC..."
+      echo "Giving up...."
+      exit
+    fi
+    cd ..
+    rm -r $BASEDIR/$GMP_DIR
+  fi # end of GMP compilation
+
+  LIBGMP=`find $INST -name "libgmp.a"`
+  LIBGMPDIR=`dirname $LIBGMP`
+  GMP_H=`find $INST -name "gmp.h"`
+  GMP_H_DIR=`dirname $GMP_H`
+
+
+  echo -e "
++------------------------------------------------------------------------------
+|
+| Now you need to download and compile MPFR as well...
+|
+| The installation will use the same directory '$INST' as above.
+|
++------------------------------------------------------------------------------
+"
+
+  if [ -e $INST/include/mpfr.h ] ; then
+    echo -e "
+It looks like you already used this script to compile MPFR.
+"
+  already_MPFR=""
+  until [ "$already_MPFR" == "y" -o "$already_MPFR" == "n" ]; do 
+  echo -e -n "Do you want to reuse the previous MPFR compilation? (y/n) "
+    read already_MPFR
+  done
+  fi  
+
+
+  if [ ! "$already_MPFR" = "y" ] ; then
+    if [ -e $MPFR_SRC ] ; then
+      echo -e -n "
+There seems to be a set of current sources in this directory:
+
+              $MPFR_SRC
+
+(presumably from a previous run of this script).
+Do you want to use this one? (y/n) "
+    read answer
+    fi  
+    if [ ! "$answer" = y ] || [ ! -e $MPFR_SRC ] 
+      then
+      echo "
+This script can either: 
+(a) try to find the sources within your home directory or
+(b) download MPFR sources from the university of Trier.
+"
+      echo -e -n "Do you want this script to search for $MPFR_SRC in your home directory? (y/n) "
+      read answer
+      if [ "$answer" = y ] 
+      then
+        echo "...searching MPFR sources locally..."
+        MPFR_LOC=`find ~ -name "$MPFR_DIR*.tar.bz2"`
+      if [ ! "$MPFR_LOC" = "" ]
+        then
+          echo -e "
+The following versions of MPFR were found:\n
+$MPFR_LOC
+
+You may now choose which version of MPFR should be used.
+"
+          for i in $MPFR_LOC ; do
+            echo -e -n "Do you want to use $i ? (y/n) " 
+            read answer
+            if [ "$answer" = y ] 
+            then
+              cp $i .
+              MPFR_SRC=$i
+              break
+            fi
+          done  
+        else
+          echo -e "\nThe search for $MPFR_DIR failed...\n"
+        fi
+      else
+        echo -e -n "Do you want the script to download a copy from iRRAM.uni-trier.de? (y/n) "
+        read answer
+        if [ "$answer" = y ] 
+        then
+          echo -e "Trying to retrieve MPFR sources from the internet..."
+          rm -f $MPFR_SRC 
+          wget http://iRRAM.uni-trier.de/$MPFR_SRC 
+          if [ ! -e $MPFR_SRC ]
+          then
+            echo "Download of  $MPFR_SRC not successfull..."
+          fi
+        else
+          echo -e "In this case, download $MPFR_SRC manually into THIS directory!"
+          echo -e "\nGiving up...."
+          exit
+        fi
+      fi
+    fi
+
+    MPFR_DIR=`basename $MPFR_SRC .tar.bz2`
+
+    if [ ! -e $MPFR_SRC ]
+    then
+      echo -e "Download $MPFR_SRC manually into THIS directory!"
+      echo -e "\nGiving up...."
+      exit
+    fi
+
+    echo -e -n "
+The script will now extract, configure, and compile $MPFR_DIR
+The resulting files will be installed locally in the directory
+      $INST
+
+Is this OK? (y/n) "
+    read answer
+    if [ "$answer" != y ] 
+    then
+      echo "
+In this case, you should consider reading the FAQ and/or INSTALL
+Giving up....
+"
+      exit
+    fi
+
+    if ( ! tar xvf $MPFR_SRC )
+    then
+      echo "Extracting $MPFR_SRC failed..."
+      echo "Giving up...."
+      exit
+    fi
+
+    cd $BASEDIR/$MPFR_DIR
+    make clean 2> /dev/null
+    ./configure  $MPFROPTIONS $OPTIONS --with-gmp-include="${GMP_H_DIR}" --with-gmp-lib="${LIBGMPDIR}" --prefix="${INST}" $VERBOSE
+    make
+    if ( ! make install) 
+     then
+      echo "Errors during configuration/compilation/installion of $MPFR_SRC..."
+      echo "Giving up...."
+      exit
+    fi
+    cd ..
+    rm -r $BASEDIR/$MPFR_DIR
+  fi # end of MPFR compilation
+fi
+
+  echo -e "
++------------------------------------------------------------------------------
+|
+| Now the configuration, compilation and installation of iRRAM can start...
+|
++------------------------------------------------------------------------------
+"
+if [ "$use_system" = "1"  ] ; then
+  installed=""
+  echo -e "
+This skript can install the iRRAM package either locally or system wide:
+the resulting files will be copied to 
+
+  (1) to a local directory, with default  
+          '$INST' 
+      (can be changed below)
+or
+
+  (2) to a system directory (later root access might be needed!) 
+"
+
+  answer=""
+  until [ "$answer" == "1" -o "$answer" == "2" ]; do 
+    echo -e -n "\nWhich option do you prefer? (1/2) "
+    read answer
+  done
+
+  if [ "$answer" == 1 ] ; then
+   echo "Where exactly do you want to install iRRAM?
+Please enter an existing directory name (where you have write access).
+Default value is '$INST'...
+"
+
+  answer=""
+  until [ -d "$answer" ]; do 
+    echo -e -n "\nInstallation prefix : "
+    read -e -i "$INST" answer
+  done
+  INST=$answer
+  INST_PREF="prefix=$INST"
+  else 
+    INST_PREF=""
+  fi
+  
+else 
+  installed="--with-include-path=${GMP_H_DIR} --with-lib-path=${LIBGMPDIR}"
+  INST_PREF="prefix=$INST"
+  echo -e "
+This skript will install the iRRAM package at the same location as before, that is in:
+           '$INST'
+           
+"
+fi
+
+
+
+echo -e "
+The configuration, compilation and installation of iRRAM will start now!
+
+"
+make clean 2> /dev/null
+
+./configure ${configure_params} ${installed} --${INST_PREF} $OPTIONS $VERBOSE; error_code=$?
+if [ "$error_code" == "100" ]; then 
+  echo -e "\nSorry, configuring iRRAM failed because of missing or unusable GMP\n"
+  exit 1
+fi 
+if [ "$error_code" == "101" ]; then 
+  echo -e "\nSorry, configuring iRRAM failed because of missing or unusable MPFR\n"
+  exit 1
+fi 
+
+error=0
+make $make_params ; error_code=$? 
+if [ "$error_code" != "0" ]; then 
+  echo -e "\nSorry, compilation of iRRAM failed\n"
+  error=1
+elif [ ! -e obj/MPFR/.libs/libiRRAM.so ] ; then
+  echo "Failure: libiRRAM.so not created..."
+  error=1
+fi
+
+if [ "$error" == "0" ] ; then
+    echo "
+Now iRRAM should be successfully installed.
+"
+else
+    echo "
+Sorry, something during the compilation failed. 
+Please get in contact with mueller@uni-trier.de. 
+It would be a helpful to add information about your computing enviroment 
+(Linux version, gcc version etc) to the email.
+You should also rerun this program with 
+   ./QUICKINSTALL_run_me -verbose 2>&1 | tee problem.log
+to get a more verbose build process that might help finding the problem.
+Please add the resulting file 'problem.log' to your email.
+"
+    exit 1
+fi
+
+if [ "$INST" != "" ] 
+then
+  make install $INST_PREF
+
+  echo -e "
++------------------------------------------------------------------------------
+|
+| The skript can compile a small set of examples from the directory
+|
+|      $BASEDIR/examples
+|
+| using
+|
+|      cd examples; make all
+|
++------------------------------------------------------------------------------
+"
+  answer=""
+  until [ "$answer" == "y" -o "$answer" == "n" ]; do 
+  echo -e -n "\nDo you want the skript to compile the examples for you? (y/n) "
+  read answer
+  done
+  if [ "$answer" == "y" ]; then
+    echo -e "\n\n Compiling examples... "
+    (cd examples; make all)
+  fi
+  echo "
+
+###############################################################################
+#    Installation finished...                                                 #
+###############################################################################
+"
+else 
+  echo "
+###############################################################################
+#  To finish the installation, you have to 'su root' and then 'make install'  #
+###############################################################################
+
+After finishing the installation you could also
+
+       cd examples; make all
+
+to compile a small set of examples
+"
+fi
+
+echo "
+
+In case of problems, bugs, suggestions or anything else,
+please send an email to mueller@uni-trier.de !
+"

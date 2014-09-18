@@ -1,0 +1,4 @@
+namespace iRRAM {
+#define iRRAM_VERSION_ct "@iRRAM_VERSION@"
+extern const char* iRRAM_VERSION_rt;
+}
