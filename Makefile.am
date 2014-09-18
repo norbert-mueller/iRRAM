@@ -13,28 +13,28 @@ libtool: $(LIBTOOL_DEPS)
 all:   backends include check
 
 backends:
-	for i in obj/*/ ; do (cd $$i && ${MAKE} ); done
+	for i in obj/*/ ; do $(MAKE) -C $$i; done
 
-check:
+check: backends
 	@echo -e "\n***  Compiling tests ***\n"
-	(cd tests; make check)
+	$(MAKE) -C tests check
 
-examples:
+examples: install
 	@echo -e "\n***  Compiling examples ***\n"
-	(cd examples; make)
+	$(MAKE) -C examples
 
 install-am:
-	for i in obj/*/ ; do (cd $$i && ${MAKE} LIBTOOLFLAGS=--silent install); done
+	for i in obj/*/ ; do $(MAKE) -C $$i LIBTOOLFLAGS=--silent install; done
 	(cd include; make LIBTOOLFLAGS=--silent install)
 	(cd examples; sed -e 's#\$${prefix}#${prefix}#' -e 's#\$${exec_prefix}#${exec_prefix}#' Makefile-pre > Makefile )
 
 clean-am: 
-	for i in obj/*/ ; do (cd $$i && ${MAKE} clean); done
-	for i in examples tests; do (cd $$i && ${MAKE} clean); done
+	for i in obj/*/ ; do $(MAKE) -C $$i clean; done
+	for i in examples tests; do $(MAKE) -C $$i clean; done
 	rm -fr autom4te.cache
 
 distclean-am: clean-am
 	rm -f config.log iRRAM_VERSION 
 	rm -fr installed 
-	for i in obj/*/ ; do (cd $$i && ${MAKE} distclean); done
-	for i in examples tests doc; do (cd $$i && ${MAKE} distclean); done
+	for i in obj/*/ ; do $(MAKE) -C $$i distclean; done
+	for i in examples tests doc; do $(MAKE) -C $$i distclean; done
