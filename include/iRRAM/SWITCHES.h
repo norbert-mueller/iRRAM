@@ -44,6 +44,7 @@ MA 02111-1307, USA.
 namespace iRRAM {
 
   extern int iRRAM_prec_array[];
+  extern const int iRRAM_prec_steps;
 
 // explicit declaration of single_valued behaviour of a code section despite multi-valued operations
 //
@@ -94,8 +95,8 @@ inline stiff(int n){
 	saved = ACTUAL_STACK.prec_step;
 	n += ACTUAL_STACK.prec_step;
 	if (n<1) n=1;
-//	if (iRRAM_prec_steps < n) n = iRRAM_prec_steps;
-	if (512 < n) n = 512;
+	if (iRRAM_prec_steps < n) n = iRRAM_prec_steps;
+//	if (512 < n) n = 512;
 	ACTUAL_STACK.prec_step = n;
         ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
         iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);

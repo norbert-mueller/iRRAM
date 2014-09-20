@@ -52,7 +52,9 @@ void resources(double& time, unsigned int& memory){
 __thread int iRRAM_debug=0;
 __thread int iRRAM_infinite=0;
 
+const int iRRAM_prec_steps=512;
 int iRRAM_prec_array[iRRAM_prec_steps];
+
 __thread int iRRAM_prec_skip=5;
 __thread int iRRAM_max_prec=1;
 __thread int iRRAM_prec_start=1;

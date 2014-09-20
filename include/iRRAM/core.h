@@ -52,8 +52,8 @@ extern double ln2_time;
 extern double pi_time;
 void show_statistics();
 
-const int iRRAM_prec_steps=512;
-extern int iRRAM_prec_array[iRRAM_prec_steps];
+extern const int iRRAM_prec_steps;
+extern int iRRAM_prec_array[];
 extern __thread  int iRRAM_prec_skip;
 extern __thread  int iRRAM_max_prec;
 extern __thread  int iRRAM_prec_start;
