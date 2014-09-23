@@ -215,8 +215,8 @@ MA 02111-1307, USA.
 /* Statistics, optional */
 
 #define MP_var_count        ext_mpfr_var_count
-//#define MP_space_count 
-//#define MP_max_space_count
+/* #define MP_space_count  */
+/* #define MP_max_space_count */
 
 
 /* special functions, optional for the backends */
@@ -273,7 +273,7 @@ inline ext_mpfr_type ext_mpfr_init()
   }
   ext_mpfr_var_count +=1;
 
-// fprintf(stderr,"create %x\n",z);
+/* fprintf(stderr,"create %x\n",z); */
 
   return z;
 }
@@ -282,7 +282,7 @@ void ext_mpfr_free(ext_mpfr_type z);
 
 inline void ext_mpfr_free(ext_mpfr_type z)
 {
-//fprintf(stderr,"delete %x\n",z);
+/* fprintf(stderr,"delete %x\n",z); */
   if ( mpfr_FreeVarCount < MaxFreeVars ) {
     mpfr_FreeVars[mpfr_FreeVarCount]=z;
     mpfr_FreeVarCount +=1;
