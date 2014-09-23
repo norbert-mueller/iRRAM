@@ -30,10 +30,10 @@ MA 02111-1307, USA.
 
 #include "iRRAM/MPFR_interface.h"
 
-//const unsigned int BITS_PER_MP_LIMB  = 8*sizeof (mp_limb_t);
+/* const unsigned int BITS_PER_MP_LIMB  = 8*sizeof (mp_limb_t); */
+/* #include "gmp-mparam.h"  */
+/* #include "mpfr-impl.h"   */
 
-//#include "gmp-mparam.h"
-//#include "mpfr-impl.h"
 #define MPFR_PREC(x)      ((x)->_mpfr_prec)
 #define MPFR_EXP(x)       ((x)->_mpfr_exp)
 #define MPFR_MANT(x)      ((x)->_mpfr_d)
@@ -200,10 +200,10 @@ inline void ext_mpfr_mul(ext_mpfr_type z1,ext_mpfr_type z2,ext_mpfr_type z,int p
 
 inline void ext_mpfr_mul_i(ext_mpfr_type z1, int z2, ext_mpfr_type z, int p)
 {
-int q,s1,zz;
+int q,s1,zz,maxsize_ifexact;
 s1=ext_mpfr_size(z1);
 q=s1+BITS_PER_MP_LIMB-p+10;if(q<10)q=10;
-int maxsize_ifexact=MPFR_PREC(z1)+32;
+maxsize_ifexact=MPFR_PREC(z1)+32;
 if (q>maxsize_ifexact)q= maxsize_ifexact;
 mpfr_set_prec(z,q);
 if (z2<0) zz=-z2; else zz=z2;
@@ -412,12 +412,12 @@ inline void ext_mpfr_duplicate_wo_init(ext_mpfr_type z1,ext_mpfr_type z2)
 
 inline void ext_mpfr_duplicate_w_init(ext_mpfr_type z1,ext_mpfr_type *z2)
 {
-//  *z2 = (ext_mpfr_type) malloc(sizeof (__mpfr_struct));
-//  mpfr_init2(*z2,mpfr_get_prec(z1));
+/*  *z2 = (ext_mpfr_type) malloc(sizeof (__mpfr_struct)); */
+/*  mpfr_init2(*z2,mpfr_get_prec(z1)); */
   int q1=mpfr_get_prec(z1);
   *z2=ext_mpfr_init();
   if (mpfr_get_prec(*z2)< q1) mpfr_set_prec(*z2,q1);
-//  ext_mpfr_var_count +=1;
+/*  ext_mpfr_var_count +=1; */
   mpfr_set(*z2,z1,iRRAM_mpfr_rounding_mode);
 }
 
