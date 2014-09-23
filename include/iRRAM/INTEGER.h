@@ -142,7 +142,7 @@ MP_int_type value;
 
 };
 
-inline INTEGER::~INTEGER(){  MP_int_clear(value);};
+inline INTEGER::~INTEGER(){  MP_int_clear(value);}
 
 inline INTEGER::INTEGER::INTEGER(MP_int_type y){ value = y; ;}
 
@@ -202,14 +202,14 @@ inline INTEGER scale(const INTEGER& x, const int n)
 // Returns the sign of INTEGER objects (-1/0/1): 
 // sign(i)= -1, iff i<0,   sign(i)=1 iff i>0,  and sign(0)=0
 //****************************************************************************************
-inline int sign(const INTEGER& x){  return MP_int_sign(x.value); };
+inline int sign(const INTEGER& x){  return MP_int_sign(x.value); }
 
 //****************************************************************************************
 // Returns the size of INTEGER objects: The smallest i>0 such that |x| < 2^i,
 // e.g. size(0)=size(1)=1;size(2)=size(3)=2,size(4)=...size(7)=3
 //****************************************************************************************
 
-inline int size(const INTEGER& x){ return MP_int_size(x.value);};
+inline int size(const INTEGER& x){ return MP_int_size(x.value);}
 
 //****************************************************************************************
 // Addition: returns x + y
@@ -428,7 +428,7 @@ inline INTEGER operator / (const INTEGER& x, const int n){
   return zvalue;
 }
 
-inline INTEGER operator / (const int      x, const INTEGER& y) {return INTEGER(x)/y;};
+inline INTEGER operator / (const int      x, const INTEGER& y) {return INTEGER(x)/y;}
 
 //****************************************************************************************
 // Division: returns x /= y
