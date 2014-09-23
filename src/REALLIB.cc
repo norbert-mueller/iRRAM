@@ -38,12 +38,12 @@ REAL strtoREAL(const char* s, char** endptr){
 REAL atoREAL(const char* s){
   char*dummy;
   return strtoREAL(s,&dummy);
-};
+}
 
 
 REAL modulo (const REAL& x, const REAL& y){
    return x-round2(x/y)*y;
-};
+}
 
 REAL power(const REAL& x, const REAL& y) {
   return exp(log(x)*y);
@@ -72,35 +72,38 @@ REAL power(const REAL& x, int n) {
 
 // maximum without using of internal representation of LAZY_BOOLEAN
 // REAL maximum (const REAL& x, const REAL& y){
-//    continous_begin();
+//    single_valued code(true);
 //    LAZY_BOOLEAN larger = ( x > y );
 //    switch ( choose ( larger, !larger, TRUE ) ){
 //    case 1: return x;
 //    case 2: return y;
 //    case 3: return (x+y+abs(x-y))/2;
 //    }
-//    continous_end();
 // };
 
 // maximum, using of internal representation of LAZY_BOOLEAN
 REAL maximum (const REAL& x, const REAL& y){
-   continous_begin();
-   LAZY_BOOLEAN larger = ( x > y );
-   continous_end();
+   LAZY_BOOLEAN larger;
+   {
+     single_valued code(true);
+     larger = ( x > y );
+   }
    if ( larger.value == true  ) return x;
    if ( larger.value == false ) return y;
    return (x+y+abs(x-y))/2;
-};
+}
 
 // minimum, using of internal representation of LAZY_BOOLEAN
 REAL minimum (const REAL& x, const REAL& y){
-   continous_begin();
-   LAZY_BOOLEAN larger = ( x > y );
-   continous_end();
+   LAZY_BOOLEAN larger;
+   {
+     single_valued code(true);
+     larger = ( x > y );
+   }
    if ( larger.value  == true  ) return y;
    if ( larger.value  == false ) return x;
    return (x+y-abs(x-y))/2;
-};
+}
 
 
 
@@ -128,13 +131,14 @@ REALMATRIX expmatrix_approx (int prec, const REALMATRIX& x){
      i+=1;
    }
    return z;
-};
+}
 
 bool exp_domain(const REALMATRIX& x){
-return bound(x,-2);
+  return bound(x,-2);
 }
+
 REALMATRIX exp (const REALMATRIX& x){
-continous_begin ();
+  single_valued code(true);
   REALMATRIX y;
   if ( bound(x,-2) )
   y = limit_lip(expmatrix_approx,0,exp_domain,x);
@@ -143,12 +147,11 @@ continous_begin ();
     y= exp(x/2);
     y= y*y;
     }
-continous_end ();
-return y;
+  return y;
 }
 
 REALMATRIX  steady_state (const REALMATRIX& x) {
-  continous_begin ();
+  single_valued code(true);
   REALMATRIX result(1,rows(x));
   REALMATRIX chain=x;
   REAL factor,outrate;
@@ -176,14 +179,12 @@ REALMATRIX  steady_state (const REALMATRIX& x) {
    for (int j=rows(x)-1; j>N;j--)
       result(0,j)=result(0,j)*factor;
   } 
-  continous_end ();
   return result;
 }
 
 
 REALMATRIX  steady_state (const SPARSEREALMATRIX& x) {
-//  continous_begin ();
-iRRAM::cout <<"Part 1...\n";
+  iRRAM::cout <<"Part 1...\n";
   REALMATRIX result(1,rows(x));
   SPARSEREALMATRIX chain=x;
   REAL factor,outrate;
@@ -196,7 +197,7 @@ iRRAM::cout <<"Part 1...\n";
   for (unsigned int N=0; N < rows(x); N++)
     sparse_set(chain,N,N,chain(N,N)-1);
 
-iRRAM::cout << "\nPart 2, filled: "<< chain.filled <<"\n";
+  iRRAM::cout << "\nPart 2, filled: "<< chain.filled <<"\n";
 
   for (unsigned int N=0; N < chain.maxrow-1; N++) {
     a=chain.colvector[N];
@@ -214,13 +215,12 @@ iRRAM::cout << "\nPart 2, filled: "<< chain.filled <<"\n";
       a=a->nextrow;
   } }
 
-iRRAM::cout << "\nPart 3, filled: "<< chain.filled <<"\n";
+  iRRAM::cout << "\nPart 3, filled: "<< chain.filled <<"\n";
   result(0,rows(x)-1)=1;
   for (int N=rows(x)-2; N >= 0; N--) {
-   outrate=0;
-
-   a=chain.colvector[N];
-   while ( a!= NULL  ) {
+    outrate=0;
+    a=chain.colvector[N];
+    while ( a!= NULL  ) {
      if (a->rowindex > (unsigned int) N) outrate=outrate+ result(0,a->rowindex)* a->value;
      a=a->nextrow;
    }
@@ -229,8 +229,6 @@ iRRAM::cout << "\nPart 3, filled: "<< chain.filled <<"\n";
    for (int j=rows(x)-1; j>N;j--)
      result(0,j)=result(0,j)*factor;
   } 
-
-//  continous_end ();
   return result;
 }
 
@@ -242,8 +240,7 @@ REALMATRIX  equilib (const SPARSEREALMATRIX& x) {
 }
 
 void equilib_del (SPARSEREALMATRIX& chain,REALMATRIX& result) {
-//  continous_begin ();
-iRRAM::cout <<"Part 1...\n";
+  iRRAM::cout <<"Part 1...\n";
 
   REAL outrate,factor,divisor;
   SPM_ELEMENT* a;
@@ -265,7 +262,7 @@ iRRAM::cout <<"Part 1...\n";
     sparse_set(chain,N,chain.maxrow-1,1);
   }
 
-iRRAM::cout << "\nPart 2, filled: "<< chain.filled <<"\n";
+  iRRAM::cout << "\nPart 2, filled: "<< chain.filled <<"\n";
 
   for (unsigned int i=0; i < chain.maxrow; i++) {
     c=sparse_get_ptr(chain,i,i);
@@ -276,7 +273,6 @@ iRRAM::cout << "\nPart 2, filled: "<< chain.filled <<"\n";
       b=c->nextrow;
       chain.hotspot=b;
       while ( b != NULL ) {
-//if (chain.hotspot != NULL) rprintf("[%d,%d] ",chain.hotspot->rowindex,chain.hotspot->colindex); else rprintf("[NULL] ");
         sparse_set(chain,b->rowindex,a->colindex,
                     chain(b->rowindex,a->colindex)
                    -factor* b->value);
@@ -299,8 +295,7 @@ iRRAM::cout << "\nPart 3, filled: "<< chain.filled <<"\n";
     }
   }
 
-iRRAM::cout <<"Part 4...\n";
-//  continous_end ();
+  iRRAM::cout <<"Part 4...\n";
 }
 
 } // namespace iRRAM
