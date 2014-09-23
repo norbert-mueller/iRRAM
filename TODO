@@ -48,8 +48,6 @@ Urgent:
  - Is it really good that an assignment to a REAL implemented as double interval from an MP real
    stays double precision (question arose during the use of a chaching strategy)?
  - Check whether there is an unnecessary call to getsize in the default constructor of REAL variables 
- - rename continous_begin/end to continuous_begin/end
- - continous_begin/end should be inlined!
  - All applications of mp_conv() should be inspected very carefully, as it uses a const_cast
  - A version of the sqrt routine for double intervals should be added.
  - More double versions should be modified to allow SSE2  
