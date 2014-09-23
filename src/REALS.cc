@@ -84,26 +84,26 @@ void REAL::mp_from_int(const int i){
   MP_int_to_mp(i,value);
   sizetype_exact(error);
   MP_getsize(value,vsize);
-};
+}
 
 void REAL::mp_from_double(const double d){
   MP_init(value);
   MP_double_to_mp(d,value);
   sizetype_exact(error);
   MP_getsize(value,vsize);
-};
+}
 
 void REAL::mp_copy(const REAL& y){
 	MP_duplicate_wo_init(y.value,value);
 	error=y.error;
 	vsize=y.vsize;
-};
+}
 
 void REAL::mp_copy_init(const REAL& y){
 	MP_duplicate_w_init(y.value,value);
 	error=y.error;
 	vsize=y.vsize;
-};
+}
 
 REAL REAL::mp_addition (const REAL& y)const
 {
@@ -121,7 +121,7 @@ REAL REAL::mp_addition (const REAL& y)const
   sizetype_inc_one(zerror,local_prec);
 
   return REAL(zvalue,zerror);
-};
+}
 
 REAL REAL::mp_addition (const int n)const 
 {
@@ -162,7 +162,7 @@ REAL& REAL::mp_eqaddition (const REAL& y){
   this->value=zvalue;
   MP_getsize(this->value,this->vsize);
   return (*this);
-};
+}
 
 std::string swrite(const REAL& x, const int w, const int form)
 {
@@ -201,8 +201,9 @@ std::string swrite(const REAL& x, const int w, const int form)
     }
 
   } else if (form==iRRAM_float_relative){
-     continous_begin();
-
+      int p;
+      {
+	single_valued code(true);
 // We want to have an error less than 0.65 ulp, where 0.51 ulp come from
 // the conversion to decimal, so we need to know that the error is at most
 // 0.15ulp.
@@ -211,12 +212,11 @@ std::string swrite(const REAL& x, const int w, const int form)
 // convert the result to decimal in order to get a correct approximation
 // for a lower bound of x. Using this lower bound we can estimate what
 // 0.15ulp means in binary.
-     int p=size(x)-2-10*(width-8)/3; 
+        p=size(x)-2-10*(width-8)/3; 
 //We have to prevent that "size" changes the multi-value-cache here! 
 //Otherwise, any iteration would not use the same amount of 
 // cache as the first run!
-     continous_end();
-
+     }
      sizetype psize;
      sizetype_set(psize,1,p);
      int s=MP_size(x.value);
@@ -273,7 +273,7 @@ REAL REAL::mp_subtraction (const REAL& y)const {
   sizetype_inc2(zerror,this->error,y.error);
 */
   return REAL(zvalue,zerror);
-};
+}
 
 REAL REAL::mp_subtraction (const int n)const
 {
@@ -292,7 +292,7 @@ REAL REAL::mp_subtraction (const int n)const
   MP_mv_subi(this->value,n,zvalue,local_prec);
   sizetype_add_one(zerror,this->error,local_prec);
   return REAL(zvalue,zerror);
-};
+}
 
 REAL REAL::mp_invsubtraction (const int n)const
 {
@@ -313,7 +313,7 @@ REAL REAL::mp_invsubtraction (const int n)const
   	MP_mv_isub(n,this->value,zvalue,local_prec);
   	sizetype_add_one(zerror,this->error,local_prec);
   	return REAL(zvalue,zerror);
-};
+}
 
 REAL REAL::mp_multiplication (const REAL& y)const
 {
@@ -332,7 +332,7 @@ REAL REAL::mp_multiplication (const REAL& y)const
   MP_mv_mul(this->value,y.value,zvalue,local_prec);
   sizetype_inc_one(zerror,local_prec);
   return REAL(zvalue,zerror);
-};
+}
 
 REAL REAL::mp_multiplication (const int n)const
 {
@@ -379,7 +379,7 @@ REAL REAL::mp_division (const REAL& y)const
   MP_mv_div(this->value,y.value,zvalue,local_prec);
   sizetype_inc_one(zerror,local_prec);
   return REAL(zvalue,zerror);
-};
+}
 
 REAL REAL::mp_division (const int n)const
 {
@@ -407,7 +407,7 @@ void   rshow   (const REAL& x, const int w){ iRRAM::cout << swrite(x,w,iRRAM_flo
 
 #define ABSOLUTE 0
 #define RELATIVE 1
-void precision_policy (int policy){ACTUAL_STACK.prec_policy=policy;};
+void precision_policy (int policy){ACTUAL_STACK.prec_policy=policy;}
 void stiff_begin (){
 	ACTUAL_STACK.prec_step++;
 	ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
@@ -418,8 +418,6 @@ void stiff_end   (){
 	ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
 	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 	}
-void continous_begin (){ACTUAL_STACK.inlimit+=1;};
-void continous_end   (){ACTUAL_STACK.inlimit-=1;};
 
 
 REAL REAL::mp_square ()const
@@ -440,7 +438,7 @@ REAL REAL::mp_square ()const
   MP_mv_mul(this->value,this->value,zvalue,local_prec);
   sizetype_inc_one(zerror,local_prec);
   return REAL(zvalue,zerror);
-};
+}
 
 LAZY_BOOLEAN REAL::mp_less (const REAL& y)const
 {
@@ -452,10 +450,10 @@ LAZY_BOOLEAN REAL::mp_less (const REAL& y)const
 	DEBUG5(1,"insufficient precisions %d*2^(%d) and %d*2^(%d) in comparing\n",
               this->error.mantissa,this->error.exponent,
               y.error.mantissa,y.error.exponent);
-        return BOTTOM;
+        return LAZY_BOOLEAN::BOTTOM;
 	}
   return  ((MP_sign((z.value))==1));
-};
+}
 
 REAL REAL::mp_absval ()const
 {
@@ -487,7 +485,7 @@ REAL REAL::mp_absval ()const
 //   sizetype_inc_one(zerror,local_prec);
 // 
 //   return REAL(zvalue,zerror);
-// };
+// }
 
 
 /*****************************************************/
@@ -539,11 +537,11 @@ LAZY_BOOLEAN positive (const REAL& x, int k)
     {
       DEBUG3(1,"insufficient precision %d*2^(%d) in test on positive\n",
 		x.error.mantissa,x.error.exponent);
-      return BOTTOM;
+      return LAZY_BOOLEAN::BOTTOM;
     }
   erg=(MP_sign(x.value)==1);
   return erg; 
-};
+}
 
 DYADIC approx (const REAL& x, const int p) {
  if (!x.value){REAL y(x);return approx(y.mp_conv(),p);}
@@ -570,7 +568,7 @@ DYADIC approx (const REAL& x, const int p) {
     iRRAM_thread_data_address->cache_mp.put(result);
   }
   return DYADIC(erg); 
-};
+}
 
 int size (const REAL& x) {
  if (!x.value){REAL y(x);return size(y.mp_conv());}
@@ -601,7 +599,7 @@ int size (const REAL& x) {
 
   if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
   return result;
-};
+}
 
 int upperbound (const REAL& x) {
  if (!x.value){REAL y(x);return upperbound(y.mp_conv());}
@@ -624,7 +622,7 @@ int upperbound (const REAL& x) {
   result=ergsize.exponent;
   if (ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
   return result;
-};
+}
 
 LAZY_BOOLEAN bound (const REAL& x, const int k) {
  if (!x.value){REAL y(x);return bound(y.mp_conv(),k);}
@@ -636,10 +634,10 @@ LAZY_BOOLEAN bound (const REAL& x, const int k) {
     {  
       DEBUG6(1,"insufficient precision %d*2^(%d) in bounding by 2^(%d) for argument of size  %d*2^(%d)\n",
               x.error.mantissa,x.error.exponent,k,x.vsize.mantissa,x.vsize.exponent);
-      return BOTTOM;
+      return LAZY_BOOLEAN::BOTTOM;
     }
   return (sizetype_less(x.vsize,ksize) );
-};
+}
 
 
 
@@ -718,21 +716,21 @@ REAL::REAL(const DYADIC& y){
   MP_duplicate_w_init(y.value,value);
   sizetype_exact(error);
   MP_getsize(value,vsize);
-};
+}
 
 REAL::REAL(const std::string s){
   REAL result=atoREAL(s.c_str());
   error=result.error;
   MP_duplicate_w_init(result.value,value);
   MP_getsize(value,vsize);
-};
+}
 
 REAL::REAL(const char* s){
   REAL result=atoREAL(s);
   error=result.error;
   MP_duplicate_w_init(result.value,value);
   MP_getsize(value,vsize);
-};
+}
 
 INTEGER REAL::as_INTEGER() const {
   if (!this->value){
