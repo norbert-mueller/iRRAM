@@ -109,4 +109,4 @@ void compute(){
   if (error) exit(1);
 
  cout << "test_string_conv:   passed\n";
-};
+}

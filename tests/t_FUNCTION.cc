@@ -2,10 +2,10 @@
 
 using namespace iRRAM;
 
-RATIONAL R_identity( const RATIONAL& x ){ return x; };
-INTEGER I_identity ( const INTEGER& x ){ return x; };
+RATIONAL R_identity( const RATIONAL& x ){ return x; }
+INTEGER I_identity ( const INTEGER& x ){ return x; }
 
-INTEGER I_multiply (const std::pair<INTEGER,INTEGER>& x ){ return x.first*x.second; };
+INTEGER I_multiply (const std::pair<INTEGER,INTEGER>& x ){ return x.first*x.second; }
 
 
 void error(int i){
@@ -104,4 +104,4 @@ cout << "test_FUNCTION:   (basic tests for functional DAGs)    passed\n";
 
 cout << "test_FUNCTION:   (not yet fully implemented)    passed\n";
 
-};
+}

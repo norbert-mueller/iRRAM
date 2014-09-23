@@ -89,4 +89,4 @@ void compute(){
  
  cout << "test_INTEGER:       passed\n";
  exit(0);
-};
+}

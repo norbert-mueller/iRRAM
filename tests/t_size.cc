@@ -59,4 +59,4 @@ REAL x=1.0;
 
 
  cout << "test_size:          passed (" <<count_low<<" low / "<<count_high<<" high)\n";
-};
+}

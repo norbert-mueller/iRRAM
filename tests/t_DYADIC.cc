@@ -47,4 +47,4 @@ void compute(){
  if ( abs(x) !=  3 )  error(21);
 
 cout << "test_DYADIC:        passed\n";
-};
+}

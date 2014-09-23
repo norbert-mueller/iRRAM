@@ -90,4 +90,4 @@ void compute(){
 
  cout << "test_RATIONAL:      passed\n";
  exit(0);
-};
+}

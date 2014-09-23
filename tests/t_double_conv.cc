@@ -34,4 +34,4 @@ double d1;
  for (int i=1; i<1140; i++){d1=d1/2;chk(d1);}
 
  cout << "test_double_conv:   passed\n";
-};
+}
