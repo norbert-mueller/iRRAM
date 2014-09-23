@@ -37,13 +37,13 @@ MA 02111-1307, USA.
 namespace iRRAM {
 
 inline int min(const int a, const int b)
-   { return (a < b ? a : b); };
+   { return (a < b ? a : b); }
 inline int max(const int a, const int b)
-   { return (a >= b ? a : b); };
+   { return (a >= b ? a : b); }
 inline int max3(const int a,const int b,const int c)
-   { return max(max(a,b),c); };
+   { return max(max(a,b),c); }
 inline int max4(const int a,const int b,const int c,const int d)
-   { return max(max(a,b),max(c,d)); };
+   { return max(max(a,b),max(c,d)); }
 
 extern __thread int iRRAM_debug;
 extern __thread int iRRAM_infinite;
@@ -92,7 +92,7 @@ const int BIT_RANGE2    = 8;
 const int GUARD_BITS    =  MANTISSA_BITS - DIFF_BITS;
 
 
-inline unsigned int scale(const unsigned int w,const int p) {return ((p<=GUARD_BITS)?(w>>p):0); };
+inline unsigned int scale(const unsigned int w,const int p) {return ((p<=GUARD_BITS)?(w>>p):0); }
 
 const SIZETYPEMANTISSA max_mantissa= 1 <<  GUARD_BITS   ; 
 const SIZETYPEMANTISSA min_mantissa= 1 << (GUARD_BITS-BIT_RANGE);
@@ -460,7 +460,7 @@ if ( unlikely (iRRAM_debug>0) ) {
 }
 
 return result;
-};
+}
 
 
 
@@ -536,7 +536,7 @@ if ( unlikely (iRRAM_debug>0) ) {
 }
 
 return result;
-};
+}
 
 
 /*****************************************/
@@ -627,7 +627,7 @@ if ( unlikely (iRRAM_debug>0) ) {
 _data->finished=true;
 
 return NULL;
-};
+}
 
 
 template <class ARGUMENT, class RESULT> 
@@ -662,14 +662,14 @@ RESULT iRRAM_thread_wait(const iRRAM_thread_data<ARGUMENT,RESULT>& data){
       cerr << "Thread "<< data.id << " now terminated.\n";
   }
   return data.result;
-};
+}
 
 
 
 template <class ARGUMENT, class RESULT> 
 bool iRRAM_thread_finished(const iRRAM_thread_data<ARGUMENT,RESULT>& data){
   return data.finished;
-};
+}
 
 
 } /* ! namespace iRRAM */
