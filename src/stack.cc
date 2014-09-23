@@ -89,9 +89,10 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   x_copy.geterror(argerror);
   sizetype_set(testerror,1,argerror.exponent);
   x_copy.adderror(testerror);
-  continous_begin();
-  d=approx(f(x_copy),p-1); 
-  continous_end();
+  {
+    single_valued code(true);
+    d=approx(f(x_copy),p-1); 
+  }
 // At this line, we are sure that x_copy (and so also x) is precise enough to allow 
 // the computation of f(x), even with a slightly increased error of the argument.
 
@@ -118,7 +119,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   DEBUG3(1,"argument error: %d*2^%d\n",x_error.mantissa,x_error.exponent);
   }
   try { 
-      continous_begin();
+      single_valued code(true);
       REAL z=f(x_copy);
       if ( unlikely(iRRAM_debug > 0 ) ) {
         sizetype z_error;
@@ -126,7 +127,6 @@ int module(REAL f(const REAL&),const REAL& x, int p){
         DEBUG3(1,"Module yields result %d*2^%d\n",z_error.mantissa,z_error.exponent);
       }
       d=approx(z,p-1); 
-      continous_end();
 	}
     catch ( Iteration it)  { fail=true; }
     switch ( direction ) {
@@ -158,7 +158,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
   return result;
 
-};
+}
 
 
 //*************************************************************************************
