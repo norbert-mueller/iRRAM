@@ -26,8 +26,6 @@ MA 02111-1307, USA.
 /****************************************************************************/
 namespace iRRAM {
 
-const int BOTTOM = -1; 
-
 class LAZY_BOOLEAN
 {
 
@@ -65,6 +63,7 @@ private:
 
 LAZY_BOOLEAN(int b){value=b;};
 int value;
+const static int BOTTOM = -1; 
 };
 
 int choose(const LAZY_BOOLEAN& x1= false,
@@ -73,6 +72,7 @@ int choose(const LAZY_BOOLEAN& x1= false,
            const LAZY_BOOLEAN& x4= false,
            const LAZY_BOOLEAN& x5= false,
            const LAZY_BOOLEAN& x6= false );
+
 
 
 } // namespace iRRAM
