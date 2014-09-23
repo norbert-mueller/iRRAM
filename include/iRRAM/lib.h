@@ -111,11 +111,11 @@ extern __thread bool inReiterate;
 
 inline  ITERATION_STACK::ITERATION_STACK(){
 	this->data=ACTUAL_STACK;
-	};
+	}
 inline  ITERATION_STACK::~ITERATION_STACK(){
 	ACTUAL_STACK= this->data;
 	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-	};
+	}
 
 } // namespace iRRAM
 
@@ -140,9 +140,6 @@ namespace iRRAM {
 void precision_policy (int policy);
 void stiff_begin ();
 void stiff_end   ();
-void continous_begin ();
-void continous_end   ();
-
 
 
 
@@ -232,8 +229,8 @@ void equilib_del (SPARSEREALMATRIX& x,REALMATRIX& z);
 /****************************************************************************/
 //  a few inlined functions
 /****************************************************************************/
-inline REAL   round2     (const REAL& x){ return REAL(x.as_INTEGER()); }; 
-inline int    round      (const REAL& x){ return int (x.as_INTEGER()); }; 
+inline REAL   round2     (const REAL& x){ return REAL(x.as_INTEGER()); }
+inline int    round      (const REAL& x){ return int (x.as_INTEGER()); }
 
 
 
