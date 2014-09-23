@@ -199,10 +199,11 @@ REAL limit_lip (REAL f(int,const REAL&),
             const REAL& x)
 {
   int lip_value;
-  continous_begin();
-  lip_value=lip_bound(x);
-  continous_end();
-
+  {
+    single_valued code(true);
+    lip_value=lip_bound(x);
+  }
+  
   ITERATION_STACK SAVED_STACK;
   ACTUAL_STACK.inlimit+=1;
   ACTUAL_STACK.prec_step++;
@@ -318,12 +319,13 @@ REAL lipschitz (REAL f(const REAL&),
   x_new=x;
   x_new.geterror(x_error);
   sizetype_exact(x_new.error);
-  continous_begin ();
+  {
+    single_valued code(true);
   DEBUG1(2,"starting lipschitz1 ...\n");
   lip_result=f(x_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  continous_end ();
+  }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
   DEBUG0(2,{lip_result.geterror(lip_error);
@@ -346,7 +348,8 @@ REAL lipschitz (REAL f(const REAL&),
 
   ITERATION_STACK SAVED_STACK;
 
-  continous_begin ();
+  {
+    single_valued code(true);
   DEBUG1(2,"starting lipschitz1b ...\n");
 
 // for the computation of the Lipschitz bound, we work with
@@ -377,8 +380,8 @@ REAL lipschitz (REAL f(const REAL&),
       DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }
   }
-  continous_end ();
-
+  }
+  
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   lip_bound.getsize(lip_size);
@@ -407,7 +410,8 @@ REAL lipschitz (REAL f(const REAL&),
   
   ITERATION_STACK SAVED_STACK;
 
-  continous_begin ();
+  {
+    single_valued code(true);
   DEBUG1(2,"starting lipschitz1a ...\n");
   lip_result=f(x_new);
 
@@ -426,7 +430,7 @@ REAL lipschitz (REAL f(const REAL&),
 
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  continous_end ();
+  }
   lip_bound.getsize(lip_size);
   lip_bound.geterror(tmp_size);
   sizetype_inc(lip_size,tmp_size);
@@ -453,12 +457,13 @@ REAL lipschitz (REAL f(int, const REAL&),
   x_new=x;
   x_new.geterror(x_error);
   sizetype_exact(x_new.error);
-  continous_begin ();
+  {
+    single_valued code(true);
   DEBUG1(2,"starting lipschitz1 ...\n");
   lip_result=f(k,x_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  continous_end ();
+  }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
   DEBUG0(2,{lip_result.geterror(lip_error);
@@ -485,12 +490,13 @@ REAL lipschitz (REAL f(const REAL&, const REAL&),
   y_new=y;
   y_new.geterror(y_error);
   sizetype_exact(y_new.error);
-  continous_begin ();
+  {
+    single_valued code(true);
   DEBUG1(2,"starting lipschitz2 ...\n");
   lip_result=f(x_new,y_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  continous_end ();
+  }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
   sizetype_shift(lip_error,y_error,lip);
@@ -523,12 +529,13 @@ REAL lipschitz (REAL f(int, const REAL&, const REAL&),
   y_new.geterror(y_error);
   sizetype_exact(y_new.error);
   x_new.geterror(x_error);
-  continous_begin ();
+  {
+    single_valued code(true);
   DEBUG1(2,"starting lipschitz2 ...\n");
   lip_result=f(k,x_new,y_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
-  continous_end ();
+  }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
   sizetype_shift(lip_error,y_error,lip);

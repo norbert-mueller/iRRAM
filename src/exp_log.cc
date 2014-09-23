@@ -66,19 +66,18 @@ precision_policy(RELATIVE);
   for (int i=1; i<= it;i+=1)z*=z;
 
   return scale(z,s);
-};
+}
 
 int exp_bound(const REAL& x)
-{return (int)((round(x)+1)*1.443);};
+{return (int)((round(x)+1)*1.443);}
 
 REAL exp (const REAL& x)
 {
   if ( positive(x-750001,0)  ) {fprintf(stderr,"Overflow in exp(x)\n");exit(1);} 
-  continous_begin ();
+  single_valued code(true);  
   REAL y= limit_lip(exp_approx,exp_bound,x);
-  continous_end ();
   return y;
-};
+}
 
 REAL euler_approx (int prec)
 {
@@ -91,12 +90,12 @@ REAL euler_approx (int prec)
     i+=1;
   }
   return z;
-};
+}
 
 REAL euler ()
 {
   return limit(euler_approx);
-};
+}
 
 
 
@@ -118,7 +117,6 @@ REAL log_taylor_approx(int prec, const REAL& x0) {
     z+=s;
    }
    return scale(z,it);
-;
 }
 
 
@@ -127,11 +125,9 @@ REAL iterate
    REAL const& a_0, REAL const& b_0)
 { REAL a=a_0,b=b_0,e;
 sizetype a_error,e_error;
-continous_begin();
+single_valued code(true);
 do {
-//stiff_begin();
   e=f(a,b);
-//stiff_end();
 } while (! bound(e,15*ACTUAL_STACK.actual_prec/16));
 //} while (! bound(e,ACTUAL_STACK.actual_prec));
 a.geterror(a_error);
@@ -140,7 +136,6 @@ sizetype_inc(a_error,e_error);
 e.getsize(e_error);
 sizetype_inc(a_error,e_error);
 a.seterror(a_error); 
-continous_end();
 return a;
 }
 
@@ -168,7 +163,7 @@ REAL log_approx(int prec, const REAL& z) {
 }
 
 bool log_domain(const REAL& x)
-{return x> REAL(1);};
+{return x> REAL(1);}
 
 REAL log(const REAL& x) {
 //x.rcheck(200);

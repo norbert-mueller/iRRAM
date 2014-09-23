@@ -11,7 +11,7 @@ namespace iRRAM {
 
 // Here, the Lipschitz bounds will usually be valid 
 //on the whole set of real numbers;
-bool total_domain(const REAL& x){ return true;};
+bool total_domain(const REAL& x){ return true;}
 
 REAL sin_taylor (int prec, const REAL& x){
 // We compute sin(x) to a precision of 2^prec using the Taylor
@@ -67,7 +67,7 @@ REAL sin_taylor (int prec, const REAL& x){
   }
 //  printf("%d %d %d\n",i,prec,upperbound(x));
   return z;
-};
+}
 
 REAL sin_range_red3 (int hint,const REAL& x){
 // This function computes sin(x) (exactly) on [-1,1]
@@ -110,7 +110,7 @@ REAL sin_range_red3 (int hint,const REAL& x){
     y*=(3-scale(square(y),2));
 }
   return y;
-};
+}
 
 REAL sin_range_red1 (int prec,const REAL& x){
 // This function computes an approximation to sin(x) for arbitray x.
@@ -178,15 +178,15 @@ REAL sin_range_red1 (int prec,const REAL& x){
       return sin_sign*sqrt(1-square(sin_range_red3(prec,x_red-pi()/2)));
    else
       return sin_sign*sin_range_red3(prec,x_red);
-};
+}
 
 REAL cos  (const REAL& x){
    return  limit_lip(sin_range_red1,0,total_domain,x+pi()/2);
-};
+}
 
 REAL sin (const REAL& x){
    return  limit_lip(sin_range_red1,0,total_domain,x);
-};
+}
 
 REAL tan (const REAL&x){
   REAL pi1=pi();
@@ -213,7 +213,7 @@ REAL atan_approx (int prec, const REAL& x){
      i+=2;
    }
    return z;
-};
+}
 
 REAL atan_reduction (int p, const REAL& x) {
 //only applied for |x|<2
@@ -231,7 +231,7 @@ REAL atan_reduction (int p, const REAL& x) {
 REAL atan (const REAL& x) {
 // arbitrary parameter x
   REAL result;
-  continous_begin();
+  single_valued code(true);
   switch (choose( x<-1,x>1,abs(x)<REAL(1.1)))
   { case 1:
 		result= -(pi()/2 - atan(-1/x));
@@ -243,26 +243,25 @@ REAL atan (const REAL& x) {
 		result= limit_lip(atan_reduction,0,total_domain,x);
 		break;
   }
- continous_end();
  return result;
 }
 
 
 REAL asin (const REAL& x){
    return atan(x/sqrt(1-x*x));
-};
+}
 
 REAL acos (const REAL& x){
    return pi()/2 - asin(x);
-};
+}
 
 REAL asec (const REAL& x){
    return acos(1/x);
-};
+}
 
 REAL acosec (const REAL& x){
    return asin(1/x);
-};
+}
 
 ///////////////////////////////////////////////////////////////////
 REAL sec (const REAL& x) {
@@ -281,7 +280,7 @@ REAL cotan (const REAL& x) {
 
 REAL sech (const REAL& x) {
 // 2/(exp(x)+exp(-x));
-  continous_begin();
+  single_valued code(true);
   REAL epx,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -293,13 +292,12 @@ REAL sech (const REAL& x) {
 		result= 2/(epx+1/epx);
 		break;
   }
-  continous_end();
   return result;
 }
 
 REAL cosech (const REAL& x) {
 // 2/(exp(x)-exp(-x));
-  continous_begin();
+  single_valued code(true);
   REAL epx,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -311,13 +309,12 @@ REAL cosech (const REAL& x) {
 		result= 2/(epx-1/epx);
 		break;
   }
-  continous_end();
   return result;
 }
 
 REAL sinh (const REAL& x) {
 // (exp(x)-exp(-x))/2;
-  continous_begin();
+  single_valued code(true);
   REAL epx,epxi,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -329,13 +326,12 @@ REAL sinh (const REAL& x) {
 		result= (epx-1/epx)/2;
 		break;
   }
-  continous_end();
   return result;
 }
 
 REAL cosh (const REAL& x) {
 // (exp(x)+exp(-x))/2
-  continous_begin();
+  single_valued code(true);
   REAL epx,epxi,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -347,14 +343,13 @@ REAL cosh (const REAL& x) {
 		result= (epx+1/epx)/2;
 		break;
   }
-  continous_end();
   return result;
 }
 
 REAL tanh (const REAL& x) {
 // just do a reformulation of (exp(x)-exp(-x))/(exp(x)+exp(-x));
 // in order try not to work with numbers that are very large...
-  continous_begin();
+  single_valued code(true);
   REAL epx,epxi,th;
   switch (choose(x>0,true))
   { case 1: 
@@ -368,14 +363,13 @@ REAL tanh (const REAL& x) {
 		th =  ((epxi-1)/(1+epxi));
 		break;
   }
-  continous_end();
   return th;
 }
 
 REAL coth (const REAL& x) {
 // just do a reformulation of (exp(x)+exp(-x))/(exp(x)-exp(-x));
 // in order try not to work with numbers that are very large...
-  continous_begin();
+  single_valued code(true);
   REAL epx,epxi,th;
   switch (choose(x>0,true))
   { case 1: 
@@ -389,7 +383,6 @@ REAL coth (const REAL& x) {
 		th =  ((epxi+1)/(1-epxi));
 		break;
   }
-  continous_end();
   return th;
 }
 
@@ -412,11 +405,11 @@ REAL acoth (const REAL& x) {
 
 REAL asech (const REAL& x){
    return acosh(1/x);
-};
+}
 
 REAL acosech (const REAL& x){
    return asinh(1/x);
-};
+}
 
 
 } // namespace iRRAM
