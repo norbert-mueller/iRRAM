@@ -34,7 +34,7 @@ REAL ln2_approx (int prec){
   c= a/(2*N+4);
   stiff_end();
   return c;
-};
+}
 
 REAL ln2(){
    if (ln2_err==0) ln2_val=new(REAL);
@@ -59,7 +59,7 @@ REAL ln2(){
 
    }
    return (*ln2_val);
-};
+}
 
 
 /*****************************************************************/
@@ -97,7 +97,7 @@ REAL pi_approx_MACHIN (int prec){
      i+=2;
    }
    return 4*(4*z1-z2);
-};
+}
 
 REAL pi_approx_AGM (int prec){
    REAL a= 1;
@@ -114,7 +114,7 @@ REAL pi_approx_AGM (int prec){
      j=2*j; 
    } while ( ! bound(a-b, prec));
    return a*a/t;
-};
+}
 
 REAL pi_inv_approx_BORWEIN (int prec){
    REAL a= 6-4*sqrt(REAL(2));
@@ -130,7 +130,7 @@ REAL pi_inv_approx_BORWEIN (int prec){
      k=2*k; 
    } while (  !bound (a-aold,prec/4 )) ;
    return a;
-};
+}
 
 REAL pi (){
    if (pi_err==0) pi_val=new(REAL);
@@ -152,6 +152,6 @@ REAL pi (){
      pi_err =  ACTUAL_STACK.actual_prec;
    }
    return (*pi_val);
-};
+}
 
 } // namespace iRRAM
