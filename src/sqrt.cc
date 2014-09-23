@@ -23,7 +23,7 @@ REAL root_approx(int prec, const REAL& x,int n) {
       error=r - r_2;
    } while ( !bound(error,prec) );
    return r;
-};
+}
 
 REAL root(const REAL& x,int n) {
    return limit(root_approx,x,n);
@@ -62,12 +62,12 @@ REAL sqrt_approx (int prec, const REAL& x){
   y=lipschitz(SQRT_APPROX,2,prec-s2,y);
   y=scale(y,s2);
   return y; 
-};
+}
 
 
 REAL sqrt (const REAL& x){
  return limit(sqrt_approx,x);
-};
+}
 #else
 
 
@@ -101,7 +101,7 @@ REAL sqrt (const REAL& x){
   sizetype_inc_one(zerror,local_prec);
 //printf("%d*2^%d\n",zerror.mantissa,zerror.exponent);
   return REAL(zvalue,zerror);
-};
+}
 
 #else
 
@@ -122,12 +122,12 @@ REAL sqrt_approx (int prec, const REAL& x){
   REAL y=scale(x,-s2*2);
   y=lipschitz(SQRT_APPROX,2,prec-s2,y);
   return scale(y,s2); 
-};
+}
 
 
 REAL sqrt (const REAL& x){
  return limit(sqrt_approx,x);
-};
+}
 #endif
 
 
