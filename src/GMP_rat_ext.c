@@ -44,23 +44,15 @@ __thread int rat_gmp_var_count=0;
 
 
 
-/*****************************************************************************/
-// adding rational in GMP
-// added: 19.02.2001
-// Last change: 19.02.2001
-/****************************************************************************/
-
 
 /*****************************************************************************/
-// adding rational and int in GMP
-// added: 18.06.2001
-// Last change: 18.06.2001
+/* adding rational and int in GMP                                            */
+/* added: 18.06.2001                                                         */
+/* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
 void rat_gmp_add_ui(const rat_gmp_type z1, const unsigned int z2, rat_gmp_type z)
 {
-#if DEBUG>0
-#endif
 	int_gmp_type num;
 	int_gmp_type den;
 	int_gmp_type temp;
@@ -85,15 +77,13 @@ return;
 
 
 /*****************************************************************************/
-// subtract rational and int in GMP
-// added: 18.06.2001
-// Last change: 18.06.2001
+/* subtract rational and int in GMP                                          */
+/* added: 18.06.2001                                                         */
+/* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
 void rat_gmp_sub_ui(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
 {
-#if DEBUG>0
-#endif
 	int_gmp_type num;
 	int_gmp_type den;
 	int_gmp_type temp;
@@ -113,17 +103,14 @@ void rat_gmp_sub_ui(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
 	int_gmp_free(den);
 	int_gmp_free(temp);
 
-#if (DEBUG>0)
-#endif
-
 return;
 }
 
 
 /*****************************************************************************/
-// multiplicate rational and int in GMP
-// added: 18.06.2001
-// Last change: 18.06.2001
+/* multiplicate rational and int in GMP                                      */
+/* added: 18.06.2001                                                         */
+/* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
 void rat_gmp_mul_si(rat_gmp_type z1, int z2, rat_gmp_type z)
@@ -147,9 +134,9 @@ return;
 }
 
 /*****************************************************************************/
-// dividing rational and int in GMP
-// added: 18.06.2001
-// Last change: 18.06.2001
+/* dividing rational and int in GMP                                          */
+/* added: 18.06.2001                                                         */
+/* Last change: 18.06.2001                                                   */
 /*****************************************************************************/
 
 void rat_gmp_div_si(rat_gmp_type z1, int z2, rat_gmp_type z)
@@ -176,15 +163,13 @@ return;
 }
 
 /*****************************************************************************/
-// dividing rational and int in GMP
-// added: 18.06.2001
-// Last change: 18.06.2001
-// ****************************************************************************
+/* dividing rational and int in GMP                                          */
+/* added: 18.06.2001                                                         */
+/* Last change: 18.06.2001                                                   */
+/* ***************************************************************************/
 
 void rat_gmp_si_div(int z1, rat_gmp_type z2, rat_gmp_type z)
 {
-#if DEBUG>0
-#endif
 	int_gmp_type num;
 	int_gmp_type den;
 	num=int_gmp_init();
@@ -194,23 +179,20 @@ void rat_gmp_si_div(int z1, rat_gmp_type z2, rat_gmp_type z)
 
 	mpz_mul_si(den,den,z1);
 
-	mpq_set_num(z,den);	// invert
+	mpq_set_num(z,den);	/* invert */
 	mpq_set_den(z,num); 
 	mpq_canonicalize(z);
 	int_gmp_free(num);
 	int_gmp_free(den);
 
-#if (DEBUG>0)
-#endif
-
 return;
 }
 
 /*****************************************************************************/
-// power function in GMP
-// added: 19.02.2001
-// Last change: 19.02.2001
-// Comment: base=MP exponent=int
+/* power function in GMP                                                     */
+/* added: 19.02.2001                                                         */
+/* Last change: 19.02.2001                                                   */
+/* Comment: base=MP exponent=int                                             */
 /*****************************************************************************/
 
 void rat_gmp_power(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
@@ -241,9 +223,10 @@ void rat_gmp_power(rat_gmp_type z1, unsigned int z2, rat_gmp_type z)
 
 char* rat_gmp_swritee(rat_gmp_type z, int w)
 {
-  if (w<1)w=1;
-  char *n, *s=malloc(w+1);
+  char *n, *s;
   int l;
+  if (w<1)w=1;
+  s=malloc(w+1);
   n=mpq_get_str(NULL, 10, z);
   l=strlen(n);
   if (l>w){
