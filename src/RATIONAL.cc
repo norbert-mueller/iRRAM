@@ -376,41 +376,41 @@ INTEGER numerator (const RATIONAL& x){
 bool operator < (const RATIONAL& x, const RATIONAL& y){
   return (MP_rat_compare(x.value,y.value) < 0 );
 }
-bool operator < (const RATIONAL& x, const INTEGER&  y){ return x<RATIONAL(y);};
-bool operator < (const RATIONAL& x, const int       y){ return x<RATIONAL(y);};
-bool operator < (const INTEGER&  x, const RATIONAL& y){ return RATIONAL(x)<y;};
-bool operator < (const int       x, const RATIONAL& y){ return RATIONAL(x)<y;};
+bool operator < (const RATIONAL& x, const INTEGER&  y){ return x<RATIONAL(y);}
+bool operator < (const RATIONAL& x, const int       y){ return x<RATIONAL(y);}
+bool operator < (const INTEGER&  x, const RATIONAL& y){ return RATIONAL(x)<y;}
+bool operator < (const int       x, const RATIONAL& y){ return RATIONAL(x)<y;}
 
 //****************************************************************************************
 // Less or equal than: x <= y
 // returns boolean value 1 if x<=y, 0 otherwise
 //****************************************************************************************
-bool operator <= (const RATIONAL& x, const RATIONAL& y){ return !(y<x); };
-bool operator <= (const RATIONAL& x, const INTEGER&  y){ return !(y<x); };
-bool operator <= (const RATIONAL& x, const int       y){ return !(y<x); };
-bool operator <= (const INTEGER&  x, const RATIONAL& y){ return !(y<x); };
-bool operator <= (const int       x, const RATIONAL& y){ return !(y<x); };
+bool operator <= (const RATIONAL& x, const RATIONAL& y){ return !(y<x); }
+bool operator <= (const RATIONAL& x, const INTEGER&  y){ return !(y<x); }
+bool operator <= (const RATIONAL& x, const int       y){ return !(y<x); }
+bool operator <= (const INTEGER&  x, const RATIONAL& y){ return !(y<x); }
+bool operator <= (const int       x, const RATIONAL& y){ return !(y<x); }
 
 //****************************************************************************************
 // Greater than: x > y
 // returns boolean value 1 if x>y, 0 otherwise
 //****************************************************************************************
-bool operator > (const RATIONAL& x, const RATIONAL& y){ return (y<x); };
-bool operator > (const RATIONAL& x, const INTEGER&  y){ return (y<x); };
-bool operator > (const RATIONAL& x, const int       y){ return (y<x); };
-bool operator > (const INTEGER&  x, const RATIONAL& y){ return (y<x); };
-bool operator > (const int       x, const RATIONAL& y){ return (y<x); };
+bool operator > (const RATIONAL& x, const RATIONAL& y){ return (y<x); }
+bool operator > (const RATIONAL& x, const INTEGER&  y){ return (y<x); }
+bool operator > (const RATIONAL& x, const int       y){ return (y<x); }
+bool operator > (const INTEGER&  x, const RATIONAL& y){ return (y<x); }
+bool operator > (const int       x, const RATIONAL& y){ return (y<x); }
 
 
 //****************************************************************************************
 // Greater or equal than: x >= y
 // returns boolean value 1 if x>=y, 0 otherwise
 //****************************************************************************************
-bool operator >= (const RATIONAL& x, const RATIONAL& y){ return !(x<y); };
-bool operator >= (const RATIONAL& x, const INTEGER&  y){ return !(x<y); };
-bool operator >= (const RATIONAL& x, const int       y){ return !(x<y); };
-bool operator >= (const INTEGER&  x, const RATIONAL& y){ return !(x<y); };
-bool operator >= (const int       x, const RATIONAL& y){ return !(x<y); };
+bool operator >= (const RATIONAL& x, const RATIONAL& y){ return !(x<y); }
+bool operator >= (const RATIONAL& x, const INTEGER&  y){ return !(x<y); }
+bool operator >= (const RATIONAL& x, const int       y){ return !(x<y); }
+bool operator >= (const INTEGER&  x, const RATIONAL& y){ return !(x<y); }
+bool operator >= (const int       x, const RATIONAL& y){ return !(x<y); }
 
 //****************************************************************************************
 // Equal to: x == y
@@ -420,21 +420,21 @@ bool operator >= (const int       x, const RATIONAL& y){ return !(x<y); };
 bool operator == (const RATIONAL& x, const RATIONAL& y){
   return (MP_rat_equal(x.value,y.value));
 }
-bool operator == (const RATIONAL& x, const INTEGER&  y){ return x==RATIONAL(y);};
-bool operator == (const RATIONAL& x, const int       y){ return x==RATIONAL(y);};
-bool operator == (const INTEGER&  x, const RATIONAL& y){ return y==RATIONAL(x);};
-bool operator == (const int       x, const RATIONAL& y){ return y==RATIONAL(x);};
+bool operator == (const RATIONAL& x, const INTEGER&  y){ return x==RATIONAL(y);}
+bool operator == (const RATIONAL& x, const int       y){ return x==RATIONAL(y);}
+bool operator == (const INTEGER&  x, const RATIONAL& y){ return y==RATIONAL(x);}
+bool operator == (const int       x, const RATIONAL& y){ return y==RATIONAL(x);}
 
 //****************************************************************************************
 // Not equal to: x != y
 // returns boolean value 1 if x!=y, 0 otherwise
 //****************************************************************************************
 
-bool operator != (const RATIONAL& x, const RATIONAL& y){ return !(x==y); };
-bool operator != (const RATIONAL& x, const INTEGER&  y){ return !(x==y); };
-bool operator != (const RATIONAL& x, const int       y){ return !(x==y); };
-bool operator != (const INTEGER& y, const RATIONAL& x ){ return !(y==x); };
-bool operator != (const int      y, const RATIONAL& x ){ return !(y==x); };
+bool operator != (const RATIONAL& x, const RATIONAL& y){ return !(x==y); }
+bool operator != (const RATIONAL& x, const INTEGER&  y){ return !(x==y); }
+bool operator != (const RATIONAL& x, const int       y){ return !(x==y); }
+bool operator != (const INTEGER& y, const RATIONAL& x ){ return !(y==x); }
+bool operator != (const int      y, const RATIONAL& x ){ return !(y==x); }
 
 
 //*****************************************************************************
