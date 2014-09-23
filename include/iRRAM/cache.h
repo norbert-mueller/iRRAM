@@ -29,9 +29,9 @@ MA 02111-1307, USA.
 
 namespace iRRAM {
 
-inline void noclearfct(void*){};
-inline void MPclear(void* x){MP_clear(*(MP_type*)(x));};
-inline void MPIclear(void* x){MP_int_clear(*(MP_int_type*)(x));};
+inline void noclearfct(void*){}
+inline void MPclear(void* x){MP_clear(*(MP_type*)(x));}
+inline void MPIclear(void* x){MP_int_clear(*(MP_int_type*)(x));}
 
 class iRRAM_cache_type{
 public:
