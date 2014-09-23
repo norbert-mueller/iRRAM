@@ -26,7 +26,7 @@ MA 02111-1307, USA.
 
 #include <strings.h>
 
-#ifndef DEBUG			// debugging information
+#ifndef DEBUG			/* debugging information */
 #define DEBUG 0
 #endif
 #if DEBUG > 0
@@ -35,24 +35,24 @@ MA 02111-1307, USA.
   int minshowop = DEBUG ;
 #endif
 
-//**************************************************************************/
-//* Variables for counting free space */
-//**************************************************************************/
+/**************************************************************************/
+/* Variables for counting free space                                      */
+/**************************************************************************/
 
 __thread int_gmp_type gmp_FreeVarsi[MaxFreeVars];
 __thread int gmp_FreeVarCounti=0L;
 __thread int int_gmp_var_count=0;
 
 
-//**************************************************************************/
-// nth root of integer in GMP
-// added: 07.02.2001
-// Last change: 07.02.2001
-// Comment: this root-function truncates the result to the integer part
-// Arguments: 1. GMP_integer
-// 		  2. unsigned int
-// 		  3. GMP_integer
-//**************************************************************************/
+/**************************************************************************/
+/*  nth root of integer in GMP                                            */
+/*  added: 07.02.2001                                                     */
+/*  Last change: 07.02.2001                                               */
+/*  Comment: this root-function truncates the result to the integer part  */
+/*  Arguments: 1. GMP_integer                                             */
+/*  		  2. unsigned int                                         */
+/*  		  3. GMP_integer                                          */
+/**************************************************************************/
 
 void int_gmp_root(int_gmp_type z1, unsigned int z2, int_gmp_type z)
 {
@@ -60,16 +60,16 @@ void int_gmp_root(int_gmp_type z1, unsigned int z2, int_gmp_type z)
   return;
 }
 
-//**************************************************************************/
-// power function in GMP
-// calculates z = z1 ^ z2
-// added: 07.02.2001
-// Last change: 07.02.2001
-// Comment: base=MP exponent=int
-// Arguments: 1. GMP_integer
-// 		  2. unsigned integer
-// 		  3. GMP_integer
-//**************************************************************************/
+/**************************************************************************/
+/*  power function in GMP                                                 */
+/*  calculates z = z1 ^ z2                                                */
+/*  added: 07.02.2001                                                     */
+/*  Last change: 07.02.2001                                               */
+/*  Comment: base=MP exponent=int                                         */
+/*  Arguments: 1. GMP_integer                                             */
+/*             2. unsigned integer                                        */
+/*             3. GMP_integer                                             */
+/**************************************************************************/
 
 void int_gmp_power_i(int_gmp_type z1, unsigned int z2, int_gmp_type z)
 {
@@ -77,16 +77,16 @@ void int_gmp_power_i(int_gmp_type z1, unsigned int z2, int_gmp_type z)
  return;
 }
 
-//**************************************************************************/
-// power function in GMP
-// calculates z = z1 ^ z2
-// added: 07.02.2001
-// Last change: 07.02.2001
-// Comment: base=int exponent=int
-// Arguments: 1. unsigned int
-// 		  2. unsigned int
-// 		  3. GMP_integer
-//**************************************************************************/
+/**************************************************************************/
+/* power function in GMP                                                  */
+/* calculates z = z1 ^ z2                                                 */
+/* added: 07.02.2001                                                      */
+/* Last change: 07.02.2001                                                */
+/* Comment: base=int exponent=int                                         */
+/* Arguments: 1. unsigned int                                             */
+/*            2. unsigned int                                             */
+/*            3. GMP_integer                                              */
+/**************************************************************************/
 
 void int_gmp_power_ii(unsigned int z1, unsigned int z2, int_gmp_type z)
 {
@@ -94,15 +94,15 @@ void int_gmp_power_ii(unsigned int z1, unsigned int z2, int_gmp_type z)
  return;
 }
 
-//**************************************************************************/
-// factorial function in GMP
-// calculates z = z1!
-// added: 07.02.2001
-// Last change: 07.02.2001
-// Comment: base is int
-// Arguments: 1. unsigned int
-// 		  2. GMP_integer
-//**************************************************************************/
+/**************************************************************************/
+/* factorial function in GMP                                              */
+/* calculates z = z1!                                                     */
+/* added: 07.02.2001                                                      */
+/* Last change: 07.02.2001                                                */
+/* Comment: base is int                                                   */
+/* Arguments: 1. unsigned int                                             */
+/* 		  2. GMP_integer                                          */
+/**************************************************************************/
 
 void int_gmp_fac(unsigned int z1, int_gmp_type z)
 {
@@ -110,15 +110,15 @@ void int_gmp_fac(unsigned int z1, int_gmp_type z)
  return;
 }
 
-//**************************************************************************/
-// modulo function in GMP
-// calculates z = z1 % z2
-// added: 07.02.2001
-// Last change: 07.02.2001
-// Arguments: 1. GMP_integer
-// 		  2. GMP_integer
-// 		  3. GMP_integer
-//**************************************************************************/
+/**************************************************************************/
+/* modulo function in GMP                                                 */
+/* calculates z = z1 % z2                                                 */
+/* added: 07.02.2001                                                      */
+/* Last change: 07.02.2001                                                */
+/* Arguments: 1. GMP_integer                                              */
+/* 		  2. GMP_integer                                          */
+/* 		  3. GMP_integer                                          */
+/**************************************************************************/
 
 void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z)
 {
@@ -130,20 +130,21 @@ void int_gmp_modulo(int_gmp_type z1, int_gmp_type z2, int_gmp_type z)
 
 
 
-//**************************************************************************/
-// writes integer to a string
-// writes z to string with length w
-// Arguments: 1. GMP_integer
-// 		  2. int integer
-//	return: char*
-//**************************************************************************/
+/**************************************************************************/
+/* writes integer to a string                                             */
+/* writes z to string with length w                                       */
+/* Arguments: 1. GMP_integer                                              */
+/*            2. int integer                                              */
+/* return: char*                                                          */
+/**************************************************************************/
 
 
 char* int_gmp_swritee(int_gmp_type z, int w)
 {
-  if (w<1)w=1;
-  char *n, *s=malloc(w+1);
+  char *n, *s;
   int l;
+  if (w<1)w=1;
+  s=malloc(w+1);
   n=mpz_get_str(NULL, 10, z);
   l=strlen(n);
   if (l>w){
@@ -161,13 +162,13 @@ char* int_gmp_swritee(int_gmp_type z, int w)
 
 
 
-//**************************************************************************/
-// writes z to string with length calculated
-// added: 18.07.2001
-// Last change: 18.07.2001
-// Arguments: 1. GMP_integer
-// 	return: char*
-//**************************************************************************/
+/**************************************************************************/
+/* writes z to string with length calculated                              */
+/* added: 18.07.2001                                                      */
+/* Last change: 18.07.2001                                                */
+/* Arguments: 1. GMP_integer                                              */
+/*  return: char*                                                         */
+/**************************************************************************/
 
 char* int_gmp_sprintf(int_gmp_type z)
 {
@@ -175,14 +176,14 @@ char* int_gmp_sprintf(int_gmp_type z)
 }
 
 
-//**************************************************************************/
-// square root of GMP_integer
-// calculates z = squareroot(z1)
-// added: 01.02.2001
-// Last change: 01.02.2001
-// Arguments: 1. GMP_integer
-// 		  2. GMP_integer
-//**************************************************************************/
+/**************************************************************************/
+/* square root of GMP_integer                                             */
+/* calculates z = squareroot(z1)                                          */
+/* added: 01.02.2001                                                      */
+/* Last change: 01.02.2001                                                */
+/* Arguments: 1. GMP_integer                                              */
+/*            2. GMP_integer                                              */
+/**************************************************************************/
 
 void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z)
 {
@@ -191,18 +192,18 @@ void int_gmp_sqrt(int_gmp_type z1, int_gmp_type z)
 }
 
 
-//**************************************************************************/
-// shifting GMP_integer by n bits
-// calculates z = z1 <<(>>) z2
-// added: 01.02.2001
-// Last change: 01.02.2001
-// Arguments: 1. GMP_integer
-// 		  2. GMP_integer
-// 		  3. int integer n
-//**************************************************************************/
+/**************************************************************************/
+/* shifting GMP_integer by n bits                                         */
+/* calculates z = z1 <<(>>) z2                                            */
+/* added: 01.02.2001                                                      */
+/* Last change: 01.02.2001                                                */
+/* Arguments: 1. GMP_integer                                              */
+/*            2. GMP_integer                                              */
+/*            3. int integer n                                            */
+/**************************************************************************/
 
 void int_gmp_shift(int_gmp_type z1, int_gmp_type z, int n)
 {
   if (n>=0) mpz_mul_2exp(z, z1, n);
-  else mpz_tdiv_q_2exp(z, z1, -n);  /** truncate-div **/
+  else mpz_tdiv_q_2exp(z, z1, -n);  /* truncate-div */
 }
