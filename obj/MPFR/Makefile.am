@@ -18,5 +18,5 @@ lib_LTLIBRARIES          = libiRRAM.la
 libiRRAM_la_LDFLAGS = -version-info @iRRAM_shared_version@
 libiRRAM_la_SOURCES = $(main_sources) $(extra_sources)
 
-distclean:	
+distclean-am:
 	rm -f *.o @iRRAM_src@ Makefile
