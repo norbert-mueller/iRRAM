@@ -21,4 +21,4 @@ if (n != y ) printf("Error 2 in INTEGER part\n");
 
 printf("End of small set of INTEGER tests.\n");
 
-};
+}

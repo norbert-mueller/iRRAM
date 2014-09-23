@@ -6,25 +6,25 @@ using namespace iRRAM;
 /* Examples for Limits */
 bool whole_domain(const REAL& x, const REAL& y){
 return true;
-};
+}
 
 REAL max_approx (int prec, const REAL& x, const REAL& y){
    if ( positive(x-y,prec) ) return x;
    else return y;
-};
+}
 
 REAL maximum_as_a_limit (const REAL& x, const REAL& y){
    return limit_lip(max_approx,0,whole_domain,x,y);
-};
+}
 
 REAL min_approx (int prec, const REAL& x, const REAL& y){
    if ( positive(x-y,prec) ) return y;
    else return x;
-};
+}
 
 REAL minimum_as_a_limit (const REAL& x, const REAL& y){
    return limit_lip(min_approx,0,whole_domain,x,y);
-};
+}
 
 
 void compute(){
@@ -54,4 +54,4 @@ switch (choose(x1>mi,x2>mi) ){
      break;
 }
 
-};
+}

@@ -22,4 +22,4 @@ void compute(){
     xr=cr*xr*(1-xr);
     xd=cd*xd*(1-xd);
   }
-};
+}

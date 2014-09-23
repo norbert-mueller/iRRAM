@@ -22,4 +22,4 @@ void compute(){
     xr+=REAL(1)/i;
     xd+=    1.0/i;
   }
-};
+}

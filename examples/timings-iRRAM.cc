@@ -63,29 +63,30 @@ if (fkt ==10)  value[1]=approx(tanh(x),prec);
 if (fkt ==11)  value[1]=approx(atanh(w),prec);
 if (fkt ==12)  value[1]=approx(euler(),prec);
 if (fkt ==13)  value[1]=approx(pi(),prec);
-continous_begin();
 double s1=cputime(),s2=s1;
 long   count=1;
 REAL z;
-while (s2-s1 < 1 ) {
-if (fkt ==0)   for (long i=1; i<=count;i++) z=x+y;
-if (fkt ==1)   for (long i=1; i<=count;i++) z=x*y;
-if (fkt ==2)   for (long i=1; i<=count;i++) z=x/y;
-if (fkt ==3)   for (long i=1; i<=count;i++) z=sqrt(x);
-if (fkt ==4)   for (long i=1; i<=count;i++) z=exp(x);
-if (fkt ==5)   for (long i=1; i<=count;i++) z=log(x);
-if (fkt ==6)   for (long i=1; i<=count;i++) z=sin(x);
-if (fkt ==7)   for (long i=1; i<=count;i++) z=cos(x);
-if (fkt ==8)   for (long i=1; i<=count;i++) z=tan(x);
-if (fkt ==9 )  for (long i=1; i<=count;i++) z=atan(x);
-if (fkt ==10)  for (long i=1; i<=count;i++) z=tanh(x);
-if (fkt ==11)  for (long i=1; i<=count;i++) z=atanh(w);
-if (fkt ==12)  for (long i=1; i<=count;i++) z=euler();
-if (fkt ==13)  for (long i=1; i<=count;i++) z=pi();
-s2=cputime();
-count=2*count;
+{
+  single_valued code(true);
+  while (s2-s1 < 1 ) {
+  if (fkt ==0)   for (long i=1; i<=count;i++) z=x+y;
+  if (fkt ==1)   for (long i=1; i<=count;i++) z=x*y;
+  if (fkt ==2)   for (long i=1; i<=count;i++) z=x/y;
+  if (fkt ==3)   for (long i=1; i<=count;i++) z=sqrt(x);
+  if (fkt ==4)   for (long i=1; i<=count;i++) z=exp(x);
+  if (fkt ==5)   for (long i=1; i<=count;i++) z=log(x);
+  if (fkt ==6)   for (long i=1; i<=count;i++) z=sin(x);
+  if (fkt ==7)   for (long i=1; i<=count;i++) z=cos(x);
+  if (fkt ==8)   for (long i=1; i<=count;i++) z=tan(x);
+  if (fkt ==9 )  for (long i=1; i<=count;i++) z=atan(x);
+  if (fkt ==10)  for (long i=1; i<=count;i++) z=tanh(x);
+  if (fkt ==11)  for (long i=1; i<=count;i++) z=atanh(w);
+  if (fkt ==12)  for (long i=1; i<=count;i++) z=euler();
+  if (fkt ==13)  for (long i=1; i<=count;i++) z=pi();
+  s2=cputime();
+  count=2*count;
 }
-continous_end();
+}
 if (fkt ==0) cout << "x+y       took ";
 if (fkt ==1) cout << "x*y       took ";
 if (fkt ==2) cout << "x/y       took ";
@@ -106,6 +107,6 @@ cout <<1000*(s2-s1)/(count-1)<<" ms  ("
 }
 
 
-};
+}
 
 

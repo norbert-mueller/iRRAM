@@ -34,7 +34,7 @@ precision_policy(RELATIVE);
   }
 precision_policy(ABSOLUTE);
   return z;
-};
+}
 
 REAL cos_new_2 (int prec,const REAL& x){
   int it;
@@ -66,14 +66,14 @@ precision_policy(RELATIVE);
 precision_policy(ABSOLUTE);
 
   return 1+y;
-};
+}
 
 
 REAL cos_new_1 (int prec,const REAL& x){
   if (prec >= 0 ) return 0;
   REAL m=modulo(x,2*pi());
   return cos_new_2(prec,m-2*pi());
-};
+}
 
 
 
@@ -126,23 +126,29 @@ precision_policy(RELATIVE);
 precision_policy(ABSOLUTE);
 
   return y;
-};
+}
+
 REAL cos_new_alternative (int prec,const REAL& x){
   if (prec >= 0 ) return 0;
   REAL m=modulo(x,2*pi());
   return cos_new_alternative_2(prec,m-2*pi());
-};
-bool total_domain(const REAL& x){ return true;};
-REAL cos_new2 (const REAL& x){ return  limit_lip(cos_new_alternative,0,total_domain,x);};
+}
+
+bool total_domain(const REAL& x){ return true;}
+
+REAL cos_new2 (const REAL& x){ return  limit_lip(cos_new_alternative,0,total_domain,x);}
+
 //------------------------------------------------------------------------------------
-REAL cos_new (const REAL& x){ return  limit_lip(cos_new_1,0,total_domain,x);};
-REAL sin_new (const REAL& x){ return  cos_new(x-pi()/2);};
+
+REAL cos_new (const REAL& x){ return  limit_lip(cos_new_1,0,total_domain,x);}
+
+REAL sin_new (const REAL& x){ return  cos_new(x-pi()/2);}
 
 void sincos_new (REAL& s,REAL& c,const REAL& x){ 
   REAL arg=x;
   s=sin_new(arg);
   c=cos_new(arg);
-};
+}
 
 
 /*
@@ -224,24 +230,25 @@ if (fkt ==10)  value[1]=approx(cos_new2(x),prec);
 
 for (int fkt=min_fkt; fkt<=max_fkt; fkt++) {
 
-continous_begin();
 double s1=cputime(),s2=s1;
 int   count=1;
-while (s2-s1 < 1 ) {
-if (fkt ==1) for (int i=1; i<=count;i++) value[1]=approx(x*y,prec);
-if (fkt ==2) for (int i=1; i<=count;i++) value[1]=approx(x/y,prec);
-if (fkt ==3) for (int i=1; i<=count;i++) value[1]=approx(sqrt(x),prec);
-if (fkt ==4) for (int i=1; i<=count;i++) value[1]=approx(exp(x),prec);
-if (fkt ==5) for (int i=1; i<=count;i++) value[1]=approx(log(x),prec);
-if (fkt ==6) for (int i=1; i<=count;i++) value[1]=approx(sin(x),prec);
-if (fkt ==7) for (int i=1; i<=count;i++) value[1]=approx(cos(x),prec);
-if (fkt ==8) for (int i=1; i<=count;i++) value[1]=approx(sin_new(x),prec);
-if (fkt ==9) for (int i=1; i<=count;i++) value[1]=approx(cos_new(x),prec);
-if (fkt ==10) for (int i=1; i<=count;i++) value[1]=approx(cos_new2(x),prec);
-s2=cputime();
-count=2*count;
+{
+  single_valued code(true);
+  while (s2-s1 < 1 ) {
+  if (fkt ==1) for (int i=1; i<=count;i++) value[1]=approx(x*y,prec);
+  if (fkt ==2) for (int i=1; i<=count;i++) value[1]=approx(x/y,prec);
+  if (fkt ==3) for (int i=1; i<=count;i++) value[1]=approx(sqrt(x),prec);
+  if (fkt ==4) for (int i=1; i<=count;i++) value[1]=approx(exp(x),prec);
+  if (fkt ==5) for (int i=1; i<=count;i++) value[1]=approx(log(x),prec);
+  if (fkt ==6) for (int i=1; i<=count;i++) value[1]=approx(sin(x),prec);
+  if (fkt ==7) for (int i=1; i<=count;i++) value[1]=approx(cos(x),prec);
+  if (fkt ==8) for (int i=1; i<=count;i++) value[1]=approx(sin_new(x),prec);
+  if (fkt ==9) for (int i=1; i<=count;i++) value[1]=approx(cos_new(x),prec);
+  if (fkt ==10) for (int i=1; i<=count;i++) value[1]=approx(cos_new2(x),prec);
+  s2=cputime();
+  count=2*count;
+  }
 }
-continous_end();
 if (fkt ==1) cout << "x*y     took ";
 if (fkt ==2) cout << "x/y     took ";
 if (fkt ==3) cout << "sqrt(x) took ";
@@ -257,6 +264,5 @@ cout <<1000*(s2-s1)/(count-1)<<" ms  ("
      << s2-s1 << " s)\n";
 }
 
-
-};
+}
 

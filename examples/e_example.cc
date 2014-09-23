@@ -17,14 +17,14 @@ using namespace iRRAM;
     i+=1;
   }
   return z;
-};
+}
 
 //---------------------------------------------------------------------
 // Compute the exact value of  e=2.71.. 
 REAL e()
 {
   return limit(e_approx);
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -48,7 +48,7 @@ void compute(){
     cin  >> deci_places;
  
   } while ( deci_places > 0 );
-};
+}
 
 
 // example input/output of "echo 65|e_example":

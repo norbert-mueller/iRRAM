@@ -12,7 +12,7 @@ REAL test_function(int p, const REAL& x){
   }
   cerr << "   prec1b" << DYADIC::getprec() <<"\n";
   return d;
-};
+}
 
 void compute(){
   cout << setRwidth(100);
@@ -31,4 +31,4 @@ void compute(){
   d=d+0;
   cout << setRflags(iRRAM_float_relative);
   cout << x-REAL(d)<<"\n";
-};
+}

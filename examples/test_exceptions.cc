@@ -27,4 +27,4 @@ catch (const iRRAM_Numerical_Exception exc)
 //   throw iRRAM_Numerical_Exception(exc);
 }
 
-};
+}

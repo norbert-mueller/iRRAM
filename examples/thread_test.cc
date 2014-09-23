@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 using namespace iRRAM;
-REAL f (const REAL& x) { return x+1; };
+REAL f (const REAL& x) { return x+1; }
 
 class my_arg_type { public: string s; long long n; };
 

@@ -5,11 +5,11 @@ using namespace iRRAM;
 REAL maxapprox (int prec, const REAL& x, const REAL& y){
    if ( positive(x-y,prec) ) return x;
    else return y;
-};
+}
 
 REAL max (const REAL& x, const REAL& y){
    return limit(maxapprox,x,y);
-};
+}
 
 int iRRAM_compute(const int& dummy) {
 

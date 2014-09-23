@@ -75,4 +75,4 @@ void compute(){
   cout << "\nmatrix exp(p):\n\n";
   write(p);
 
-};
+}

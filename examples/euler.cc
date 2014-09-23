@@ -57,12 +57,12 @@ REAL gamma_approx(int p)
   k0=sqrt(pi()/REAL(4*n))*exp(REAL(-2*n))*k0;
 
   return (s0-k0)/i0-log(REAL(n));
-};
+}
 
 REAL gamma()
 {
   return limit(gamma_approx);
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -83,4 +83,4 @@ void compute(){
     cout << "\n\nAnother try? ";
     cin  >> deci_places;
   } while ( deci_places > 0 );
-};
+}

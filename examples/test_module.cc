@@ -38,4 +38,4 @@ cout << "module of sin at 0.0000001 for precision "<<p<<" is "<< m <<"\n";
 
 p=10; m=module(exp,REAL(0.0000001),p);
 cout << "module of exp at 0.0000001 for precision "<<p<<" is "<< m <<"\n";
-};
+}

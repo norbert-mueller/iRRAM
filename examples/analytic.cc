@@ -95,7 +95,7 @@ cout <<"Degree:" << f.degree << "\n";
     {
     cout <<setw(4) << i <<" " << setRwidth(40) << f.coeff[i] << "\n";
     }
-};
+}
 
 void compute (){
 ANALYTIC f(REAL(1),20);

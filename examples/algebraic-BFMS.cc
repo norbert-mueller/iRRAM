@@ -135,7 +135,7 @@ bool  zerotest (const ALGEBRAIC& x){
 	return choose ( abs(x.val) > 0 , abs(x.val) < zerobound )  -  1 ;
   }
   return false;
-};
+}
 
 void compute (){
   int count,width;

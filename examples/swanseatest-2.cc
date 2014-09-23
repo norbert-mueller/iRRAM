@@ -61,5 +61,5 @@ printval("log(1+log(1+log(1+log(1+log(1+log(1+pi))))))  = ",DP, value[5]);
 printval("log(1+log(1+log(1+log(1+log(1+log(1+exp(1)))))))  = ",DP, value[6]);
 printval("exp(1000)  = ",DP, value[7]);
 
-};
+}
 

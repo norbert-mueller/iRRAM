@@ -19,4 +19,4 @@ void compute(){
     xd=cd*xd*(1-xd);
     xq=cq*xq*(1-xq);
   }
-};
+}

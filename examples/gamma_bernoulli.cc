@@ -84,7 +84,7 @@ REAL ln_gamma_approx(int max_index, const REAL& z)
     inv_power_z= inv_power_z*inv_square_z;
   };
   return result;
-};
+}
 
 // An experiment to compute the Gamma function
 // We make unproven(!) guesses on 

@@ -53,4 +53,4 @@ void compute(){
   cout << "Matrix K*H:\n";
   write(o);
   cout << "\n";
-};
+}

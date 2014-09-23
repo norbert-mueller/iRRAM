@@ -81,4 +81,4 @@ void compute(){
  
   outfile << endl;
   cout << "\n\nResults are in fileio.dat2\n";
-};
+}

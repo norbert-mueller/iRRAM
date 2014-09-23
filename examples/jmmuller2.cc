@@ -30,4 +30,4 @@ void compute(){
     cd=111-(1130-3000/ad)/bd;    ad=bd; bd=cd;   
     cq=111-(1130-3000/aq)/bq;    aq=bq; bq=cq;   
   }
-};
+}

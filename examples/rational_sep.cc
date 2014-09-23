@@ -56,7 +56,7 @@ RATIONAL_SEP::RATIONAL_SEP(const REAL& r_arg,sizetype sep1_arg,sizetype sep2_arg
   sep1=sep1_arg;
   sep2=sep2_arg;
   length=len_arg;
-};
+}
 
 RATIONAL_SEP& RATIONAL_SEP::operator = (const RATIONAL_SEP& y){
   r=y.r;
@@ -64,7 +64,7 @@ RATIONAL_SEP& RATIONAL_SEP::operator = (const RATIONAL_SEP& y){
   sep2=y.sep2;
   length=y.length;
   return (*this);
-};
+}
 
 RATIONAL_SEP 	operator + 	(const RATIONAL_SEP& x, const RATIONAL_SEP& y)
 { REAL r=x.r+y.r;
@@ -74,7 +74,8 @@ RATIONAL_SEP 	operator + 	(const RATIONAL_SEP& x, const RATIONAL_SEP& y)
   sizetype_add(s1,h1,h2);
   sizetype_mult(s2,x.sep2,y.sep2);
   return RATIONAL_SEP(r,s1,s2,x.length+y.length+1);
-};
+}
+
 RATIONAL_SEP 	operator - 	(const RATIONAL_SEP& x, const RATIONAL_SEP& y){
  REAL r=x.r-y.r;
   sizetype s1,s2,h1,h2;
@@ -83,28 +84,26 @@ RATIONAL_SEP 	operator - 	(const RATIONAL_SEP& x, const RATIONAL_SEP& y){
   sizetype_add(s1,h1,h2);
   sizetype_mult(s2,x.sep2,y.sep2);
   return RATIONAL_SEP(r,s1,s2,x.length+y.length+1);
-};
-;
+}
+
 RATIONAL_SEP 	operator * 	(const RATIONAL_SEP& x, const RATIONAL_SEP& y){
  REAL r=x.r*y.r;
   sizetype s1,s2;
   sizetype_mult(s1,x.sep1,y.sep1);
   sizetype_mult(s2,x.sep2,y.sep2);
   return RATIONAL_SEP(r,s1,s2,x.length+y.length+1);
-};
-;
+}
+
 RATIONAL_SEP 	operator / 	(const RATIONAL_SEP& x, const RATIONAL_SEP& y){
  REAL r=x.r/y.r;
   sizetype s1,s2;
   sizetype_mult(s1,x.sep1,y.sep2);
   sizetype_mult(s2,x.sep2,y.sep1);
   return RATIONAL_SEP(r,s1,s2,x.length+y.length+1);
-};
-;
+}
+
 void 	rwrite		(const RATIONAL_SEP& x, const int w){
-};
-
-
+}
 
 void compute(){
 
