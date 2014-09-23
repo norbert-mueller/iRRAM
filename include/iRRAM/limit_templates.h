@@ -339,7 +339,7 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 // 
 //   ITERATION_STACK SAVED_STACK;
 // 
-//   continous_begin ();
+//   single_valued code(true);
 //   DEBUG1(2,"starting lipschitz1b ...\n");
 // 
 // // for the computation of the Lipschitz bound, we work with
@@ -374,7 +374,6 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 //       DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
 //     }
 //   }
-//   continous_end ();
 // 
 //   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
 //              lip_result.error.mantissa, lip_result.error.exponent);
@@ -401,7 +400,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
 
   ITERATION_STACK SAVED_STACK;
 
-  continous_begin ();
+  single_valued code(true);
   DEBUG1(2,"starting lipschitz_1p_1a ...\n");
 
   DISCRETE_ARGUMENT x_center;
@@ -421,7 +420,6 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
       DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }
   }
-  continous_end ();
 
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
