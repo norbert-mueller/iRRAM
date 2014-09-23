@@ -129,7 +129,7 @@ int anz=0;
   this->hotspot=ptr_r;
   if (ptr_r->colindex==j) return ptr_r->value;
   return 0; 
-};
+}
 
 SPM_ELEMENT* sparse_get_ptr( SPARSEREALMATRIX& m,unsigned int i,unsigned int j){
   SPM_ELEMENT* ptr_r= m.rowvector[i];
@@ -159,7 +159,7 @@ void SPARSEREALMATRIX::free() {
   delete colvector;
   hotspot=NULL;
   filled=0;
-};
+}
 
 
 SPARSEREALMATRIX::SPARSEREALMATRIX(unsigned int rows,unsigned int columns){
@@ -175,7 +175,7 @@ SPARSEREALMATRIX::SPARSEREALMATRIX(unsigned int rows,unsigned int columns){
   for (unsigned int i=0;i<columns;i++) colvector[i]=NULL;
   hotspot=NULL;
   filled=0;
-};
+}
 
 SPARSEREALMATRIX sparse_eye (unsigned int rows) {
   SPARSEREALMATRIX prod(rows,rows);
@@ -354,11 +354,11 @@ SPARSEREALMATRIX operator - (const SPARSEREALMATRIX& x, const SPARSEREALMATRIX& 
 
 SPARSEREALMATRIX::~SPARSEREALMATRIX() {
   free();
-};
+}
 
 SPARSEREALMATRIX::SPARSEREALMATRIX(){
   maxrow=0;maxcolumn=0;colvector=NULL; rowvector=NULL; filled=0; hotspot=NULL;
-};
+}
 
 SPARSEREALMATRIX::SPARSEREALMATRIX(const SPARSEREALMATRIX& y){
   SPM_ELEMENT* ptr;
@@ -378,7 +378,7 @@ SPARSEREALMATRIX::SPARSEREALMATRIX(const SPARSEREALMATRIX& y){
       ptr=ptr->nextcol;
     }
   }
-};
+}
 
 
 void SPARSEREALMATRIX::adderror (sizetype error)
@@ -457,7 +457,7 @@ SPARSEREALMATRIX operator / (const SPARSEREALMATRIX& x ,const SPARSEREALMATRIX& 
 }
 
 SPARSEREALMATRIX solve (SPARSEREALMATRIX& lside, SPARSEREALMATRIX& rside,int use_pivot) {
-continous_begin ();
+  single_valued code(true);
   SPARSEREALMATRIX result(rside.maxrow,rside.maxcolumn);
   SPM_ELEMENT* ptr;
   REAL faktor;
@@ -538,7 +538,6 @@ continous_begin ();
           ptr3=ptr3->nextrow;
       } }
   } }
-  continous_end ();
   return result;
 }
 
