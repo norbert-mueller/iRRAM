@@ -39,7 +39,7 @@ REALMATRIX::REALMATRIX(unsigned int rows,unsigned int columns)
      }
   maxrow=rows;maxcolumn=columns;
   values=new REAL[rows*columns];
-};
+}
 
 REALMATRIX eye (unsigned int rows) {
   REALMATRIX prod(rows,rows); REAL one=1;
@@ -128,7 +128,7 @@ REALMATRIX solve
        (REALMATRIX& lside,
         REALMATRIX& rside,
         int               use_pivot) {
-continous_begin ();
+  single_valued code(true);
   REALMATRIX result(rside.maxrow,rside.maxcolumn);
   REAL faktor;
   int testsize,pivotsize,pivot,pivotsave;
@@ -174,25 +174,24 @@ continous_begin ();
      ELEMENT(rside,perm[j],k)=ELEMENT(rside,perm[j],k)
        -ELEMENT(lside,perm[j],i)* ELEMENT(result,i,k);
   } }
-continous_end ();
   return result;
 }
 
 REALMATRIX::~REALMATRIX() {
 //fprintf(stderr," +- Destructor 1m: %x\n",this);
   delete []values;
-};
+}
 
 REALMATRIX::REALMATRIX(){
   maxrow=0;maxcolumn=0;values=NULL;
-};
+}
 
 REALMATRIX::REALMATRIX(const REALMATRIX& y){
   maxrow=y.maxrow;maxcolumn=y.maxcolumn;
   unsigned int size=maxrow*maxcolumn;
   values = new REAL[size];
   for (unsigned int i=0; i < size; i++) values[i]=y.values[i];
-};
+}
 
 REAL&  REALMATRIX::element (unsigned int i, unsigned int j) const {
   if ((i>= maxrow) || (j>= maxcolumn) ) {
@@ -201,7 +200,7 @@ REAL&  REALMATRIX::element (unsigned int i, unsigned int j) const {
      exit(1);
      }
   return values[i*maxcolumn+j];
-};
+}
 
 REAL&  REALMATRIX::operator () (unsigned int i, unsigned int j) const {
   if ((i>= maxrow) || (j>= maxcolumn) ) {
@@ -210,7 +209,7 @@ REAL&  REALMATRIX::operator () (unsigned int i, unsigned int j) const {
      exit(1);
      }
   return values[i*maxcolumn+j];
-};
+}
 
 
 REALMATRIX operator * (const REALMATRIX& x, const REAL& y) {
