@@ -64,16 +64,16 @@ void mpfr_ext_test (mpfr_ptr y, mpfr_srcptr u, int p, mp_rnd_t rnd_mode)
    }
 
 DYADIC compute_exp(DYADIC x, int p) { return approx(exp(REAL(x)),p); }
-void mpfr_ext_exp (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_exp,r,u,p);};
+void mpfr_ext_exp (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_exp,r,u,p);}
 
 DYADIC compute_log(DYADIC x, int p) { return approx(log(REAL(x)),p); }
-void mpfr_ext_log (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_log,r,u,p);};
+void mpfr_ext_log (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_log,r,u,p);}
 
 DYADIC compute_sin(DYADIC x, int p) { return approx(sin(REAL(x)),p); }
-void mpfr_ext_sin (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_sin,r,u,p);};
+void mpfr_ext_sin (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_sin,r,u,p);}
 
 DYADIC compute_cos(DYADIC x, int p) { return approx(cos(REAL(x)),p); }
-void mpfr_ext_cos (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_cos,r,u,p);};
+void mpfr_ext_cos (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_cos,r,u,p);}
 
 DYADIC compute_tan(DYADIC x, int p) { return approx(tan(REAL(x)),p); }
-void mpfr_ext_tan (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_tan,r,u,p);};
+void mpfr_ext_tan (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_tan,r,u,p);}
