@@ -1,0 +1,12 @@
+/config.guess
+/config.sub
+/configure
+/missing
+/ltmain.sh
+/libtool
+/install-sh
+/depcomp
+/compile
+/test-driver
+Makefile.in
+Makefile
