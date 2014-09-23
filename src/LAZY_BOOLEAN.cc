@@ -33,7 +33,7 @@ LAZY_BOOLEAN::operator bool() const {
   bool result;
   if ( ACTUAL_STACK.inlimit !=0 || ! iRRAM_thread_data_address->cache_b.get(result)){
 
-    if ( value <= BOTTOM ){
+    if ( value <= LAZY_BOOLEAN::BOTTOM ){
       DEBUG1(1,"lazy boolean values BOTTOM leading to iteration\n");
       REITERATE(0);
     }
@@ -42,7 +42,7 @@ LAZY_BOOLEAN::operator bool() const {
     if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_b.put(result);
   }
   return result;
-};
+}
 
 int check( const LAZY_BOOLEAN& lb) {
   int result;
@@ -51,7 +51,7 @@ int check( const LAZY_BOOLEAN& lb) {
     if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
   }   
   return result;
-};
+}
 
 int choose(const LAZY_BOOLEAN& x1,
            const LAZY_BOOLEAN& x2,
@@ -70,28 +70,28 @@ int choose(const LAZY_BOOLEAN& x1,
      if (x4.value == 1 )result=4; else
       if (x5.value == 1 )result=5; else
        if (x6.value == 1 )result=6; else
-        if (x1.value == BOTTOM )minvalue=BOTTOM; else
-         if (x2.value == BOTTOM )minvalue=BOTTOM; else
-          if (x3.value == BOTTOM )minvalue=BOTTOM; else
-           if (x4.value == BOTTOM )minvalue=BOTTOM; else
-            if (x5.value == BOTTOM )minvalue=BOTTOM; else
-             if (x6.value == BOTTOM )minvalue=BOTTOM;
+        if (x1.value == LAZY_BOOLEAN::BOTTOM )minvalue=LAZY_BOOLEAN::BOTTOM; else
+         if (x2.value == LAZY_BOOLEAN::BOTTOM )minvalue=LAZY_BOOLEAN::BOTTOM; else
+          if (x3.value == LAZY_BOOLEAN::BOTTOM )minvalue=LAZY_BOOLEAN::BOTTOM; else
+           if (x4.value == LAZY_BOOLEAN::BOTTOM )minvalue=LAZY_BOOLEAN::BOTTOM; else
+            if (x5.value == LAZY_BOOLEAN::BOTTOM )minvalue=LAZY_BOOLEAN::BOTTOM; else
+             if (x6.value == LAZY_BOOLEAN::BOTTOM )minvalue=LAZY_BOOLEAN::BOTTOM;
 
-  if ( minvalue == BOTTOM ){
+  if ( minvalue == LAZY_BOOLEAN::BOTTOM ){
     DEBUG1(1,"lazy boolean value BOTTOM leading to iteration\n");
     REITERATE(0);
   }
 
   if ( ACTUAL_STACK.inlimit==0 ) iRRAM_thread_data_address->cache_i.put(result);
   return result;
-};
+}
 
 LAZY_BOOLEAN operator && 
    (const LAZY_BOOLEAN& x, const LAZY_BOOLEAN& y)
    {
      if (x.value==1 && y.value==1) return 1;
      if (x.value==0 || y.value==0) return 0;
-     return BOTTOM;
+     return LAZY_BOOLEAN::BOTTOM;
    } 
 
 LAZY_BOOLEAN operator || 
@@ -99,7 +99,7 @@ LAZY_BOOLEAN operator ||
    {
      if (x.value==1 || y.value==1) return 1;
      if (x.value==0 && y.value==0) return 0;
-     return BOTTOM;
+     return LAZY_BOOLEAN::BOTTOM;
    } 
 
 LAZY_BOOLEAN operator !
@@ -107,7 +107,7 @@ LAZY_BOOLEAN operator !
    {
      if (x.value==1) return 0;
      if (x.value==0) return 1;
-     return BOTTOM;
+     return LAZY_BOOLEAN::BOTTOM;
    } 
 
 } // namespace iRRAM
