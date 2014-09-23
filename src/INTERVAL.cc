@@ -42,20 +42,20 @@ INTERVAL::INTERVAL(const REAL& x, const REAL& y)
 {
   low=minimum(x,y);
   upp=maximum(x,y);
-};
+}
 
 
 INTERVAL operator + (const INTERVAL & x, const INTERVAL & y){
 	return INTERVAL( x.low+y.low, x.upp+y.upp );
-};
+}
 
 INTERVAL operator - (const INTERVAL  & x, const INTERVAL  & y){
 	return INTERVAL( x.low-y.upp, x.upp-y.low );
-};
+}
 
 INTERVAL operator - (const INTERVAL  & x){
 	return INTERVAL( -x.upp, -x.low);
-};
+}
 
 INTERVAL operator * (const INTERVAL  & x, const INTERVAL  & y){
 	REAL aa= x.low*y.low;
@@ -69,14 +69,14 @@ INTERVAL operator * (const INTERVAL  & x, const INTERVAL  & y){
 
 	return INTERVAL(minimum(mina,minb),maximum(maxa,maxb));
 
-};
+}
 
 INTERVAL operator / (const INTERVAL  & x, const INTERVAL  & y){
   if ( y.low< REAL(0) && REAL(0) < y.upp ) {
     throw iRRAM_Numerical_Exception(iRRAM_interval_divide_by_zero);
   }
   return  INTERVAL(1/y.low,1/y.upp)*x;
-};
+}
 
 
 REAL wid(const INTERVAL& x){
@@ -97,11 +97,11 @@ return (x.upp+x.low)/2;
 
 REAL mag(const INTERVAL& x){
 return maximum(abs(x.upp),abs(x.low));
-};
+}
 
 REAL mig(const INTERVAL& x){
 return maximum(REAL(0),x.low)-minimum(REAL(0),x.upp);
-};
+}
 
 INTERVAL fabs(const INTERVAL& x){
 return INTERVAL(maximum(x.low,REAL(0))-minimum(x.upp,REAL(0)),
@@ -274,31 +274,31 @@ return INTERVAL (atan(x.low),atan(x.upp));
 LAZY_BOOLEAN superset (const INTERVAL& x,
                              const INTERVAL& y){
 return ( (x.low <= y.low)&&(x.upp >= y.upp) );
-};
+}
 
 
 LAZY_BOOLEAN proper_superset (const INTERVAL& x, const INTERVAL& y){
-return superset(x,y); };
+return superset(x,y); }
 
 LAZY_BOOLEAN subset (const INTERVAL& x, const INTERVAL& y){
-return superset(y,x); };
+return superset(y,x); }
 
 LAZY_BOOLEAN proper_subset (const INTERVAL& x, const INTERVAL& y){
-return superset(y,x); };
+return superset(y,x); }
 
 LAZY_BOOLEAN in_interior (const INTERVAL& x, const INTERVAL& y){
-return superset(y,x); };
+return superset(y,x); }
 
 LAZY_BOOLEAN disjoint (const INTERVAL& x, const INTERVAL& y){
-return ( (x.low > y.upp) || (y.low > x.upp));};
+return ( (x.low > y.upp) || (y.low > x.upp));}
 
 LAZY_BOOLEAN in (const REAL& x, const INTERVAL& y){
-return ( (y.low <= x) && (x <= y.upp) );};
+return ( (y.low <= x) && (x <= y.upp) );}
 
 INTERVAL interval_hull (const INTERVAL& x, const INTERVAL& y){
-return INTERVAL(minimum(x.low,y.low),maximum(x.upp,x.upp));};
+return INTERVAL(minimum(x.low,y.low),maximum(x.upp,x.upp));}
 
 INTERVAL intersect (const INTERVAL& x, const INTERVAL& y){
-return INTERVAL(maximum(x.low,y.low),minimum(x.upp,x.upp));};
+return INTERVAL(maximum(x.low,y.low),minimum(x.upp,x.upp));}
 
 } // namespace iRRAM
