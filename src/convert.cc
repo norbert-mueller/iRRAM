@@ -54,7 +54,7 @@ DYADIC REAL::as_DYADIC(const int p) const {
   return approx(*this,p);
 }
 
-DYADIC REAL::as_DYADIC () const { return approx(*this,DYADIC::getprec());};
+DYADIC REAL::as_DYADIC () const { return approx(*this,DYADIC::getprec());}
 
 
 //Conversion from REAL to double with a relative precision of p bits

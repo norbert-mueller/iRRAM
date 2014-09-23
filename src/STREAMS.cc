@@ -144,7 +144,7 @@ orstream& iRRAM_out(orstream* s,const PARAM &x){
   }
   ACTUAL_STACK.inlimit--;}else{ *(s->target) << x;}
   return *s;
-};
+}
   
 #define iRRAM_out2(x) \
   if ( (ACTUAL_STACK.inlimit>0) && _respect_iteration) {\
