@@ -257,11 +257,5 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&, DISCRETE),
 
 } // namespace iRRAM
 
-// some standard imports we often need 
-// but where we will have no conflcits by our own software
-// perhaps we should collect them in a separate include file 
-using std::setw;
-using std::string;
-
 #endif
 /* ! iRRAM_LIB_H */
