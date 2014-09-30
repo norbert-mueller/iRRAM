@@ -48,56 +48,73 @@ MA 02111-1307, USA.
 /****** Initialization functions ******/
 
 /* Backend initialization (if necessary) */
-#define MP_initialize      	ext_mpfr_initialize()
+#define MP_initialize   ext_mpfr_initialize()
 
 /* Initialization of MP/integer/rational variables */
-#define MP_init(z)      z=ext_mpfr_init()
-#define MP_int_init(z)  z=int_gmp_init()
-#define MP_rat_init(z)  z=rat_gmp_init()
+#define MP_init(z)      do { z = ext_mpfr_init(); } while (0)
+#define MP_int_init(z)  do { z = int_gmp_init(); } while (0)
+#define MP_rat_init(z)  do { z = rat_gmp_init(); } while (0)
 
 /* Deletion of MP/integer/rational variables */
-#define MP_clear(z)     ext_mpfr_free(z) 
+#define MP_clear(z)     ext_mpfr_free(z)
 #define MP_int_clear(z) int_gmp_free(z)
 #define MP_rat_clear(z) rat_gmp_free(z)
 
 
 /****** typechanging functions ******/
-#define MP_mp_to_double(z)    mpfr_get_d(z,GMP_RNDN)
-#define MP_double_to_mp(d,z)  {mpfr_set_prec(z,53);mpfr_set_d(z,d,iRRAM_mpfr_rounding_mode);}
+#define MP_mp_to_double(z)	mpfr_get_d(z,GMP_RNDN)
+#define MP_double_to_mp(d,z)                                                   \
+	do {   	                                                               \
+		mpfr_set_prec(z,53);                                           \
+		mpfr_set_d(z,d,iRRAM_mpfr_rounding_mode);                      \
+	} while (0)
 
-#define MP_int_to_mp(i,z)      {mpfr_set_prec(z,32);mpfr_set_si(z,i,iRRAM_mpfr_rounding_mode);}
-#define MP_int_to_INTEGER(i,z) mpz_set_si(z,i)
+#define MP_int_to_mp(i,z)                                                      \
+	do {                                                                   \
+		mpfr_set_prec(z,32);                                           \
+		mpfr_set_si(z,i,iRRAM_mpfr_rounding_mode);                     \
+	} while (0)
+#define MP_int_to_INTEGER(i,z)	mpz_set_si(z,i)
 
-#define MP_INTEGER_to_mp(i,r) ext_mpfr_set_z(r,i)
-#define MP_INTEGER_to_int(z) mpz_get_si(z)
+#define MP_INTEGER_to_mp(i,r)	ext_mpfr_set_z(r,i)
+#define MP_INTEGER_to_int(z)	mpz_get_si(z)
 
-#define MP_mp_to_INTEGER(r,i) mpfr_get_z(i,r,MPFR_RNDZ)
+#define MP_mp_to_INTEGER(r,i)	mpfr_get_z(i,r,MPFR_RNDZ)
 /* here  MPFR_RNDZ is chosen as GMP does a truncation in the corresponding function */
 
 #define MP_double_to_INTEGER(i,z)   mpz_set_d(z,i)
 #define MP_string_to_INTEGER(s,z,b) mpz_set_str(z,s,b)
 
-#define MP_int_to_RATIONAL(i,z) mpq_set_si(z,i,1)
-#define MP_intint_to_RATIONAL(i,j,z) {mpq_set_si(z,i,j);mpq_canonicalize(z);}
-#define MP_double_to_RATIONAL(d,z) mpq_set_d(z,d)
-#define MP_string_to_RATIONAL(s,z) rat_gmp_string_2_rat(z,s)
-#define MP_INTEGER_to_RATIONAL(i,r) mpq_set_z(r,i)
-#define MP_INTINTEGER_to_RATIONAL(i,j,r) {mpq_set_num(r,i);mpq_set_den(r,j);mpq_canonicalize(r);}
+#define MP_int_to_RATIONAL(i,z)		mpq_set_si(z,i,1)
+#define MP_intint_to_RATIONAL(i,j,z)                                           \
+	do {                                                                   \
+		mpq_set_si(z,i,j);                                             \
+		mpq_canonicalize(z);                                           \
+	} while (0)
+#define MP_double_to_RATIONAL(d,z)	mpq_set_d(z,d)
+#define MP_string_to_RATIONAL(s,z)	rat_gmp_string_2_rat(z,s)
+#define MP_INTEGER_to_RATIONAL(i,r)	mpq_set_z(r,i)
+#define MP_INTINTEGER_to_RATIONAL(i,j,r)                                       \
+	do {                                                                   \
+		mpq_set_num(r,i);                                              \
+		mpq_set_den(r,j);                                              \
+		mpq_canonicalize(r);                                           \
+	} while (0)
 
 
 /* duplicate value z1 to z2, with/without initialization of z2 */
 
-#define MP_duplicate_w_init(z1,z2)  	ext_mpfr_duplicate_w_init(z1,&(z2))
-#define MP_duplicate_wo_init(z1,z2) 	ext_mpfr_duplicate_wo_init(z1,z2) 
+#define MP_duplicate_w_init(z1,z2)	ext_mpfr_duplicate_w_init(z1,&(z2))
+#define MP_duplicate_wo_init(z1,z2)	ext_mpfr_duplicate_wo_init(z1,z2) 
 
-#define MP_int_duplicate_w_init(z1,z2)  	int_gmp_duplicate_w_init(z1,&(z2))
-#define MP_int_duplicate_wo_init(z1,z2) 	int_gmp_duplicate_wo_init(z1,z2) 
+#define MP_int_duplicate_w_init(z1,z2)	int_gmp_duplicate_w_init(z1,&(z2))
+#define MP_int_duplicate_wo_init(z1,z2)	int_gmp_duplicate_wo_init(z1,z2) 
 
-#define MP_rat_duplicate_w_init(z1,z2)  	rat_gmp_duplicate_w_init(z1,&(z2))
-#define MP_rat_duplicate_wo_init(z1,z2) 	rat_gmp_duplicate_wo_init(z1,z2) 
+#define MP_rat_duplicate_w_init(z1,z2)	rat_gmp_duplicate_w_init(z1,&(z2))
+#define MP_rat_duplicate_wo_init(z1,z2)	rat_gmp_duplicate_wo_init(z1,z2) 
 
 /* copy z1 to z2, but precision p is sufficient */
-#define MP_copy(z1,z2,p) 			ext_mpfr_duplicate_wo_init(z1,z2)
+#define MP_copy(z1,z2,p)		ext_mpfr_duplicate_wo_init(z1,z2)
 
 
 /* Multiple precision arithmetic, deterministic results */
