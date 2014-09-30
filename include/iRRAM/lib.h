@@ -45,8 +45,8 @@ Authors:  all by Norbert, except:
 #else
 # define iRRAM_expect(e,n)	(e)
 #endif
-#define likely(x)		iRRAM_expect(!!(x), 1)
-#define unlikely(x)	iRRAM_expect(!!(x), 0)
+#define iRRAM_likely(x)		iRRAM_expect(!!(x), 1)
+#define iRRAM_unlikely(x)	iRRAM_expect(!!(x), 0)
 
 #ifndef iRRAM_BACKEND
 	#include "iRRAM/MPFR_interface.h"

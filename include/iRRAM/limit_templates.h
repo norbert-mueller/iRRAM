@@ -29,7 +29,7 @@ MA 02111-1307, USA.
 namespace iRRAM {
 
 inline void limit_debug(const char* c){
-  if ( unlikely(iRRAM_debug > 0) ){
+  if ( iRRAM_unlikely(iRRAM_debug > 0) ){
     if (iRRAM_debug >=ACTUAL_STACK.inlimit + 2 )
 		cerr << c <<"...\n";
     if (iRRAM_max_prec <= ACTUAL_STACK.prec_step) 
@@ -38,7 +38,7 @@ inline void limit_debug(const char* c){
 }
 
 inline void limit_debug2(const char* c){
-      if ( unlikely(iRRAM_debug > 0) ) {
+      if ( iRRAM_unlikely(iRRAM_debug > 0) ) {
 	    if (iRRAM_debug >=ACTUAL_STACK.inlimit + 2 )
 		cerr << c <<", increasing precision locally to "
 			<<ACTUAL_STACK.actual_prec<<"\n";
