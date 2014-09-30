@@ -2,6 +2,8 @@
 
 using namespace iRRAM;
 
+using std::setw;
+
 /*
  Test Inversion of matrices, similar to 'matrix.cc', but with
  matrices of very bad condition.

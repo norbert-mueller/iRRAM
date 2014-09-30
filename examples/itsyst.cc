@@ -2,6 +2,8 @@
 
 using namespace iRRAM;
 
+using std::setw;
+
 /* Compute iterated system x=3.75*x*(1-x) (Kulisch) */
 
 

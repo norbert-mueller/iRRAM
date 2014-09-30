@@ -6,6 +6,7 @@
 
 using namespace iRRAM;
 
+using std::string;
 
 double cputime(){
  struct rusage r;

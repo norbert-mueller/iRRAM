@@ -10,6 +10,8 @@
 
 using namespace iRRAM;
 
+using std::setw;
+
 class ANALYTIC 
 {
 public:

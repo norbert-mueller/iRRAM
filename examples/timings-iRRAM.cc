@@ -1,11 +1,13 @@
-#include "iRRAM.h"
 
-using namespace iRRAM;
+#include "iRRAM.h"
 
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
 
+using namespace iRRAM;
+
+using std::string;
 
 double cputime(){
  struct rusage r;
