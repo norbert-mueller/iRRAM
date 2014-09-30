@@ -233,7 +233,7 @@ for (int fkt=min_fkt; fkt<=max_fkt; fkt++) {
 double s1=cputime(),s2=s1;
 int   count=1;
 {
-  single_valued code(true);
+  single_valued code;
   while (s2-s1 < 1 ) {
   if (fkt ==1) for (int i=1; i<=count;i++) value[1]=approx(x*y,prec);
   if (fkt ==2) for (int i=1; i<=count;i++) value[1]=approx(x/y,prec);

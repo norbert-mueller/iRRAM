@@ -203,7 +203,7 @@ std::string swrite(const REAL& x, const int w, const int form)
   } else if (form==iRRAM_float_relative){
       int p;
       {
-	single_valued code(true);
+	single_valued code;
 // We want to have an error less than 0.65 ulp, where 0.51 ulp come from
 // the conversion to decimal, so we need to know that the error is at most
 // 0.15ulp.

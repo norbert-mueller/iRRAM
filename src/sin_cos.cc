@@ -231,7 +231,7 @@ REAL atan_reduction (int p, const REAL& x) {
 REAL atan (const REAL& x) {
 // arbitrary parameter x
   REAL result;
-  single_valued code(true);
+  single_valued code;
   switch (choose( x<-1,x>1,abs(x)<REAL(1.1)))
   { case 1:
 		result= -(pi()/2 - atan(-1/x));
@@ -280,7 +280,7 @@ REAL cotan (const REAL& x) {
 
 REAL sech (const REAL& x) {
 // 2/(exp(x)+exp(-x));
-  single_valued code(true);
+  single_valued code;
   REAL epx,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -297,7 +297,7 @@ REAL sech (const REAL& x) {
 
 REAL cosech (const REAL& x) {
 // 2/(exp(x)-exp(-x));
-  single_valued code(true);
+  single_valued code;
   REAL epx,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -314,7 +314,7 @@ REAL cosech (const REAL& x) {
 
 REAL sinh (const REAL& x) {
 // (exp(x)-exp(-x))/2;
-  single_valued code(true);
+  single_valued code;
   REAL epx,epxi,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -331,7 +331,7 @@ REAL sinh (const REAL& x) {
 
 REAL cosh (const REAL& x) {
 // (exp(x)+exp(-x))/2
-  single_valued code(true);
+  single_valued code;
   REAL epx,epxi,result;
   switch (choose(x>0,true))
   { case 1: 
@@ -349,7 +349,7 @@ REAL cosh (const REAL& x) {
 REAL tanh (const REAL& x) {
 // just do a reformulation of (exp(x)-exp(-x))/(exp(x)+exp(-x));
 // in order try not to work with numbers that are very large...
-  single_valued code(true);
+  single_valued code;
   REAL epx,epxi,th;
   switch (choose(x>0,true))
   { case 1: 
@@ -369,7 +369,7 @@ REAL tanh (const REAL& x) {
 REAL coth (const REAL& x) {
 // just do a reformulation of (exp(x)+exp(-x))/(exp(x)-exp(-x));
 // in order try not to work with numbers that are very large...
-  single_valued code(true);
+  single_valued code;
   REAL epx,epxi,th;
   switch (choose(x>0,true))
   { case 1: 

@@ -457,7 +457,7 @@ SPARSEREALMATRIX operator / (const SPARSEREALMATRIX& x ,const SPARSEREALMATRIX& 
 }
 
 SPARSEREALMATRIX solve (SPARSEREALMATRIX& lside, SPARSEREALMATRIX& rside,int use_pivot) {
-  single_valued code(true);
+  single_valued code;
   SPARSEREALMATRIX result(rside.maxrow,rside.maxcolumn);
   SPM_ELEMENT* ptr;
   REAL faktor;

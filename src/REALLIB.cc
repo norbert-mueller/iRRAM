@@ -85,7 +85,7 @@ REAL power(const REAL& x, int n) {
 REAL maximum (const REAL& x, const REAL& y){
    LAZY_BOOLEAN larger;
    {
-     single_valued code(true);
+     single_valued code;
      larger = ( x > y );
    }
    if ( larger.value == true  ) return x;
@@ -97,7 +97,7 @@ REAL maximum (const REAL& x, const REAL& y){
 REAL minimum (const REAL& x, const REAL& y){
    LAZY_BOOLEAN larger;
    {
-     single_valued code(true);
+     single_valued code;
      larger = ( x > y );
    }
    if ( larger.value  == true  ) return y;
@@ -138,7 +138,7 @@ bool exp_domain(const REALMATRIX& x){
 }
 
 REALMATRIX exp (const REALMATRIX& x){
-  single_valued code(true);
+  single_valued code;
   REALMATRIX y;
   if ( bound(x,-2) )
   y = limit_lip(expmatrix_approx,0,exp_domain,x);
@@ -151,7 +151,7 @@ REALMATRIX exp (const REALMATRIX& x){
 }
 
 REALMATRIX  steady_state (const REALMATRIX& x) {
-  single_valued code(true);
+  single_valued code;
   REALMATRIX result(1,rows(x));
   REALMATRIX chain=x;
   REAL factor,outrate;

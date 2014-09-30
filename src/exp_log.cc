@@ -74,7 +74,7 @@ int exp_bound(const REAL& x)
 REAL exp (const REAL& x)
 {
   if ( positive(x-750001,0)  ) {fprintf(stderr,"Overflow in exp(x)\n");exit(1);} 
-  single_valued code(true);  
+  single_valued code;
   REAL y= limit_lip(exp_approx,exp_bound,x);
   return y;
 }
@@ -125,7 +125,7 @@ REAL iterate
    REAL const& a_0, REAL const& b_0)
 { REAL a=a_0,b=b_0,e;
 sizetype a_error,e_error;
-single_valued code(true);
+single_valued code;
 do {
   e=f(a,b);
 } while (! bound(e,15*ACTUAL_STACK.actual_prec/16));

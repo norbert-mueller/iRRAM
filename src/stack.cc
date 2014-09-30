@@ -90,7 +90,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   sizetype_set(testerror,1,argerror.exponent);
   x_copy.adderror(testerror);
   {
-    single_valued code(true);
+    single_valued code;
     d=approx(f(x_copy),p-1); 
   }
 // At this line, we are sure that x_copy (and so also x) is precise enough to allow 
@@ -119,7 +119,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   DEBUG3(1,"argument error: %d*2^%d\n",x_error.mantissa,x_error.exponent);
   }
   try { 
-      single_valued code(true);
+      single_valued code;
       REAL z=f(x_copy);
       if ( iRRAM_unlikely(iRRAM_debug > 0 ) ) {
         sizetype z_error;
