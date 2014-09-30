@@ -508,7 +508,7 @@ REAL scale(const REAL& x, int n) {
 REAL scale(const REAL& x, int n) {
    if (n==0) return x;
    if (n==1) return 2*x;
-   stiff_begin();
+   stiff code;
    REAL y=1;
    REAL xc=2;
    if (n<0) {xc=y/2;n=-n;}
@@ -520,7 +520,6 @@ REAL scale(const REAL& x, int n) {
      if (k%2==1) y*=xc;
      if ( k ==1) break;
      xc*=xc;}
-   stiff_end();
    return y*x; 
 }
 

@@ -17,7 +17,7 @@ double ln2_time=0.0;
 double pi_time=0.0;
 
 REAL ln2_approx (int prec){
-  stiff_begin();
+  stiff code;
   int N=100-prec/2;
   REAL a=1,b=scale(REAL(1),N),c,d;
   bool end;
@@ -32,7 +32,6 @@ REAL ln2_approx (int prec){
   d.getsize(error);
   a.adderror(error);
   c= a/(2*N+4);
-  stiff_end();
   return c;
 }
 
