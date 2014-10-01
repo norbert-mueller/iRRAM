@@ -49,17 +49,27 @@ if [ "$use_system" = "2" ] ; then
   GMP_SRC=${GMP_DIR}.tar.bz2
   MPFR_SRC=${MPFR_DIR}.tar.bz2
 
-  echo "Where do you want GMP, MPFR and iRRAM to be installed?
-Please enter an existing directory name (where you have write access).
-Default value is '$INST'...
+  echo "
+
+Where do you want GMP, MPFR and iRRAM to be installed?
+Please enter an existing directory name (where you have write access) or
+choose the default ($INST).
 "
 
 answer=""
-until [ -d "$answer" ]; do 
-  echo -e -n "\nInstallation prefix : "
-  read -e -i "$INST" answer
+while true; do
+  echo -e -n "\nInstallation prefix ($INST) :"
+  read -e answer
+  if [ "$answer" = "" ]; then
+    answer=$INST
+  fi
+  if [ -d "$answer" ]; then
+   break
+  fi
+  echo "Directory '$answer' not found"
 done
 INST=$answer
+echo "Later, installed software will be in '$INST'"
 
 
   if [ -e "${INST}/include/gmp.h" ] ; then
@@ -361,12 +371,20 @@ Please enter an existing directory name (where you have write access).
 Default value is '$INST'...
 "
 
-  answer=""
-  until [ -d "$answer" ]; do 
-    echo -e -n "\nInstallation prefix : "
-    read -e -i "$INST" answer
+answer=""
+  while true; do
+    echo -e -n "\nInstallation prefix ($INST) :"
+    read -e answer
+    if [ "$answer" = "" ]; then
+      answer=$INST
+    fi
+    if [ -d "$answer" ]; then
+     break
+    fi
+    echo "Directory '$answer' not found"
   done
   INST=$answer
+  echo "Later, iRRAM will be in '$INST'"
   INST_PREF="prefix=$INST"
   else 
     INST_PREF=""
