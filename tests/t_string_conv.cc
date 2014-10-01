@@ -1,6 +1,7 @@
 #include "iRRAM.h"
 
 using namespace iRRAM;
+using std::string;
 
 bool error=false;
 

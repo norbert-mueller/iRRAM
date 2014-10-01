@@ -73,8 +73,8 @@ int exp_bound(const REAL& x)
 
 REAL exp (const REAL& x)
 {
-  if ( positive(x-750001,0)  ) {fprintf(stderr,"Overflow in exp(x)\n");exit(1);} 
-  single_valued code;  
+  if ( positive(x-750001,0)  ) {fprintf(stderr,"Overflow in exp(x)\n");exit(1);}
+  single_valued code;
   REAL y= limit_lip(exp_approx,exp_bound,x);
   return y;
 }

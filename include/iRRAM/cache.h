@@ -56,9 +56,9 @@ bool active;
 iRRAM_cache(){active=false;data=NULL;size=0;end=0;current=0;};
 
 void put(const DATA& x){
-  if (unlikely(!active)){activate();}
-  if ( unlikely(end>=size)){
-    if ( unlikely(size> 1000000000) ) 
+  if (iRRAM_unlikely(!active)){activate();}
+  if ( iRRAM_unlikely(end>=size)){
+    if ( iRRAM_unlikely(size> 1000000000) ) 
        throw iRRAM_Numerical_Exception(iRRAM_cacheerror_test);
     DATA* temp=data;
     data=new DATA[2*size];

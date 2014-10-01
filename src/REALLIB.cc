@@ -6,7 +6,7 @@
 namespace iRRAM {
 
 REAL strtoREAL(const char* s, char** endptr){
-  stiff_begin();
+  stiff code;
   int exp=0;
   int sign=1;
   REAL y;
@@ -31,7 +31,6 @@ REAL strtoREAL(const char* s, char** endptr){
 
   if (exp !=0) y*=power(ten,exp);
 
-  stiff_end();
   return y;
 }
 

@@ -38,13 +38,15 @@ Authors:  all by Norbert, except:
 
 #include <string>
 
-#ifndef likely
-# ifndef __builtin_expect
-#  define __builtin_expect(e,n) (e)
-# endif
-# define likely(x)      __builtin_expect (!!(x), 1)
-# define unlikely(x)    __builtin_expect (!!(x), 0)
+#if defined(__GNUC__) || defined(__clang__) || defined(__builtin_expect)
+/* Don't need to check version of compilers, they all support __builtin_expect()
+ * since the time they know of C++11 */
+# define iRRAM_expect(e,n)	__builtin_expect((e),(n))
+#else
+# define iRRAM_expect(e,n)	(e)
 #endif
+#define iRRAM_likely(x)		iRRAM_expect(!!(x), 1)
+#define iRRAM_unlikely(x)	iRRAM_expect(!!(x), 0)
 
 #ifndef iRRAM_BACKEND
 	#include "iRRAM/MPFR_interface.h"
@@ -254,12 +256,6 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&, DISCRETE),
                            const ARGUMENT& x, DISCRETE param);
 
 } // namespace iRRAM
-
-// some standard imports we often need 
-// but where we will have no conflcits by our own software
-// perhaps we should collect them in a separate include file 
-using std::setw;
-using std::string;
 
 #endif
 /* ! iRRAM_LIB_H */

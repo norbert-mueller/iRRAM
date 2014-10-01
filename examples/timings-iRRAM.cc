@@ -1,11 +1,13 @@
-#include "iRRAM.h"
 
-using namespace iRRAM;
+#include "iRRAM.h"
 
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
 
+using namespace iRRAM;
+
+using std::string;
 
 double cputime(){
  struct rusage r;
@@ -67,7 +69,7 @@ double s1=cputime(),s2=s1;
 long   count=1;
 REAL z;
 {
-  single_valued code(true);
+  single_valued code;
   while (s2-s1 < 1 ) {
   if (fkt ==0)   for (long i=1; i<=count;i++) z=x+y;
   if (fkt ==1)   for (long i=1; i<=count;i++) z=x*y;

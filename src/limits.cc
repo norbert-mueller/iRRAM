@@ -813,9 +813,10 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
       rcc.geterror(error);
       rcc.seterror(no_error);
       rc=rcc-scale(REAL(int(error.mantissa)),error.exponent);
-stiff_begin();stiff_begin();
-      diff=rc-lc;
-stiff_end();stiff_end();
+      {
+        stiff code(+2);
+        diff=rc-lc;
+      }
       diff.getsize(diff_size);
       if (diff_size.exponent > SAVED_STACK.data.actual_prec ) {
         DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",

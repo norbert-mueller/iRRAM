@@ -2,6 +2,7 @@
 
 using namespace iRRAM;
 
+using std::string;
 
 void printval(string s,int DP, const REAL& y)
 {

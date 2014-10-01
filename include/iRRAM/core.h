@@ -59,13 +59,13 @@ extern __thread  int iRRAM_max_prec;
 extern __thread  int iRRAM_prec_start;
 
 #ifndef NODEBUG
-  #define DEBUG0(level,p) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) p
-  #define DEBUG1(level,p) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) cerr << p
-  #define DEBUG2(level,p1,p2) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2)
-  #define DEBUG3(level,p1,p2,p3) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3)
-  #define DEBUG4(level,p1,p2,p3,p4) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4)
-  #define DEBUG5(level,p1,p2,p3,p4,p5) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4,p5)
-  #define DEBUG6(level,p1,p2,p3,p4,p5,p6) if (unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4,p5,p6)
+  #define DEBUG0(level,p) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) p
+  #define DEBUG1(level,p) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) cerr << p
+  #define DEBUG2(level,p1,p2) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2)
+  #define DEBUG3(level,p1,p2,p3) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3)
+  #define DEBUG4(level,p1,p2,p3,p4) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4)
+  #define DEBUG5(level,p1,p2,p3,p4,p5) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4,p5)
+  #define DEBUG6(level,p1,p2,p3,p4,p5,p6) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4,p5,p6)
 #else
   #define DEBUG0(level,p)
   #define DEBUG1(level,p) 
@@ -113,18 +113,18 @@ const SIZETYPEEXPONENT  min_exponent=MP_min + MANTISSA_BITS;
 
 
 inline void sizetype_normalize( sizetype& e) {
-  if (unlikely(e.mantissa < min_mantissa)) {
+  if (iRRAM_unlikely(e.mantissa < min_mantissa)) {
       e.mantissa <<= BIT_RANGE;
       e.exponent -= BIT_RANGE;
   }
-  if (unlikely( e.mantissa >=  max_mantissa ) ) {
+  if (iRRAM_unlikely( e.mantissa >=  max_mantissa ) ) {
       e.mantissa = ( e.mantissa>> DIFF_BITS ) + 1; 
       e.exponent += DIFF_BITS;
   } 
-  if (unlikely( e.exponent < MP_min ) ){
+  if (iRRAM_unlikely( e.exponent < MP_min ) ){
     e.exponent = min_exponent;
   }
-  if (unlikely( e.exponent >= MP_max ) ) 
+  if (iRRAM_unlikely( e.exponent >= MP_max ) ) 
   {
     DEBUG1(1,"exponent too big in sizetype_normalize ");
     REITERATE(0);
@@ -261,11 +261,11 @@ inline void sizetype_shift(sizetype& x,const sizetype& y,const int s)
   x.exponent=y.exponent+s;
   x.mantissa=y.mantissa;
 
-  if (unlikely( x.exponent < MP_min ) ) {
+  if (iRRAM_unlikely( x.exponent < MP_min ) ) {
     DEBUG1(1,"warning: small exponent found in sizetype_shift\n");
     x.exponent = min_exponent;
 //    x.mantissa = 1;
-  } else  if ( unlikely(x.exponent >= MP_max) ) 
+  } else  if ( iRRAM_unlikely(x.exponent >= MP_max) ) 
   {
     DEBUG1(1,"exponent too big in sizetype_shift ");
     REITERATE(0);
@@ -284,7 +284,7 @@ inline void sizetype_mult(sizetype& x,const sizetype& y,const sizetype& z)
      ((unsigned long long)(y.mantissa))*z.mantissa;
   x.exponent=y.exponent+z.exponent;
 
-  while (unlikely(lmantissa >= max_mantissa) ) 
+  while (iRRAM_unlikely(lmantissa >= max_mantissa) ) 
        { lmantissa=lmantissa>>BIT_RANGE2;x.exponent+=BIT_RANGE2;}
 
   x.mantissa=lmantissa+1;
@@ -327,8 +327,8 @@ inline void sizetype_exact(sizetype& x)
 /*Test whether  y<z; for y=z the result is allowed to be true OR false!  */
 inline int sizetype_less(const sizetype& y,const sizetype& z) 
 { unsigned int mantissa;
-  if (unlikely(y.mantissa==0)) return 1;
-  if (unlikely(z.mantissa==0)) return 0;
+  if (iRRAM_unlikely(y.mantissa==0)) return 1;
+  if (iRRAM_unlikely(z.mantissa==0)) return 0;
   if (y.exponent>z.exponent) 
   {
     mantissa=scale(z.mantissa,y.exponent-z.exponent);
@@ -403,7 +403,7 @@ fesetround(FE_DOWNWARD);
 
 cache_active = new cachelist;
 
-if ( unlikely(iRRAM_debug>0) ) {
+if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
 		<<", backend "<<iRRAM_BACKEND<<") starting...\n";
 	iRRAM_max_prec=ACTUAL_STACK.prec_step;
@@ -422,7 +422,7 @@ while (true) {
   iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 
   int p_end=0;
-  try { result=iRRAM_compute(x);   if ( likely(!iRRAM_infinite) ) break;}
+  try { result=iRRAM_compute(x);   if ( iRRAM_likely(!iRRAM_infinite) ) break;}
   catch ( Iteration it)  { p_end=ACTUAL_STACK.actual_prec+it.prec_diff; }
   catch ( const iRRAM_Numerical_Exception exc)
     {
@@ -438,7 +438,7 @@ while (true) {
     	} while ( (ACTUAL_STACK.actual_prec > p_end) && (prec_skip != iRRAM_prec_skip) ); 
 
   ACTUAL_STACK.inlimit=0;    	
-  if ( unlikely(iRRAM_debug>0) ) {
+  if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	show_statistics();
          if (iRRAM_max_prec <= ACTUAL_STACK.prec_step) 
 		iRRAM_max_prec  = ACTUAL_STACK.prec_step;
@@ -454,7 +454,7 @@ ACTUAL_STACK.inlimit=-1;
 delete cache_active;
 delete iRRAM_thread_data_address;
 
-if ( unlikely (iRRAM_debug>0) ) {
+if ( iRRAM_unlikely (iRRAM_debug>0) ) {
 	show_statistics();
 	cerr << "iRRAM ending \n";
 }
@@ -482,7 +482,7 @@ cache_active = new cachelist;
 
 RESULT result;
 
-if ( unlikely(iRRAM_debug>0) ) {
+if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
 		<<", backend "<<iRRAM_BACKEND<<") starting...\n";
 	iRRAM_max_prec=ACTUAL_STACK.prec_step;
@@ -498,7 +498,7 @@ while (true) {
   iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 
   int p_end=0;
-  try { result=iRRAM_compute(x,y);   if ( likely (!iRRAM_infinite) ) break;}
+  try { result=iRRAM_compute(x,y);   if ( iRRAM_likely (!iRRAM_infinite) ) break;}
   catch ( Iteration it)  { p_end=ACTUAL_STACK.actual_prec+it.prec_diff; }
   catch (const iRRAM_Numerical_Exception exc)
     {
@@ -514,7 +514,7 @@ while (true) {
     	} while ( (ACTUAL_STACK.actual_prec > p_end) && (prec_skip != iRRAM_prec_skip) ); 
  
   ACTUAL_STACK.inlimit=0;
-  if ( unlikely(iRRAM_debug>0) ) {
+  if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	show_statistics();
          if (iRRAM_max_prec <= ACTUAL_STACK.prec_step) 
 		iRRAM_max_prec  = ACTUAL_STACK.prec_step;
@@ -530,7 +530,7 @@ ACTUAL_STACK.inlimit=-1;
 delete cache_active;
 delete iRRAM_thread_data_address;
 
-if ( unlikely (iRRAM_debug>0) ) {
+if ( iRRAM_unlikely (iRRAM_debug>0) ) {
 	show_statistics();
 	cerr << "iRRAM ending \n";
 }
@@ -566,7 +566,7 @@ fesetround(FE_DOWNWARD);
 
 cache_active = new cachelist;
 
-if ( unlikely(iRRAM_debug>0) ) {
+if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
 		<<", backend "<<iRRAM_BACKEND
 		<<", thread "<< _data->id<<") starting...\n";
@@ -586,7 +586,7 @@ while (true) {
   int p_end=0;
 
   try {_data->result = _data-> f(_data->argument); 
-       if ( likely(!iRRAM_infinite) ) break;}
+       if ( iRRAM_likely(!iRRAM_infinite) ) break;}
   catch ( Iteration it)  { p_end=ACTUAL_STACK.actual_prec+it.prec_diff; }
   catch ( const iRRAM_Numerical_Exception exc)
     {
@@ -602,7 +602,7 @@ while (true) {
 
   ACTUAL_STACK.inlimit=0;    	
   iRRAM_prec_start=ACTUAL_STACK.prec_step;
-  if ( unlikely(iRRAM_debug>0) ) {
+  if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	show_statistics();
          if (iRRAM_max_prec <= ACTUAL_STACK.prec_step) 
 		iRRAM_max_prec  = ACTUAL_STACK.prec_step;
@@ -619,7 +619,7 @@ ACTUAL_STACK.inlimit=-1;
 delete cache_active;
 delete iRRAM_thread_data_address;
 
-if ( unlikely (iRRAM_debug>0) ) {
+if ( iRRAM_unlikely (iRRAM_debug>0) ) {
 	show_statistics();
 	cerr << "iRRAM thread "<< _data->id <<  " ending \n";
 }
@@ -654,11 +654,11 @@ return;
 
 template <class ARGUMENT, class RESULT> 
 RESULT iRRAM_thread_wait(const iRRAM_thread_data<ARGUMENT,RESULT>& data){
-  if ( unlikely (iRRAM_debug>0) ) {
+  if ( iRRAM_unlikely (iRRAM_debug>0) ) {
       cerr << "Waiting for termination of thread "<< data.id << "\n";
   }
   pthread_join(data.thread,NULL);
-  if ( unlikely (iRRAM_debug>0) ) {
+  if ( iRRAM_unlikely (iRRAM_debug>0) ) {
       cerr << "Thread "<< data.id << " now terminated.\n";
   }
   return data.result;

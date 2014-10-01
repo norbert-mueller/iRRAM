@@ -357,7 +357,7 @@ LAZY_BOOLEAN mp_less (const REAL& y)const;
 
 std::string swrite(const REAL& x, const int p, const int form=iRRAM_float_absolute);
 
-#define USE_HIGH_LEVEL unlikely(iRRAM_highlevel)
+#define USE_HIGH_LEVEL iRRAM_unlikely(iRRAM_highlevel)
 // inlined versions of most important functions:
 
 //"private" internal  constructor
@@ -385,7 +385,7 @@ inline REAL::REAL(const __m128d& y_sse)
 
 inline REAL::~REAL() 
 { 
-    if ( unlikely(value) ) { MP_clear(value); value=NULL;}
+    if ( iRRAM_unlikely(value) ) { MP_clear(value); value=NULL;}
 }
 
 inline REAL::REAL()
@@ -416,7 +416,7 @@ inline REAL::REAL(const double d)
 inline REAL::REAL(const REAL& y){
     value=NULL;
     dp=y.dp;
-    if ( unlikely(y.value) ) mp_copy_init(y);
+    if ( iRRAM_unlikely(y.value) ) mp_copy_init(y);
 }
 
 inline REAL& REAL::mp_conv()const{
@@ -425,7 +425,7 @@ inline REAL& REAL::mp_conv()const{
 }
 
 inline REAL& REAL::operator = (const REAL& y) {
-    if ( unlikely(value||y.value) ){
+    if ( iRRAM_unlikely(value||y.value) ){
 	if ( value&&y.value ){
 		this->mp_copy(y);
 		return (*this);
@@ -453,7 +453,7 @@ inline REAL operator >> (const REAL& x, const int n) {
 
 inline REAL operator + (const REAL& x, const REAL& y)
 {
-    if ( unlikely ( x.value||y.value ) )
+    if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_addition(y.mp_conv()); }
 #ifdef _use_SSE2__
     return REAL(_mm_add_pd(x.dp.sse_data,y.dp.sse_data));
@@ -464,7 +464,7 @@ inline REAL operator + (const REAL& x, const REAL& y)
 
 inline REAL operator + (const REAL& x, const int i)
 {
-    if (unlikely( x.value ) )
+    if (iRRAM_unlikely( x.value ) )
 	{ return x.mp_addition(i); }
     iRRAM_double_pair z(x.dp.lower_pos+i,x.dp.upper_neg-i);
     return REAL(z);
@@ -472,7 +472,7 @@ inline REAL operator + (const REAL& x, const int i)
 
 inline REAL operator + (const REAL& x, const double d)
 {
-    if (unlikely( x.value ) )
+    if (iRRAM_unlikely( x.value ) )
 	{ return x.mp_addition(d); }
     iRRAM_double_pair z(x.dp.lower_pos+d,x.dp.upper_neg-d);
     return REAL(z);
@@ -480,7 +480,7 @@ inline REAL operator + (const REAL& x, const double d)
 
 inline REAL& operator += (REAL& x,const REAL& y)
 {
-    if ( unlikely ( x.value||y.value ) )
+    if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { x.mp_conv().mp_eqaddition(y.mp_conv()); return x;}
 #ifdef _use_SSE2__
     x.dp.sse_data = _mm_add_pd(x.dp.sse_data,y.dp.sse_data);
@@ -503,7 +503,7 @@ inline REAL operator + (const double d, const REAL& x)
 
 inline REAL operator - (const REAL& x, const REAL& y)
 {
-    if ( unlikely ( x.value||y.value ) )
+    if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_subtraction(y.mp_conv()); }
     iRRAM_double_pair z(x.dp.lower_pos+y.dp.upper_neg,x.dp.upper_neg+y.dp.lower_pos);
     return REAL(z);
@@ -511,7 +511,7 @@ inline REAL operator - (const REAL& x, const REAL& y)
 
 inline REAL operator - (const REAL& x, const int n)
 {
-    if ( unlikely ( x.value ) )
+    if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_subtraction(n); }
     iRRAM_double_pair z(x.dp.lower_pos-n,x.dp.upper_neg+n);
     return REAL(z);
@@ -519,7 +519,7 @@ inline REAL operator - (const REAL& x, const int n)
 
 inline REAL operator - (const int n, const REAL& x)
 {
-    if ( unlikely ( x.value ) )
+    if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_invsubtraction(n); }
     iRRAM_double_pair z(x.dp.upper_neg+n,x.dp.lower_pos-n);
     return REAL(z);
@@ -527,7 +527,7 @@ inline REAL operator - (const int n, const REAL& x)
 
 inline REAL operator - (const REAL& x)
 {
-    if ( unlikely ( x.value ) )
+    if ( iRRAM_unlikely ( x.value ) )
 	{ return x.mp_invsubtraction(int(0)); }
     iRRAM_double_pair z(-x.dp.lower_pos,-x.dp.upper_neg);
     return REAL(z);
@@ -556,7 +556,7 @@ inline REAL& operator -= (REAL& x, const REAL& y){
 
 inline REAL operator * (const REAL& x, const REAL& y) 
 {
-    if ( unlikely ( x.value||y.value ) )
+    if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_multiplication(y.mp_conv()); }
     iRRAM_double_pair z;
     if (x.dp.lower_pos >= 0 && y.dp.lower_pos >= 0) {
@@ -580,7 +580,7 @@ inline REAL operator * (const REAL& x, const REAL& y)
 
 inline REAL operator * (const REAL& x, const int n) 
 {
-    if ( unlikely ( x.value) )
+    if ( iRRAM_unlikely ( x.value) )
 	 { return x.mp_multiplication(n); }
     iRRAM_double_pair z;
     if ( n >= 0) {
@@ -615,7 +615,7 @@ inline REAL operator * (const double d, const REAL& x)
 }
 
 inline REAL& operator *= (REAL& x, const int n){
-    if ( unlikely ( x.value) )
+    if ( iRRAM_unlikely ( x.value) )
 	 { x=x.mp_multiplication(n); return x;}
     if ( n >= 0) {
       x.dp.lower_pos = x.dp.lower_pos * n;
@@ -629,7 +629,7 @@ inline REAL& operator *= (REAL& x, const int n){
 }
 
 inline REAL operator / (const REAL& x, const REAL& y) {
-    if ( unlikely ( x.value||y.value ) )
+    if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_division(y.mp_conv()); }
     iRRAM_double_pair z;
     if (y.dp.lower_pos > 0.0 ) {
@@ -664,7 +664,7 @@ inline REAL operator / (const int n, const REAL& y) {
   return REAL(n)/y;
 }
 inline REAL operator / (const REAL& x, const int n) {
-    if ( unlikely ( x.value ) )
+    if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_division(n); }
     iRRAM_double_pair z;
     if (n > 0 ) {
@@ -710,7 +710,7 @@ inline REAL& operator /= (REAL& x, const int n){
 
 inline REAL square (const REAL& x) 
 {
-    if ( unlikely ( x.value ) )
+    if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_square(); }
     iRRAM_double_pair z;
     if (x.dp.lower_pos >= 0 ) {
@@ -730,7 +730,7 @@ inline REAL square (const REAL& x)
 }
 
 inline LAZY_BOOLEAN operator < (const REAL& x, const REAL& y) {
-    if ( unlikely ( x.value||y.value ) )
+    if ( iRRAM_unlikely ( x.value||y.value ) )
 	 { return x.mp_conv().mp_less(y.mp_conv()); }
     if ((-x.dp.upper_neg) < y.dp.lower_pos) return true;
     if (x.dp.lower_pos > (-y.dp.upper_neg)) return false;
@@ -798,7 +798,7 @@ inline LAZY_BOOLEAN operator != (const INTEGER& x, const REAL&    y){ return  (R
 inline LAZY_BOOLEAN operator != (const DYADIC&  x, const REAL&    y){ return  (REAL(x)!=y); }
 
 inline REAL abs (const REAL& x){
-    if ( unlikely ( x.value ) )
+    if ( iRRAM_unlikely ( x.value ) )
 	 { return x.mp_absval(); }
     iRRAM_double_pair z;
     if (x.dp.lower_pos > 0.0 )
@@ -811,7 +811,7 @@ inline REAL abs (const REAL& x){
 }
 
 // inline REAL intervall_join (const REAL& x,const REAL& y){
-//     if ( unlikely ( x.value||y.value ) )
+//     if ( iRRAM_unlikely ( x.value||y.value ) )
 // 	 { return x.mp_conv().mp_intervall_join(y.mp_conv()); }
 //     iRRAM_double_pair z;
 //     if (x.dp.lower_pos < y.dp.lower_pos )

@@ -2,6 +2,8 @@
 
 using namespace iRRAM;
 
+using std::setw;
+
 /* Simple test program:  working with matrices */
 
 void write  (const REALMATRIX& x){

@@ -2,6 +2,9 @@
 #include <unistd.h>
 
 using namespace iRRAM;
+
+using std::string;
+
 REAL f (const REAL& x) { return x+1; }
 
 class my_arg_type { public: string s; long long n; };
