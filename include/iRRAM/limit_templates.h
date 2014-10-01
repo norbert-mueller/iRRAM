@@ -339,7 +339,7 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 // 
 //   ITERATION_STACK SAVED_STACK;
 // 
-//   single_valued code(true);
+//   single_valued code;
 //   DEBUG1(2,"starting lipschitz1b ...\n");
 // 
 // // for the computation of the Lipschitz bound, we work with
@@ -400,7 +400,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
 
   ITERATION_STACK SAVED_STACK;
 
-  single_valued code(true);
+  single_valued code;
   DEBUG1(2,"starting lipschitz_1p_1a ...\n");
 
   DISCRETE_ARGUMENT x_center;

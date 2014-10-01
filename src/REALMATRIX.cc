@@ -128,7 +128,7 @@ REALMATRIX solve
        (REALMATRIX& lside,
         REALMATRIX& rside,
         int               use_pivot) {
-  single_valued code(true);
+  single_valued code;
   REALMATRIX result(rside.maxrow,rside.maxcolumn);
   REAL faktor;
   int testsize,pivotsize,pivot,pivotsave;

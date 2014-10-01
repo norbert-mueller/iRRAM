@@ -200,7 +200,7 @@ REAL limit_lip (REAL f(int,const REAL&),
 {
   int lip_value;
   {
-    single_valued code(true);
+    single_valued code;
     lip_value=lip_bound(x);
   }
   
@@ -320,7 +320,7 @@ REAL lipschitz (REAL f(const REAL&),
   x_new.geterror(x_error);
   sizetype_exact(x_new.error);
   {
-    single_valued code(true);
+    single_valued code;
   DEBUG1(2,"starting lipschitz1 ...\n");
   lip_result=f(x_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
@@ -349,7 +349,7 @@ REAL lipschitz (REAL f(const REAL&),
   ITERATION_STACK SAVED_STACK;
 
   {
-    single_valued code(true);
+    single_valued code;
   DEBUG1(2,"starting lipschitz1b ...\n");
 
 // for the computation of the Lipschitz bound, we work with
@@ -411,7 +411,7 @@ REAL lipschitz (REAL f(const REAL&),
   ITERATION_STACK SAVED_STACK;
 
   {
-    single_valued code(true);
+    single_valued code;
   DEBUG1(2,"starting lipschitz1a ...\n");
   lip_result=f(x_new);
 
@@ -458,7 +458,7 @@ REAL lipschitz (REAL f(int, const REAL&),
   x_new.geterror(x_error);
   sizetype_exact(x_new.error);
   {
-    single_valued code(true);
+    single_valued code;
   DEBUG1(2,"starting lipschitz1 ...\n");
   lip_result=f(k,x_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
@@ -491,7 +491,7 @@ REAL lipschitz (REAL f(const REAL&, const REAL&),
   y_new.geterror(y_error);
   sizetype_exact(y_new.error);
   {
-    single_valued code(true);
+    single_valued code;
   DEBUG1(2,"starting lipschitz2 ...\n");
   lip_result=f(x_new,y_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
@@ -530,7 +530,7 @@ REAL lipschitz (REAL f(int, const REAL&, const REAL&),
   sizetype_exact(y_new.error);
   x_new.geterror(x_error);
   {
-    single_valued code(true);
+    single_valued code;
   DEBUG1(2,"starting lipschitz2 ...\n");
   lip_result=f(k,x_new,y_new);
   DEBUG3(2,"getting result with local error %d*2^(%d)\n",

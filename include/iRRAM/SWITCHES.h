@@ -55,7 +55,7 @@ class single_valued
 {
 int saved;
 public:
-  inline  single_valued(bool dummy){ saved=ACTUAL_STACK.inlimit++; }
+  inline  single_valued(){ saved=ACTUAL_STACK.inlimit++; }
   inline ~single_valued(){ ACTUAL_STACK.inlimit=saved; }
 };
 
