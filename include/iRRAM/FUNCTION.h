@@ -58,8 +58,8 @@ public:
 };
 
 
-template<class RESULT>
-class FUNCTIONAL_value :public FUNCTIONAL_object<RESULT>
+template<class RESULT,class... PARAM>
+class FUNCTIONAL_value :public FUNCTIONAL_object<RESULT,PARAM...>
 {
 public:
 	RESULT _value;
@@ -68,7 +68,7 @@ public:
 		const RESULT &value
 	) {_value=value;}
 
-	RESULT eval() {return _value;}; 
+	RESULT eval(const PARAM&...z) {return _value;}; 
 };
 
 /*
@@ -175,9 +175,9 @@ inline FUNCTION<RESULT,PARAM...> from_algorithm(
 	return new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp);
 }
 
-template<class RESULT>	inline FUNCTION<RESULT> from_value (
+template<class RESULT,class... PARAM>	inline FUNCTION<RESULT,PARAM...> from_value (
 		const RESULT &value
-		){return new FUNCTIONAL_value<RESULT>(value);}
+		){return new FUNCTIONAL_value<RESULT,PARAM...>(value);}
 
 template<class RESULT,class INTERMEDIATE,class... PARAM>
 inline FUNCTION<RESULT,PARAM...> compose(
@@ -193,6 +193,8 @@ inline FUNCTION<RESULT,PARAM...> compose(
 		)
 	);
 }
+
+
 
 
 template<class RESULT1, class... PARAM1, class RESULT2, class... PARAM2>
