@@ -34,7 +34,9 @@ clean-am:
 	rm -fr autom4te.cache
 
 distclean-am: clean-am
-	rm -f config.log iRRAM_VERSION 
-	rm -fr installed 
 	for i in obj/*/ ; do $(MAKE) -C $$i distclean; done
 	for i in examples tests doc; do $(MAKE) -C $$i distclean; done
+	rm -vf config.log config.status iRRAM_VERSION 
+	rm -vfr installed 
+	rm -vf m4/libtool.m4  m4/lt~obsolete.m4  m4/ltoptions.m4  m4/ltsugar.m4  m4/ltversion.m4
+	rm -vf test-driver missing install-sh ltmain.sh compile config.guess  config.sub depcomp
