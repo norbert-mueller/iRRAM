@@ -131,21 +131,21 @@ REAL sin_range_red1 (int prec,const REAL& x){
 // In this case, the result is not an approximation but precise, indeed!
 
 
+   int x_int;
+   REAL x_red;
+   bool sin_neg;
 //For larger numbers, we increase the working precision a bit:
 //This of course is a bit of a hack, that should be replaced by something
 //clean later!
-   bool large_number=!bound(x,2);
-   if ( large_number ){
-     ACTUAL_STACK.prec_step++;
-     ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-     }
+   {
+   stiff code(!bound(x,2) ? +1 : 0);
 
 // We reduce x to -2pi..2pi by taking the value modulo 2pi
-   REAL x_red=modulo(x,2*pi());
+   x_red=modulo(x,2*pi());
 // We take an integer approximation x_int of 100*x_red,
 // which must be between -629..629
 // This allows us to easily find a reasonable reduction interval
-   int x_int=round(x_red*100);
+   x_int=round(x_red*100);
 // We have |x_int:100-x_red| <= 0.01
 
 // In case x_int is negative, we shift by 2pi(),
@@ -156,8 +156,8 @@ REAL sin_range_red1 (int prec,const REAL& x){
 
 // In case x_int > 314, we reduce using sin(x)=-sin(x-pi)
 // so we still have sin(x)=sin(x_red)*sin_sign;
-   REAL sin_sign=1;
-   if ( x_int >  314 ) {x_int=x_int-314;x_red=x_red-pi();sin_sign=-1;}
+   sin_neg=false;
+   if ( x_int >  314 ) {x_int=x_int-314;x_red=x_red-pi();sin_neg=true;}
 // We now have /x_int:100 - x_red/ < 0.03 and
 // -0.01 <= x_red <= pi+0.01
 
@@ -166,18 +166,16 @@ REAL sin_range_red1 (int prec,const REAL& x){
    if ( x_int >  157 ) {x_int=157-x_int;x_red=pi()-x_red;}
 // We now have /x_int:100 - x_red/ < 0.04 and
 // -0.02 <= x_red <= pi/2+0.02
-
-   if (large_number  ){
-     ACTUAL_STACK.prec_step--;
-     ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-   }
+  }
 
 // Now we do an exact(!) computation of sin(x).
 // The procedure uses the argument prec just as an hint for optimization!
+   REAL sin_abs;
    if ( x_int > 80 ) 
-      return sin_sign*sqrt(1-square(sin_range_red3(prec,x_red-pi()/2)));
+      sin_abs = sqrt(1-square(sin_range_red3(prec,x_red-pi()/2)));
    else
-      return sin_sign*sin_range_red3(prec,x_red);
+      sin_abs = sin_range_red3(prec,x_red);
+   return sin_neg ? -sin_abs : sin_abs;
 }
 
 REAL cos  (const REAL& x){
