@@ -11,8 +11,6 @@ namespace iRRAM {
 /*   Application: range reduction, AGM methods for logarithms, ..*/ 
 /*****************************************************************/
 
-__thread REAL *ln2_val;
-__thread int ln2_err=0;
 double ln2_time=0.0;
 double pi_time=0.0;
 
@@ -36,6 +34,10 @@ REAL ln2_approx (int prec){
 }
 
 REAL ln2(){
+
+static __thread REAL *ln2_val;
+static __thread int ln2_err=0;
+
    if (ln2_err==0) ln2_val=new(REAL);
    if (ln2_err >  ACTUAL_STACK.actual_prec || ln2_err == 0) {
      unsigned int dummy;double s1;resources(s1,dummy);
