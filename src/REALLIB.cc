@@ -71,7 +71,7 @@ REAL power(const REAL& x, int n) {
 
 // maximum without using of internal representation of LAZY_BOOLEAN
 // REAL maximum (const REAL& x, const REAL& y){
-//    single_valued code(true);
+//    single_valued code;
 //    LAZY_BOOLEAN larger = ( x > y );
 //    switch ( choose ( larger, !larger, TRUE ) ){
 //    case 1: return x;
