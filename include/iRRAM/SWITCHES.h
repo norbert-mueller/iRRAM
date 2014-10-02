@@ -33,7 +33,7 @@ MA 02111-1307, USA.
 // Such switches exist for:
 // -  explicit declaration of single_valued behaviour of a code section despite multi-valued operations
 // -  switching the precision policy to absolute or relative precision
-// -  temporary increase of the working precision for REAL
+// -  temporary increase or decrease of the working precision for REAL
 // -  declaration of the working precision of DYADIC operators (see DYACIC.h)
 //
 // The switches are thread-specific.
@@ -84,28 +84,26 @@ public:
 // obsoletes stiff_begin(), stiff_end()
 class stiff
 {
-int saved;
+	int saved;
+
+	static inline void set_prec_step(int n)
+	{
+		if (n<1) n=1;
+		if (iRRAM_prec_steps < n) n = iRRAM_prec_steps;
+		ACTUAL_STACK.prec_step = n;
+		ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
+		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
+	}
 public:
-inline stiff(){
-        saved = ACTUAL_STACK.prec_step++;
-        ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
-        iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-        }
-inline stiff(int n){
-	saved = ACTUAL_STACK.prec_step;
-	n += ACTUAL_STACK.prec_step;
-	if (n<1) n=1;
-	if (iRRAM_prec_steps < n) n = iRRAM_prec_steps;
-//	if (512 < n) n = 512;
-	ACTUAL_STACK.prec_step = n;
-        ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
-        iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-        }
-inline ~stiff(){
-	ACTUAL_STACK.prec_step = saved;
-        ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-        iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-        }
+	explicit inline stiff(int n = 1) {
+		saved = ACTUAL_STACK.prec_step;
+		set_prec_step(ACTUAL_STACK.prec_step + n);
+	}
+	inline ~stiff() {
+		set_prec_step(saved);
+	}
+	stiff(const stiff &) = delete;
+	stiff operator=(const stiff &) = delete;
 };
 
 } // namespace iRRAM

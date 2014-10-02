@@ -140,11 +140,6 @@ namespace iRRAM {
 #define ABSOLUTE 0
 #define RELATIVE 1
 void precision_policy (int policy);
-void stiff_begin ();
-void stiff_end   ();
-
-
-
 
 REAL atoREAL(const char* s);
 

@@ -408,17 +408,6 @@ void   rshow   (const REAL& x, const int w){ iRRAM::cout << swrite(x,w,iRRAM_flo
 #define ABSOLUTE 0
 #define RELATIVE 1
 void precision_policy (int policy){ACTUAL_STACK.prec_policy=policy;}
-void stiff_begin (){
-	ACTUAL_STACK.prec_step++;
-	ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-	}
-void stiff_end   (){
-	ACTUAL_STACK.prec_step--;
-	ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-	iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-	}
-
 
 REAL REAL::mp_square ()const
 {
