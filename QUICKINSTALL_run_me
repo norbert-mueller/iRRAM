@@ -419,19 +419,10 @@ if [ "$error_code" == "101" ]; then
   exit 1
 fi 
 
-error=0
 make $make_params ; error_code=$? 
-if [ "$error_code" != "0" ]; then 
-  echo -e "\nSorry, compilation of iRRAM failed\n"
-  error=1
-elif [ ! -e obj/MPFR/.libs/libiRRAM.so ] ; then
-  echo "Failure: libiRRAM.so not created..."
-  error=1
-fi
-
-if [ "$error" == "0" ] ; then
+if [ "$error_code" == "0" ] ; then
     echo "
-Now iRRAM should be successfully installed.
+Now iRRAM should have been build successfully.
 "
 else
     echo "
