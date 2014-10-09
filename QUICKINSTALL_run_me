@@ -422,7 +422,7 @@ fi
 make $make_params ; error_code=$? 
 if [ "$error_code" == "0" ] ; then
     echo "
-Now iRRAM should have been build successfully.
+Now iRRAM should have been built successfully.
 "
 else
     echo "
