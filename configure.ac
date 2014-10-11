@@ -35,7 +35,7 @@ if test "$enable_profiling" != "no" ; then
 fi
 
 dnl Checks for programs.
-AC_PROG_CC
+AC_PROG_CC_C99
 AC_PROG_CXX
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
@@ -49,6 +49,21 @@ if test -n "$GCC"; then
   CFLAGS="$CFLAGS -Wall -Wno-implicit -Wmissing-prototypes -Wpedantic"
   CXXFLAGS="$CXXFLAGS -Wall -Wpedantic"
 fi
+
+case "$host" in
+*-mingw*)
+	dnl Use ANSI printf modifiers in mingw32.
+	dnl See <http://sourceforge.net/p/mingw-w64/wiki2/gnu%20printf/>
+	CPPFLAGS="-D__USE_MINGW_ANSI_STDIO=1 $CPPFLAGS"
+
+	dnl Do not use dynamic linking on Windows
+	AM_LDFLAGS="-all-static $AM_LDFLAGS"
+
+	dnl GetProcessMemoryInfo() library psapi
+	LIBS_INST="$LIBS_INST -lpsapi"
+	LIBS="$LDADD $LIBS_INST"
+	;;
+esac
 
 dnl Test backends
 
@@ -71,8 +86,8 @@ AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 if test -z "$gmp_lib" ;  then 
 	AC_TRY_RUN( [
 		#include <cstdio>
-		#include "gmp.h"
-		#include <string.h>
+		#include <gmp.h>
+		#include <cstring>
 		int main(int argc, char *argv[])
 		{ //if ( strcmp (gmp_version,"4.1") < 0 ) return 1;
 		  if ( __GNU_MP_VERSION < 4 ) return 1;
@@ -84,7 +99,7 @@ if test -z "$gmp_lib" ;  then
 	AC_MSG_ERROR( [cross compiling not supported! ] ) ) 
 fi
 if test -z "$gmp_lib" ;  then 
-	AC_MSG_RESULT( [GMP check successfull! ] ) 
+	AC_MSG_RESULT( [GMP check successful! ] )
 else
 	AC_MSG_ERROR( [GMP not found! You need to install GMP first!], 100 ) 
 fi
@@ -125,6 +140,7 @@ AC_SUBST(CXXFLAGS)
 AC_SUBST(INCLUDES)
 AC_SUBST(LDADD)
 AC_SUBST(LDFLAGS)
+AC_SUBST(AM_LDFLAGS)
 AC_SUBST(LIBS)
 AC_SUBST(LIBS_INST)
 AC_SUBST(CFLAGS)

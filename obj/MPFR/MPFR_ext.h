@@ -25,8 +25,19 @@ MA 02111-1307, USA.
 #ifndef MPFR_ext_h
 #define MPFR_ext_h
 
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef __cplusplus
+/* C++ does not need this macro definition, but when including this file in a C
+ * translation unit we need this macro to access PRIuMAX, etc. */
+# define __STDC_FORMAT_MACROS	1
+# include <stdlib.h>
+# include <stdio.h>
+# include <inttypes.h>
+#else
+# include <cstdlib>
+# include <cstdio>
+# include <cinttypes>
+#endif
+
 
 #include "iRRAM/MPFR_interface.h"
 
@@ -42,10 +53,9 @@ MA 02111-1307, USA.
 #define MPFR_NOTZERO(x)  !( mpfr_sgn(x)==0)
 
 
-#include "mpfr.h"
+#include <mpfr.h>
 
 #define MAX_OF(h,i) ((h) >= (i) ? (h) : (i))
-
 
 #define GMP_min -1000000000
 #define GMP_max 1000000000
@@ -381,7 +391,6 @@ inline char* ext_mpfr_swritee(ext_mpfr_type z,int w)
   return s;
 }
 
-
 inline void ext_mpfr_write(ext_mpfr_type z,int w)
 { char *s=(char *)malloc(w+1);
   long e; 
@@ -396,7 +405,7 @@ inline void ext_mpfr_write(ext_mpfr_type z,int w)
   if (MPFR_LIMB_SIZE(z) != 0) {
      printf("\n");
      for (i=MPFR_LIMB_SIZE(z)-1;i>=0; i-=1) 
-       printf("%lu ",z->_mpfr_d[i]);
+       printf("%" PRIuMAX " ",(uintmax_t)z->_mpfr_d[i]);
   }
   printf("\nExponent %ld, Limbs: %ld, Bits: %ld\n",
      z->_mpfr_exp,MPFR_LIMB_SIZE(z),mpfr_get_prec(z));
