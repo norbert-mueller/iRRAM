@@ -42,7 +42,9 @@ void resources(double &time, unsigned int &memory)
 {
 	FILETIME creation_time, exit_time, kernel_time, user_time;
 	if (GetProcessTimes(GetCurrentProcess(), &creation_time, &exit_time, &kernel_time, &user_time)) {
-		time = (kernel_time.dwLowDateTime + ((uint64_t)kernel_time.dwHighDateTime << 32)) / 1e7;
+		time = ((kernel_time.dwLowDateTime + ((uint64_t)kernel_time.dwHighDateTime << 32))
+		        + (user_time.dwLowDateTime + ((uint64_t)  user_time.dwHighDateTime << 32))
+		       ) / 1e7;
 	} else {
 		time = 0;
 	}
