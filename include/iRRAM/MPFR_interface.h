@@ -24,8 +24,8 @@ MA 02111-1307, USA.
 #ifndef MPFR_interface
 #define MPFR_interface
 
-#include "gmp.h"
-#include "mpfr.h"
+#include <gmp.h>
+#include <mpfr.h>
 #include "GMP_intrat.h"
 
 

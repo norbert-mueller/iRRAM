@@ -25,9 +25,9 @@ MA 02111-1307, USA.
 #ifndef IRRAM_CORE_H
 #define IRRAM_CORE_H
 
-#include "stdio.h"
+#include <cstdio>
 #include <vector>
-#include "fenv.h"
+#include <cfenv>
 #include <pthread.h>
 
 #include "iRRAM/lib.h"

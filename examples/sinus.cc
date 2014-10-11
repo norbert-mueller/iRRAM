@@ -1,6 +1,6 @@
-#include "stdio.h"
-#include "stdlib.h"
-#include <cmath>                                                                                           
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include "iRRAM.h"
 #include "iRRAM/core.h"
 

@@ -36,7 +36,7 @@ Changelog: (initial version by Tom van Diessen)
 #include <stdio.h>
 #include <string.h>
 
-#include "gmp.h"
+#include <gmp.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
