@@ -71,52 +71,6 @@ public:
 	RESULT eval(const PARAM&...z) {return _value;}; 
 };
 
-/*
-template<class RESULT,class PARAM1, class PARAM2>
-class FUNCTIONAL_bind_first :public FUNCTIONAL_object< PARAM2, RESULT > 
-{
-public:
-	FUNCTIONAL_object<std::pair<PARAM1,PARAM2>,RESULT> * _f;
-	PARAM1 _x;
-
-	FUNCTIONAL_bind_first(
-		FUNCTIONAL_object<std::pair<PARAM1,PARAM2>,RESULT >* f,
-		const PARAM1& x
-		){_f = f->clone();_x=x;}
-
-	virtual void clear()
-		{
-		if (this->release_check()) return;
-		_f->clear();
-		delete this; 
-		}
-
-	RESULT eval(const PARAM2 &y) {return _f->eval(std::make_pair<PARAM1,PARAM2>(_x,y));}; 
-};
-
-template<class PARAM1, class PARAM2, class RESULT>
-class FUNCTIONAL_bind_second :public FUNCTIONAL_object< PARAM1, RESULT > 
-{
-public:
-	FUNCTIONAL_object<std::pair<PARAM1,PARAM2>,RESULT> * _f;
-	PARAM2 _y;
-
-	FUNCTIONAL_bind_second(
-		FUNCTIONAL_object<std::pair<PARAM1,PARAM2>,RESULT >* f,
-		const PARAM2& y
-		){_f = f->clone();_y=y;}
-
-	virtual void clear(){
-		if (this->release_check()) return;
-		_f->clear();
-		delete this; 
-		}
-
-	RESULT eval(const PARAM1 &x) {return _f->eval(std::make_pair<PARAM1,PARAM2>(x,_y));}; 
-};
-*/
-
-
 //********************************************************************************
 
 
@@ -131,7 +85,7 @@ public:
 
 	FUNCTION() : _fobject(new FUNCTIONAL_object<RESULT,PARAM...>) {}
 
-	FUNCTION(RESULT (evalp)(const PARAM &... z))
+	FUNCTION(RESULT (*evalp)(const PARAM &... z))
 	: _fobject(new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp)) {}
 
 	FUNCTION(
@@ -164,9 +118,12 @@ public:
 
 //********************************************************************************
 
-template<class RESULT,class... PARAM>	inline FUNCTION<RESULT,PARAM...> from_algorithm (
-		RESULT (evalp)(const PARAM &... z)
-		){return new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp);}
+template<class RESULT,class... PARAM>
+inline FUNCTION<RESULT,PARAM...> from_algorithm(
+	RESULT (evalp)(const PARAM &... z)
+) {
+	return new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp);
+}
 
 template<class RESULT,class... PARAM>
 inline FUNCTION<RESULT,PARAM...> from_algorithm(
@@ -175,9 +132,11 @@ inline FUNCTION<RESULT,PARAM...> from_algorithm(
 	return new FUNCTIONAL_algorithm<RESULT,PARAM...>(evalp);
 }
 
-template<class RESULT,class... PARAM>	inline FUNCTION<RESULT,PARAM...> from_value (
-		const RESULT &value
-		){return new FUNCTIONAL_value<RESULT,PARAM...>(value);}
+template<class RESULT,class... PARAM>
+inline FUNCTION<RESULT,PARAM...> from_value(const RESULT &value)
+{
+	return new FUNCTIONAL_value<RESULT,PARAM...>(value);
+}
 
 template<class RESULT,class INTERMEDIATE,class... PARAM>
 inline FUNCTION<RESULT,PARAM...> compose(
