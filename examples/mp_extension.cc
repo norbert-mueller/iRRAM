@@ -6,7 +6,7 @@ using namespace iRRAM;
 // iRRAM-routine to compute a DYADIC cosine
 DYADIC compute_cos(DYADIC x, int p) { return approx(cos(REAL(x)),p); }
 
-template DYADIC iRRAM_exec <DYADIC,int,DYADIC> 
+template DYADIC iRRAM::iRRAM_exec <DYADIC,int,DYADIC>
 (DYADIC (*) (DYADIC,int),DYADIC,int);
 
 

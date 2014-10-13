@@ -3,7 +3,7 @@
 
 using namespace iRRAM;
 
-template int iRRAM_exec <int, char **> (int (*) (int, char **),int, char **);
+template int iRRAM::iRRAM_exec <int, char **> (int (*) (int, char **),int, char **);
 
 int iRRAM_compute(int argc, char **argv) {
 

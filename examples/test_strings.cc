@@ -5,7 +5,7 @@ using namespace std;
 using namespace iRRAM;
 
 
-template int iRRAM_exec <string*,string*> (int (*) (string*,string*),string*, string*);
+template int iRRAM::iRRAM_exec <string*,string*> (int (*) (string*,string*),string*, string*);
 
 int iRRAM_compute(string* in_par,string *out_par) {
 
