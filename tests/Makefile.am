@@ -1,4 +1,4 @@
-AM_CPPFLAGS= -I$(top_srcdir)/include @INCLUDES@ -std=c++11
+AM_CPPFLAGS= -I$(top_srcdir)/include -I$(top_builddir)/include @INCLUDES@
 
 DEFS = @DEFS@
 

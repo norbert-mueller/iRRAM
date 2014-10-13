@@ -5,6 +5,7 @@ iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
 
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SRCDIR([sourcefile.list])
 
 LT_INIT
 AC_SUBST(LIBTOOL)
@@ -158,15 +159,27 @@ AC_SUBST(iRRAM_src)
 
 MAKEFILES=""
 
-for bg in obj/*/; do
- cd $bg
- for i in $iRRAM_src; do
- 	AC_MSG_RESULT( linking $bg/$i )
- 	$LN_S ../../src/$i $i
- done
- cd ../..
-done
+BACKENDS="MPFR"
 
+if true; then
+for be in $BACKENDS; do
+ for si in $srcdir/obj/$be/*.{c,cc,h} $(for i in $iRRAM_src; do echo $srcdir/src/$i; done); do
+  oi=obj/$be/`basename $si`
+  AC_MSG_RESULT([linking $si -> $oi])
+  AC_CONFIG_LINKS($oi:$si)
+ done
+done
+else
+for bg in $srcdir/obj/*/; do
+ (cd $bg &&
+ for i in $iRRAM_src; do
+ 	AC_MSG_RESULT([linking ../../src/$i -> $i])
+	dnl Should use AC_CONFIG_LINKS(dest:src) for this
+ 	dnl $LN_S ../../src/$i $i
+	AC_CONFIG_LINKS($i:src/$i)
+ done)
+done
+fi
 
 AC_CONFIG_FILES([obj/MPFR/Makefile])
 AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h] )
