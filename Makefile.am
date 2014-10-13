@@ -2,41 +2,46 @@
 # SUBDIRS=include . examples
 # doc still missing...
 
-.PHONY: all backends check examples install-am clean-am distclean-am
-
 ACLOCAL_AMFLAGS = -I m4
+
+BACKEND_DIRS = obj/MPFR
+SUBDIRS = doc include $(BACKEND_DIRS) tests
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
 
-all:   backends include check
+# The following functionality is discouraged by the automake authors, see
+# <http://www.gnu.org/software/automake/manual/html_node/Scripts_002dbased-Testsuites.html>
+#all-recursive: check
 
-backends:
-	for i in obj/*/ ; do $(MAKE) -C $$i; done
-
-check: backends
-	@echo -e "\n***  Compiling tests ***\n"
-	$(MAKE) -C tests check
+# copied shamelessly from GMP
+install-data-hook:
+	@echo ''
+	@echo '+-------------------------------------------------------------+'
+	@echo '| CAUTION:                                                    |'
+	@echo '|                                                             |'
+	@echo '| If you have not already run "make check", then we strongly  |'
+	@echo '| recommend you do so.                                        |'
+	@echo '|                                                             |'
+	@echo '+-------------------------------------------------------------+'
+	@echo ''
 
 examples: install
 	@echo -e "\n***  Compiling examples ***\n"
 	$(MAKE) -C examples
 
-install-am:
-	for i in obj/*/ ; do $(MAKE) -C $$i LIBTOOLFLAGS=--silent install; done
-	(cd include; make LIBTOOLFLAGS=--silent install)
+# Still missing functionality:
+#LIBTOOLFLAGS+=--silent
+
+install-data-local:
 	(cd examples; sed -e 's#\$${prefix}#${prefix}#' -e 's#\$${exec_prefix}#${exec_prefix}#' Makefile-pre > Makefile )
 
-clean-am: 
-	for i in obj/*/ ; do $(MAKE) -C $$i clean; done
-	for i in examples tests; do $(MAKE) -C $$i clean; done
-	rm -fr autom4te.cache
+clean-local:
+	$(MAKE) -C examples -f Makefile-pre clean
 
-distclean-am: clean-am
-	for i in obj/*/ ; do $(MAKE) -C $$i distclean; done
-	for i in examples tests doc; do $(MAKE) -C $$i distclean; done
-	rm -vf config.log config.status iRRAM_VERSION 
-	rm -vfr installed 
+distclean-local:
+#	rm -vfr installed
+	rm -vf examples/Makefile
 	rm -vf m4/libtool.m4  m4/lt~obsolete.m4  m4/ltoptions.m4  m4/ltsugar.m4  m4/ltversion.m4
-	rm -vf test-driver missing install-sh ltmain.sh compile config.guess  config.sub depcomp
+#	rm -vf test-driver missing install-sh ltmain.sh compile config.guess  config.sub depcomp

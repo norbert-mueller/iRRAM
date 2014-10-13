@@ -80,7 +80,7 @@ fi
 
 CPPFLAGS_INST="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $INCLUDES"
-AC_MSG_RESULT(checking gmp header... )
+AS_BOX([checking GMP header...])
 AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 
 if test -z "$gmp_lib" ;  then 
@@ -106,7 +106,7 @@ fi
 LIBS_INST="$LIBS_INST -lgmp"
 LIBS="$LDADD $LIBS_INST"
  
-AC_MSG_RESULT(checking mpfr headers )
+AS_BOX([checking MPFR headers])
 AC_CHECK_HEADER(mpfr.h, ,mpfr_h=no)
 
 if test -z "$mpfr_h" ;  then 
