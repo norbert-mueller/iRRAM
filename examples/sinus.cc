@@ -11,7 +11,8 @@ using namespace iRRAM;
 REAL one_minus_cos_approx (int prec, int wd, const REAL& x){
 precision_policy(RELATIVE);
   REAL x2=square(x);
-  REAL xpow[wd],xf=power(x2,wd),z;
+  std::vector<REAL> xpow(wd);
+  REAL xf=power(x2,wd),z;
   xpow[0]=-x2/2;
   z=xpow[0];
   for (int i=1; i<wd; i++) {
