@@ -135,8 +135,6 @@ REAL sin_range_red1 (int prec,const REAL& x){
    REAL x_red;
    bool sin_neg;
 //For larger numbers, we increase the working precision a bit:
-//This of course is a bit of a hack, that should be replaced by something
-//clean later!
    {
    stiff code(!bound(x,2) ? +1 : 0);
 

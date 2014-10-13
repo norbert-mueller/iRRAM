@@ -23,9 +23,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 #include <cmath>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
 
 #include "iRRAM/core.h"
