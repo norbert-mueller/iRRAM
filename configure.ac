@@ -46,8 +46,8 @@ AC_CHECK_LIB(m, main,LIBS_INST="-lm")
 
 dnl If compiler is gcc, then use some warning flags
 if test -n "$GCC"; then
-  CFLAGS="$CFLAGS -Wall -Wno-implicit -Wmissing-prototypes -Wpedantic"
-  CXXFLAGS="$CXXFLAGS -Wall -Wpedantic"
+  CFLAGS="$CFLAGS -Wall -Wno-implicit -Wmissing-prototypes -pedantic"
+  CXXFLAGS="$CXXFLAGS -Wall -pedantic"
 fi
 
 case "$host" in
