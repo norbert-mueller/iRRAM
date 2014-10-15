@@ -400,7 +400,7 @@ cache_active = new cachelist;
 
 if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
-		<<", backend "<<iRRAM_BACKEND<<") starting...\n";
+		<<", backend "<<iRRAM_BACKENDS<<") starting...\n";
 	iRRAM_max_prec=ACTUAL_STACK.prec_step;
 }
 
@@ -479,7 +479,7 @@ RESULT result;
 
 if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
-		<<", backend "<<iRRAM_BACKEND<<") starting...\n";
+		<<", backend "<<iRRAM_BACKENDS<<") starting...\n";
 	iRRAM_max_prec=ACTUAL_STACK.prec_step;
 }
 
@@ -563,7 +563,7 @@ cache_active = new cachelist;
 
 if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
-		<<", backend "<<iRRAM_BACKEND
+		<<", backend "<<iRRAM_BACKENDS
 		<<", thread "<< _data->id<<") starting...\n";
 	iRRAM_max_prec=ACTUAL_STACK.prec_step;
 }

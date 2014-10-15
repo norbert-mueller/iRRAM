@@ -3,7 +3,7 @@
 
 #include "iRRAM/core.h"
 
-#if ($iRRAM_BACKEND == MPFR)
+#if iRRAM_BACKEND_MPFR
 	#include "MPFR_ext.h"
 #else
 	#include "Currently no additional backend!"

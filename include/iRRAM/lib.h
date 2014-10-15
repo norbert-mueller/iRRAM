@@ -48,11 +48,16 @@ Authors:  all by Norbert, except:
 #define iRRAM_likely(x)		iRRAM_expect(!!(x), 1)
 #define iRRAM_unlikely(x)	iRRAM_expect(!!(x), 0)
 
-#ifndef iRRAM_BACKEND
-	#include "iRRAM/MPFR_interface.h"
-	#define iRRAM_BACKEND "MPFR"
+#include <iRRAM/version.h>
+
+#ifndef iRRAM_BACKENDS
+# error error: no usable backend, defined iRRAM_BACKENDS
+#endif
+
+#if iRRAM_BACKEND_MPFR
+# include "iRRAM/MPFR_interface.h"
 #else
-	#include "Currently no additional backend!"
+# include "Currently no additional backend!"
 #endif
 
 extern "C" void iRRAM_initialize(int argc,char** argv);

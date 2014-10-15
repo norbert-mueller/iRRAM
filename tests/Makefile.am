@@ -2,7 +2,7 @@ AM_CPPFLAGS= -I$(top_srcdir)/include -I$(top_builddir)/include @INCLUDES@
 
 DEFS = @DEFS@
 
-LDADD=../obj/MPFR/libiRRAM.la @LDADD@
+LDADD=../obj/libiRRAM.la @LDADD@
 
 check_PROGRAMS = t_DYADIC t_INTEGER t_RATIONAL t_double_conv t_size t_string_conv t_FUNCTION
 

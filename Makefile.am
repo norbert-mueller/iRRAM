@@ -4,8 +4,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-BACKEND_DIRS = obj/MPFR
-SUBDIRS = doc include $(BACKEND_DIRS) tests
+SUBDIRS = doc include obj tests
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
