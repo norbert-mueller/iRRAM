@@ -132,7 +132,7 @@ AC_CHECK_LIB(pthread, pthread_create,LIBS_INST="$LIBS_INST -lpthread")
 LIBS="$LDADD $LIBS_INST"
 
 AC_LANG_CPLUSPLUS
-AX_CXX_COMPILE_STDCXX_11
+AX_CXX_COMPILE_STDCXX_11([noext])
 
 AC_SUBST(CPPFLAGS)                                                           
 AC_SUBST(CPPFLAGS_INST)                                                           
