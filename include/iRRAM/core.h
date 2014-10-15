@@ -59,22 +59,17 @@ extern __thread  int iRRAM_max_prec;
 extern __thread  int iRRAM_prec_start;
 
 #ifndef NODEBUG
-  #define DEBUG0(level,p) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) p
-  #define DEBUG1(level,p) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) cerr << p
-  #define DEBUG2(level,p1,p2) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2)
-  #define DEBUG3(level,p1,p2,p3) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3)
-  #define DEBUG4(level,p1,p2,p3,p4) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4)
-  #define DEBUG5(level,p1,p2,p3,p4,p5) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4,p5)
-  #define DEBUG6(level,p1,p2,p3,p4,p5,p6) if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+level)) fprintf(stderr,p1,p2,p3,p4,p5,p6)
+  #define DEBUG0(level,...)                                                     \
+	do {                                                                    \
+		if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+(level))) {\
+			__VA_ARGS__;                                            \
+		}                                                               \
+	} while (0)
 #else
   #define DEBUG0(level,p)
-  #define DEBUG1(level,p) 
-  #define DEBUG2(level,p1,p2) 
-  #define DEBUG3(level,p1,p2,p3) 
-  #define DEBUG4(level,p1,p2,p3,p4) 
-  #define DEBUG5(level,p1,p2,p3,p4,p5) 
-  #define DEBUG6(level,p1,p2,p3,p4,p5,p6)
 #endif
+#define DEBUG1(level,p)		DEBUG0((level),cerr << p)
+#define DEBUG2(level,...)	DEBUG0((level),fprintf(stderr,__VA_ARGS__))
 
 
 struct Iteration {int prec_diff; Iteration (int p){prec_diff=p;}; };

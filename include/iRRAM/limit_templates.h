@@ -89,7 +89,7 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&),
     if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG3(2,"getting result with error %d*2^(%d)\n",
+      DEBUG2(2,"getting result with error %d*2^(%d)\n",
                lim_error.mantissa, lim_error.exponent);
       } else {
       DEBUG1(2,"computation successful, but no improvement\n");
@@ -162,7 +162,7 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&,DISCRETE param),
     if ( firsttime  != 0 || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG3(2,"getting result with error %d*2^(%d)\n",
+      DEBUG2(2,"getting result with error %d*2^(%d)\n",
                lim_error.mantissa, lim_error.exponent);
       } else {
       DEBUG1(2,"computation successful, but no improvement\n");
@@ -253,7 +253,7 @@ RESULT limit_mv (RESULT f(int prec,
    if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG3(2,"getting result with error %d*2^(%d)\n",
+      DEBUG2(2,"getting result with error %d*2^(%d)\n",
                lim_error.mantissa, lim_error.exponent);
       } else {
       DEBUG1(2,"computation successful, but no improvement\n");
@@ -305,7 +305,7 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
       limit_debug2("limit_lip too imprecise");
 
    } else {
-      DEBUG3(2,"getting result with local error %d*2^(%d)\n",
+      DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lim_error.mantissa, lim_error.exponent);
       break;
     }}
@@ -375,7 +375,7 @@ RESULT  limit_lip (RESULT  f(int,const ARGUMENT&,DISCRETE param),
 //     }
 //   }
 // 
-//   DEBUG3(2,"getting result with local error %d*2^(%d)\n",
+//   DEBUG2(2,"getting result with local error %d*2^(%d)\n",
 //              lip_result.error.mantissa, lip_result.error.exponent);
 //   lip_size=lip_bound.vsize;
 //   lip_bound.geterror(tmp_size);
@@ -421,7 +421,7 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
     }
   }
 
-  DEBUG3(2,"getting result with local error %d*2^(%d)\n",
+  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);

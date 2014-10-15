@@ -115,8 +115,8 @@ int module(REAL f(const REAL&),const REAL& x, int p){
   if ( iRRAM_unlikely(iRRAM_debug > 0 ) ) {
    sizetype x_error;
    x_copy.geterror(x_error);
-  DEBUG4(1,"Testing module: 1*2^%d + %d*2^%d\n",p_arg,argerror.mantissa,argerror.exponent);
-  DEBUG3(1,"argument error: %d*2^%d\n",x_error.mantissa,x_error.exponent);
+  DEBUG2(1,"Testing module: 1*2^%d + %d*2^%d\n",p_arg,argerror.mantissa,argerror.exponent);
+  DEBUG2(1,"argument error: %d*2^%d\n",x_error.mantissa,x_error.exponent);
   }
   try { 
       single_valued code;
@@ -124,7 +124,7 @@ int module(REAL f(const REAL&),const REAL& x, int p){
       if ( iRRAM_unlikely(iRRAM_debug > 0 ) ) {
         sizetype z_error;
         z.geterror(z_error);
-        DEBUG3(1,"Module yields result %d*2^%d\n",z_error.mantissa,z_error.exponent);
+        DEBUG2(1,"Module yields result %d*2^%d\n",z_error.mantissa,z_error.exponent);
       }
       d=approx(z,p-1); 
 	}
