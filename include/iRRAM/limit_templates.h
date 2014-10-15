@@ -405,19 +405,17 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
 
   DISCRETE_ARGUMENT x_center;
   RESULT lip_result;
-  sizetype lip_error,lip_size,x_error;
+  sizetype lip_error,x_error;
 
   bool try_it=true;
   x.to_formal_ball(x_center,x_error);
 
-  while (try_it) {
-  try { try_it=false;
+  for (unsigned prec_step_add = 0; try_it; prec_step_add += 2) {
+    stiff code(prec_step_add);
+    try { try_it=false;
         lip_result=f(x_center,param); }
-  catch ( Iteration it)  { try_it=true;
-      ACTUAL_STACK.prec_step+=2;
-      ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-      DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+    catch ( Iteration it)  { try_it=true;
+      DEBUG2(2,"lipschitz_1p_1a failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec+2);
     }
   }
 
