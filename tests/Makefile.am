@@ -1,6 +1,4 @@
-AM_CPPFLAGS= -I$(top_srcdir)/include -I$(top_builddir)/include @INCLUDES@
-
-DEFS = @DEFS@
+DEFAULT_INCLUDES=-I$(top_srcdir)/include -I$(top_builddir)/include
 
 LDADD=../obj/libiRRAM.la @LDADD@
 

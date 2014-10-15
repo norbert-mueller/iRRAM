@@ -75,7 +75,7 @@ esac
 dnl Test backends
 
 if test "$with_include_path" != "" ; then
-  INCLUDES="-I$with_include_path"
+	AM_CPPFLAGS="$AM_CPPFLAGS -I$with_include_path"
 fi
 
 if test "$with_lib_path" != "" ; then
@@ -86,7 +86,7 @@ if test "$with_lib_path" != "" ; then
 fi
 
 CPPFLAGS_INST="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $INCLUDES"
+CPPFLAGS="$CPPFLAGS $AM_CPPFLAGS"
 AS_BOX([checking GMP header...])
 AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 
@@ -156,7 +156,7 @@ AX_CXX_COMPILE_STDCXX_11([noext])
 AC_SUBST(CPPFLAGS)                                                           
 AC_SUBST(CPPFLAGS_INST)                                                           
 AC_SUBST(CXXFLAGS)                                                           
-AC_SUBST(INCLUDES)
+AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(LDADD)
 AC_SUBST(LDFLAGS)
 AC_SUBST(AM_LDFLAGS)
@@ -179,7 +179,7 @@ AC_SUBST(iRRAM_src)
 MAKEFILES=""
 
 for j in $iRRAM_src; do
-	AC_CONFIG_LINKS(obj/$j:src/$j)
+	AC_CONFIG_LINKS(obj/$j:$srcdir/src/$j)
 done
 
 MPFR_src="MPFR_ext.c mpfr_extension.cc MPFR_ext.h"
@@ -187,7 +187,7 @@ MPFR_src="MPFR_ext.c mpfr_extension.cc MPFR_ext.h"
 for be in $BACKENDS; do
 	be_src=${be}_src
 	for i in ${!be_src}; do
-		AC_CONFIG_LINKS(obj/$i:src/$be/$i)
+		AC_CONFIG_LINKS(obj/$i:$srcdir/src/$be/$i)
 	done
 done
 
