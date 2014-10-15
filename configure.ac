@@ -85,7 +85,7 @@ if test "$with_lib_path" != "" ; then
 	LIBS="$LDADD $LIBS_INST"
 fi
 
-CPPFLAGS_INST="$CPPFLAGS"
+CPPFLAGS_INST="$CPPFLAGS $AM_CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $AM_CPPFLAGS"
 AS_BOX([checking GMP header...])
 AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
