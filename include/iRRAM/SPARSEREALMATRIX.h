@@ -23,6 +23,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
+#ifndef iRRAM_SPARSEREALMATRIX_H
+#define iRRAM_SPARSEREALMATRIX_H
+
 namespace iRRAM {
 
 class SPM_ELEMENT
@@ -127,3 +130,5 @@ void geterror (sizetype& error) const;
 };
 
 } // namespace iRRAM
+
+#endif

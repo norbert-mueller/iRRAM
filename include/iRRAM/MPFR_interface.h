@@ -21,8 +21,8 @@ along with the iRRAM Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
-#ifndef MPFR_interface
-#define MPFR_interface
+#ifndef MPFR_INTERFACE_H
+#define MPFR_INTERFACE_H
 
 #include <gmp.h>
 #include <mpfr.h>
@@ -310,8 +310,4 @@ inline void ext_mpfr_free(ext_mpfr_type z)
   ext_mpfr_var_count -=1;
 }
 
-
-
-
-
-#endif /*ifndef MPFR_interface*/
+#endif /*ifndef MPFR_INTERFACE_H */

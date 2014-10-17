@@ -22,6 +22,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
+#ifndef iRRAM_REAL_H
+#define iRRAM_REAL_H
+
 #include <cmath>
 
 #ifdef __SSE2__at_the_moment_not_used_due_to_alignment_problems_in_gcc_4_3
@@ -826,3 +829,5 @@ inline REAL abs (const REAL& x){
 // }
 
 } // namespace iRRAM
+
+#endif

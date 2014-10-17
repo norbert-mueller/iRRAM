@@ -39,7 +39,11 @@ MA 02111-1307, USA.
 // The switches are thread-specific.
 //
 /****************************************************************************/
-#include "iRRAM/core.h"
+
+#ifndef iRRAM_SWITCHES_H
+#define iRRAM_SWITCHES_H
+
+#include <iRRAM/core.h>
 
 namespace iRRAM {
 
@@ -107,3 +111,5 @@ public:
 };
 
 } // namespace iRRAM
+
+#endif

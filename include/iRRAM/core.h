@@ -59,7 +59,7 @@ extern __thread  int iRRAM_max_prec;
 extern __thread  int iRRAM_prec_start;
 
 #ifndef NODEBUG
-  #define iRRAM_DEBUG0(level,...)                                                     \
+  #define iRRAM_DEBUG0(level,...)                                               \
 	do {                                                                    \
 		if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+(level))) {\
 			__VA_ARGS__;                                            \
@@ -68,7 +68,7 @@ extern __thread  int iRRAM_prec_start;
 #else
   #define iRRAM_DEBUG0(level,...)
 #endif
-#define iRRAM_DEBUG1(level,p)		iRRAM_DEBUG0((level),cerr << p)
+#define iRRAM_DEBUG1(level,p)	iRRAM_DEBUG0((level),cerr << p)
 #define iRRAM_DEBUG2(level,...)	iRRAM_DEBUG0((level),fprintf(stderr,__VA_ARGS__))
 
 

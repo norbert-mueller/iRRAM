@@ -22,8 +22,8 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
-#ifndef iRRAM_cache_h
-#define iRRAM_cache_h
+#ifndef iRRAM_CACHE_H
+#define iRRAM_CACHE_H
 
 #include <string>
 
@@ -133,4 +133,4 @@ extern __thread iRRAM_thread_data_class *iRRAM_thread_data_address;
 
 } // namespace iRRAM
 
-#endif //define iRRAM_cache_h
+#endif //define iRRAM_CACHE_H

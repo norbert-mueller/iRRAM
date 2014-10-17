@@ -22,6 +22,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
+#ifndef iRRAM_COMPLEX_H
+#define iRRAM_COMPLEX_H
+
 namespace iRRAM {
 
 class COMPLEX
@@ -124,3 +127,5 @@ COMPLEX acosech(const COMPLEX& z);
 
 
 } // namespace iRRAM
+
+#endif

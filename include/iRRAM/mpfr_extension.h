@@ -1,3 +1,7 @@
+
+#ifndef iRRAM_MPFR_EXTENSION_H
+#define iRRAM_MPFR_EXTENSION_H
+
 #ifndef GMP_RNDN 
 #include <mpfr.h>
 #endif
@@ -17,4 +21,6 @@ void iRRAM_initialize(int argc,char **argv);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

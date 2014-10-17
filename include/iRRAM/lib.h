@@ -82,7 +82,7 @@ int type;
 };
 #define ERRORDEFINE(x,y) x,
 enum iRRAM_exception_list {
-#include "iRRAM/errno.h"
+#include <iRRAM/errno.h>
 };
 
 
@@ -252,5 +252,4 @@ RESULT limit (RESULT f(int prec,const ARGUMENT&, DISCRETE),
 
 } // namespace iRRAM
 
-#endif
-/* ! iRRAM_LIB_H */
+#endif /* ! iRRAM_LIB_H */

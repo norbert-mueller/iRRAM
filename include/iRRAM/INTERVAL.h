@@ -29,6 +29,9 @@ MA 02111-1307, USA.
 // Not all functions have been implemented!
 /****************************************************************************/
 
+#ifndef iRRAM_INTERVAL_H
+#define iRRAM_INTERVAL_H
+
 namespace iRRAM {
 
 class INTERVAL 
@@ -98,3 +101,5 @@ REAL upp;
 };
 
 } /* ! namespace iRRAM */
+
+#endif

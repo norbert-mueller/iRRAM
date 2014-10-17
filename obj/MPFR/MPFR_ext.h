@@ -22,8 +22,8 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
-#ifndef MPFR_ext_h
-#define MPFR_ext_h
+#ifndef iRRAM_MPFR_EXT_H
+#define iRRAM_MPFR_EXT_H
 
 #ifndef __cplusplus
 /* C++ does not need this macro definition, but when including this file in a C

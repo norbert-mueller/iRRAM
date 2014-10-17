@@ -24,6 +24,10 @@ MA 02111-1307, USA.
 /****************************************************************************/
 // Definition of class LAZY_BOOLEAN 
 /****************************************************************************/
+
+#ifndef iRRAM_LAZYBOOLEAN_H
+#define iRRAM_LAZYBOOLEAN_H
+
 namespace iRRAM {
 
 class LAZY_BOOLEAN
@@ -76,3 +80,5 @@ int choose(const LAZY_BOOLEAN& x1= false,
 
 
 } // namespace iRRAM
+
+#endif

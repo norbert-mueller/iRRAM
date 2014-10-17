@@ -29,8 +29,8 @@ Changelog: (initial version by Tom van Diessen)
   2004-12-20 transformation to inline by Norbert
 */
 
-#ifndef GMP_int_rat
-#define GMP_int_rat
+#ifndef iRRAM_GMP_INT_RAT_H
+#define iRRAM_GMP_INT_RAT_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -234,4 +234,4 @@ static inline int rat_gmp_cmp(const rat_gmp_type z1,const  rat_gmp_type z2){retu
 }
 #endif
 
-#endif /* ifndef GMP_int_rat */
+#endif /* ifndef iRRAM_GMP_INT_RAT_H */

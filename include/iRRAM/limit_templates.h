@@ -21,8 +21,8 @@ along with the iRRAM Library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
-#ifndef iRRAM_limit_templates_h
-#define iRRAM_limit_templates_h
+#ifndef iRRAM_LIMIT_TEMPLATES_H
+#define iRRAM_LIMIT_TEMPLATES_H
 
 #include "iRRAM/core.h"
 
@@ -435,5 +435,4 @@ RESULT lipschitz_1p_1a (RESULT f(const DISCRETE_ARGUMENT&, const PARAM& param),
 } /* ! namespace iRRAM */
 
 
-#endif 
-/* ! iRRAM_limit_templates_h */
+#endif /* ! iRRAM_LIMIT_TEMPLATES_H */

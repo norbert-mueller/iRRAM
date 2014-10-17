@@ -22,6 +22,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
+#ifndef iRRAM_RATIONAL_H
+#define iRRAM_RATIONAL_H
+
 namespace iRRAM {
 
 class RATIONAL
@@ -160,3 +163,5 @@ RATIONAL(MP_int_type y);
 };
 
 } /* ! namespace iRRAM */
+
+#endif

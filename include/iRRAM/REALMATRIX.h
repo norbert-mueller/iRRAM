@@ -22,6 +22,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
+#ifndef iRRAM_REALMATRIX_H
+#define iRRAM_REALMATRIX_H
+
 namespace iRRAM {
 
 class REALMATRIX
@@ -129,3 +132,5 @@ REALMATRIX limit_lip (REALMATRIX f(int, const REALMATRIX&),
                            const REALMATRIX& x);
 
 } // namespace iRRAM
+
+#endif

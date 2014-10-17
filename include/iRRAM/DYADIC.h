@@ -22,6 +22,9 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
+#ifndef iRRAM_DYADIC_H
+#define iRRAM_DYADIC_H
+
 namespace iRRAM {
 
   extern __thread  int iRRAM_DYADIC_precision;
@@ -185,3 +188,5 @@ int precision;
 };
 
 } /* ! namespace iRRAM */
+
+#endif

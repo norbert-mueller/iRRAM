@@ -22,8 +22,8 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 
-#ifndef iRRAM_FUNCTION
-#define iRRAM_FUNCTION
+#ifndef iRRAM_FUNCTION_H
+#define iRRAM_FUNCTION_H
 #include <utility>
 #include <vector>
 #include <functional>	/* std::function */
@@ -622,5 +622,5 @@ REAL limit (const FUNCTION<REAL,int>& f );
 
 
 } //namespace iRRAM
-#endif
 
+#endif

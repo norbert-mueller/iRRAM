@@ -546,6 +546,4 @@ inline std::string swrite(const INTEGER& x){
 
 } /* ! namespace iRRAM */
 
-#endif
-/* ! iRRAM_INTEGER_H */
-
+#endif /* ! iRRAM_INTEGER_H */
