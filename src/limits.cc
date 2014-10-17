@@ -60,7 +60,7 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
 
   while (1) {
    try {
-    DEBUG2(2,"trying to compute limit_gen2 with precision %d...\n",element);
+    iRRAM_DEBUG2(2,"trying to compute limit_gen2 with precision %d...\n",element);
     limnew=f(element,x,y);
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
@@ -68,7 +68,7 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
     if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
     	&&  limnew_error.exponent > x_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]
     	&&  limnew_error.exponent > y_error.exponent -iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
-    DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
+    iRRAM_DEBUG0(2,{fprintf(stderr,"computation not precise enough (%d*2^%d), trying normal p-sequence\n",
                    limnew_error.mantissa,limnew_error.exponent);});
        element_step=1;
        element=4+iRRAM_prec_array[element_step];
@@ -77,10 +77,10 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
     if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ){
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG2(2,"getting result with error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
                    lim_error.mantissa,lim_error.exponent);
       } else {
-      DEBUG1(2,"computation successful, but no improvement\n");
+      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
     if (element<=SAVED_STACK.data.actual_prec)break;
@@ -89,21 +89,21 @@ REAL limit         (REAL f(int, const REAL&, const REAL&),
     }
     catch ( Iteration it)  {
       if ( firsttime==0) {
-      DEBUG1(2,"computation failed, using best success\n");
+      iRRAM_DEBUG1(2,"computation failed, using best success\n");
       break;
       } else
       if ( firsttime==2) {
-      DEBUG1(2,"computation failed, trying normal p-sequence\n");
+      iRRAM_DEBUG1(2,"computation failed, trying normal p-sequence\n");
       element_step=1;
       element=4+iRRAM_prec_array[element_step];
       firsttime=1;
       } else {
-      DEBUG1(1,"computation of limit_gen1 failed totally\n");
+      iRRAM_DEBUG1(1,"computation of limit_gen1 failed totally\n");
       REITERATE(0);
       }}
   }
   lim.seterror(lim_error);
-  DEBUG0(2,{fprintf(stderr,"end of limit_gen2 with error %d*2^(%d)\n",
+  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_gen2 with error %d*2^(%d)\n",
                    lim_error.mantissa,lim_error.exponent);});
   return lim;
 }
@@ -124,9 +124,9 @@ REAL limit (REAL f(int))
 
   while (1) {
    try {
-    DEBUG2(2,"trying to compute limit_0 with precision %d...\n",ACTUAL_STACK.actual_prec);
+    iRRAM_DEBUG2(2,"trying to compute limit_0 with precision %d...\n",ACTUAL_STACK.actual_prec);
     lim=f(SAVED_STACK.data.actual_prec);
-    DEBUG2(2,"getting result with local error %d*2^(%d)\n", lim.error.mantissa, lim.error.exponent);
+    iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n", lim.error.mantissa, lim.error.exponent);
     break;
   }
     catch ( Iteration it) {
@@ -136,7 +136,7 @@ REAL limit (REAL f(int))
    }}
   sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
   lim.adderror(lim_error);
-  DEBUG0(2,{lim.geterror(lim_error);
+  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_0 with error %d*2^(%d)\n",
               lim_error.mantissa,lim_error.exponent);});
   return lim;
@@ -166,27 +166,27 @@ REAL limit_lip (REAL f(int,const REAL&),
 
   while (1) {
     try{
-    DEBUG2(2,"trying to compute limit_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
+    iRRAM_DEBUG2(2,"trying to compute limit_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
     lim=f(SAVED_STACK.data.actual_prec,x_new);
     if (lim.error.exponent > SAVED_STACK.data.actual_prec ) {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip1 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip1 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
-      DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lim.error.mantissa, lim.error.exponent);
       break;
     }}
     catch ( Iteration it){
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } }
   sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
   lim.adderror(lim_error);
   sizetype_shift(lim_error,x_error,lip_value);
   lim.adderror(lim_error);
-  DEBUG0(2,{lim.geterror(lim_error);
+  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_lip1 with error %d*2^(%d)\n",
               lim_error.mantissa,lim_error.exponent);
             fprintf(stderr,"  error of argument: %d*2^(%d)\n",
@@ -222,27 +222,27 @@ REAL limit_lip (REAL f(int,const REAL&),
 
   while (1) {
      try{
-      DEBUG2(2,"trying to compute limit_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"trying to compute limit_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
     lim=f(SAVED_STACK.data.actual_prec,x_new);
     if (lim.error.exponent > SAVED_STACK.data.actual_prec ) {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip1 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip1 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
-      DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lim.error.mantissa, lim.error.exponent);
       break;
     }}
     catch ( Iteration it){
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } }
   sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
   lim.adderror(lim_error);
   sizetype_shift(lim_error,x_error,lip_value);
   lim.adderror(lim_error);
-  DEBUG0(2,{lim.geterror(lim_error);
+  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_lip1 with error %d*2^(%d)\n",
               lim_error.mantissa,lim_error.exponent);
             fprintf(stderr,"  error of argument: %d*2^(%d)\n",
@@ -274,21 +274,21 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
 
   while (1) {
     try {
-      DEBUG2(2,"trying to compute limit_lip2 with precision %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"trying to compute limit_lip2 with precision %d...\n",ACTUAL_STACK.actual_prec);
       lim=f(SAVED_STACK.data.actual_prec,x_new,y_new);
      if (lim.error.exponent > SAVED_STACK.data.actual_prec ) {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip2 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip2 too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
-      DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lim.error.mantissa, lim.error.exponent);
       break;
     }}
     catch ( Iteration it) {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }}
   sizetype_set(lim_error,1,SAVED_STACK.data.actual_prec);
   lim.adderror(lim_error);
@@ -296,7 +296,7 @@ REAL limit_lip     (REAL f(int, const REAL&, const REAL&),
   lim.adderror(lim_error);
   sizetype_shift(lim_error,y_error,lip);
   lim.adderror(lim_error);
-  DEBUG0(2,{lim.geterror(lim_error);
+  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_lip2 with error %d*2^(%d)\n",
               lim_error.mantissa,lim_error.exponent);
             fprintf(stderr,"  error of argument 1: %d*2^(%d)\n",
@@ -321,14 +321,14 @@ REAL lipschitz (REAL f(const REAL&),
   sizetype_exact(x_new.error);
   {
     single_valued code;
-  DEBUG1(2,"starting lipschitz1 ...\n");
+  iRRAM_DEBUG1(2,"starting lipschitz1 ...\n");
   lip_result=f(x_new);
-  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+  iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
-  DEBUG0(2,{lip_result.geterror(lip_error);
+  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_1 with error %d*2^(%d)\n",
               lip_error.mantissa,lip_error.exponent);
             fprintf(stderr,"  for argument with error %d*2^(%d)\n",
@@ -350,7 +350,7 @@ REAL lipschitz (REAL f(const REAL&),
 
   {
     single_valued code;
-  DEBUG1(2,"starting lipschitz1b ...\n");
+  iRRAM_DEBUG1(2,"starting lipschitz1b ...\n");
 
 // for the computation of the Lipschitz bound, we work with
 // reduced precision:
@@ -377,19 +377,19 @@ REAL lipschitz (REAL f(const REAL&),
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
       iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-      DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip2 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }
   }
   }
   
-  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+  iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   lip_bound.getsize(lip_size);
   lip_bound.geterror(tmp_size);
   sizetype_inc(lip_size,tmp_size);
   sizetype_mult(lip_error,lip_size,x_error);
   lip_result.adderror(lip_error);
-  DEBUG0(2,{lip_result.geterror(lip_error);
+  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_1b with error %d*2^(%d)\n",
               lip_error.mantissa,lip_error.exponent);
             fprintf(stderr,"  for argument with error %d*2^(%d)\n",
@@ -412,7 +412,7 @@ REAL lipschitz (REAL f(const REAL&),
 
   {
     single_valued code;
-  DEBUG1(2,"starting lipschitz1a ...\n");
+  iRRAM_DEBUG1(2,"starting lipschitz1a ...\n");
   lip_result=f(x_new);
 
 // for the computation of the Lipschitz bound, we work with
@@ -428,7 +428,7 @@ REAL lipschitz (REAL f(const REAL&),
   ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
   iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 
-  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+  iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
   lip_bound.getsize(lip_size);
@@ -436,7 +436,7 @@ REAL lipschitz (REAL f(const REAL&),
   sizetype_inc(lip_size,tmp_size);
   sizetype_mult(lip_error,lip_size,x_error);
   lip_result.adderror(lip_error);
-  DEBUG0(2,{lip_result.geterror(lip_error);
+  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_1a with error %d*2^(%d)\n",
               lip_error.mantissa,lip_error.exponent);
             fprintf(stderr,"  for argument with error %d*2^(%d)\n",
@@ -459,14 +459,14 @@ REAL lipschitz (REAL f(int, const REAL&),
   sizetype_exact(x_new.error);
   {
     single_valued code;
-  DEBUG1(2,"starting lipschitz1 ...\n");
+  iRRAM_DEBUG1(2,"starting lipschitz1 ...\n");
   lip_result=f(k,x_new);
-  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+  iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
-  DEBUG0(2,{lip_result.geterror(lip_error);
+  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_1 with error %d*2^(%d)\n",
               lip_error.mantissa,lip_error.exponent);
             fprintf(stderr,"  error of argument: %d*2^(%d)\n",
@@ -492,16 +492,16 @@ REAL lipschitz (REAL f(const REAL&, const REAL&),
   sizetype_exact(y_new.error);
   {
     single_valued code;
-  DEBUG1(2,"starting lipschitz2 ...\n");
+  iRRAM_DEBUG1(2,"starting lipschitz2 ...\n");
   lip_result=f(x_new,y_new);
-  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+  iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
   sizetype_shift(lip_error,y_error,lip);
   lip_result.adderror(lip_error);
-  DEBUG0(2,{lip_result.geterror(lip_error);
+  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_2 with error %d*2^(%d)\n",
               lip_error.mantissa,lip_error.exponent);
             fprintf(stderr,"  error of argument x: %d*2^(%d)\n",
@@ -531,16 +531,16 @@ REAL lipschitz (REAL f(int, const REAL&, const REAL&),
   x_new.geterror(x_error);
   {
     single_valued code;
-  DEBUG1(2,"starting lipschitz2 ...\n");
+  iRRAM_DEBUG1(2,"starting lipschitz2 ...\n");
   lip_result=f(k,x_new,y_new);
-  DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+  iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              lip_result.error.mantissa, lip_result.error.exponent);
   }
   sizetype_shift(lip_error,x_error,lip);
   lip_result.adderror(lip_error);
   sizetype_shift(lip_error,y_error,lip);
   lip_result.adderror(lip_error);
-  DEBUG0(2,{lip_result.geterror(lip_error);
+  iRRAM_DEBUG0(2,{lip_result.geterror(lip_error);
             fprintf(stderr,"end of lipschitz_2 with error %d*2^(%d)\n",
               lip_error.mantissa,lip_error.exponent);
             fprintf(stderr,"  error of argument x: %d*2^(%d)\n",
@@ -569,11 +569,11 @@ REAL limit_hint    (REAL f(int, const REAL&),
   x.geterror(element_error);
   int element=max(element_error.exponent,SAVED_STACK.data.actual_prec);
 
-  DEBUG1(2,"starting limit_hint1...\n");
+  iRRAM_DEBUG1(2,"starting limit_hint1...\n");
 
   while (1) {
     try {
-    DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
+    iRRAM_DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x);
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
@@ -581,10 +581,10 @@ REAL limit_hint    (REAL f(int, const REAL&),
     if ( (! success) || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG2(2,"getting result with error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
                lim_error.mantissa, lim_error.exponent);
       } else {
-      DEBUG1(2,"computation successful, but no improvement\n");
+      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       hintcopy=2*hintcopy;
       }
     success=1;
@@ -596,11 +596,11 @@ REAL limit_hint    (REAL f(int, const REAL&),
     element=element+hintcopy;
     }}
   if ( ! success) {
-    DEBUG1(1,"computation of limit_hint1 failed\n");
+    iRRAM_DEBUG1(1,"computation of limit_hint1 failed\n");
     REITERATE(0);
   }
   lim.seterror(lim_error);
-  DEBUG0(2,{fprintf(stderr,"end of limit_hint1 with error %d*2^(%d)\n",
+  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_hint1 with error %d*2^(%d)\n",
                    lim_error.mantissa,lim_error.exponent);});
   return lim;
 }
@@ -629,7 +629,7 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
 
   while (1) {
     try {
-    DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
+    iRRAM_DEBUG2(2,"trying to compute limit_hint1 with precicion 2^(%d)...\n",element);
     limnew=f(element,x,y);
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
@@ -637,10 +637,10 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
     if ( (! success) || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG2(2,"getting result with error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
                lim_error.mantissa, lim_error.exponent);
       } else {
-      DEBUG1(2,"computation successful, but no improvement\n");
+      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       hintcopy=2*hintcopy;
       }
     success=1;
@@ -652,11 +652,11 @@ REAL limit_hint    (REAL f(int, const REAL&, const REAL&),
     element=element+hintcopy;
     }}
   if ( ! success) {
-    DEBUG1(1,"computation of limit_hint1 failed\n");
+    iRRAM_DEBUG1(1,"computation of limit_hint1 failed\n");
     REITERATE(0);
   }
   lim.seterror(lim_error);
-  DEBUG0(2,{fprintf(stderr,"end of limit_hint1 with error %d*2^(%d)\n",
+  iRRAM_DEBUG0(2,{fprintf(stderr,"end of limit_hint1 with error %d*2^(%d)\n",
                    lim_error.mantissa,lim_error.exponent);});
   return lim;
 }
@@ -686,30 +686,30 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
 
   while (1) {
    try {
-     DEBUG2(2,"trying to compute limit_matrix_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
+     iRRAM_DEBUG2(2,"trying to compute limit_matrix_lip1 with precision %d...\n",ACTUAL_STACK.actual_prec);
      limnew=f(SAVED_STACK.data.actual_prec,x_new);
      lim=limnew;
      lim.geterror(lim_error);
      if (lim_error.exponent > SAVED_STACK.data.actual_prec ) {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip too imprecise, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } else {
-      DEBUG0(2,fprintf(stderr,"getting result with local error %d*2^(%d)\n",
+      iRRAM_DEBUG0(2,fprintf(stderr,"getting result with local error %d*2^(%d)\n",
                 lim_error.mantissa,lim_error.exponent););
     break;
   }}
     catch ( Iteration it)  {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"limit_lip1 failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     }}
   sizetype_exact(lim_error);
   lim.adderror(lim_error);
   x.geterror(lim_error);
   sizetype_shift(lim_error,lim_error,lip);
   lim.adderror(lim_error);
-  DEBUG0(2,{lim.geterror(lim_error);
+  iRRAM_DEBUG0(2,{lim.geterror(lim_error);
             fprintf(stderr,"end of limit_matrix_lip1 with error %d*2^(%d)\n",
                 lim_error.mantissa,lim_error.exponent);});
 
@@ -737,10 +737,10 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
 //   ACTUAL_STACK.prec_inc=-50;
 // 
 // 
-//   DEBUG1(2,"starting iteration...\n");
+//   iRRAM_DEBUG1(2,"starting iteration...\n");
 //   while (1) {
 //      try{
-//       DEBUG2(2,"trying to compute iteration with precision %d...\n",ACTUAL_STACK.actual_prec);
+//       iRRAM_DEBUG2(2,"trying to compute iteration with precision %d...\n",ACTUAL_STACK.actual_prec);
 //       REAL lcc=lc;
 //       REAL rcc=rc;
 //       f(lcc,rcc,param);
@@ -755,25 +755,25 @@ REALMATRIX limit_lip (REALMATRIX f(int,const REALMATRIX&),
 // stiff_end();stiff_end();
 // 
 //       if (diff.vsize.exponent > SAVED_STACK.actual_prec ) {
-//         DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",
+//         iRRAM_DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",
 //               diff.vsize.mantissa,diff.vsize.exponent);});
 //       ACTUAL_STACK.prec_inc=int(ACTUAL_STACK.prec_inc * ACTUAL_STACK.prec_factor)+iRRAM_prec_inc1;
 //       ACTUAL_STACK.actual_prec=iRRAM_starting_prec+ACTUAL_STACK.prec_inc;
-//       DEBUG2(2,"iteration result too imprecise, trying a new iteration with %d...\n",ACTUAL_STACK.actual_prec);
+//       iRRAM_DEBUG2(2,"iteration result too imprecise, trying a new iteration with %d...\n",ACTUAL_STACK.actual_prec);
 //     } else {
-//       DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+//       iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
 //              diff.vsize.mantissa, diff.vsize.exponent);
 //       break;
 //     }}
 //     catch ( Iteration it){
 //       ACTUAL_STACK.prec_inc=int(ACTUAL_STACK.prec_inc * ACTUAL_STACK.prec_factor)+iRRAM_prec_inc1;
 //       ACTUAL_STACK.actual_prec=iRRAM_starting_prec+ACTUAL_STACK.prec_inc;
-//       DEBUG2(2,"iteration failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+//       iRRAM_DEBUG2(2,"iteration failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
 //     } }
 //       sizetype_half(diff_size,diff.vsize);
 //       lc=scale(lc+rc,-1);
 //       lc.adderror(diff_size);
-//   DEBUG0(2,{ fprintf(stderr,"end of iteration with error %d*2^(%d)\n",
+//   iRRAM_DEBUG0(2,{ fprintf(stderr,"end of iteration with error %d*2^(%d)\n",
 //               diff_size.mantissa,diff_size.exponent);});
 //   return lc;
 // }
@@ -799,10 +799,10 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
   REAL lcc,rcc;
 
 
-  DEBUG1(2,"starting iteration...\n");
+  iRRAM_DEBUG1(2,"starting iteration...\n");
   while (1) {
      try{
-      DEBUG2(2,"trying to compute iteration with precision %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"trying to compute iteration with precision %d...\n",ACTUAL_STACK.actual_prec);
       REAL lcc=lc;
       REAL rcc=rc;
       diff_old_size=diff_size;
@@ -819,27 +819,27 @@ REAL iteration (void f(REAL&,REAL&,const int& param),
       }
       diff.getsize(diff_size);
       if (diff_size.exponent > SAVED_STACK.data.actual_prec ) {
-        DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",
+        iRRAM_DEBUG0(2,{ fprintf(stderr,"iteration with error %d*2^(%d)\n",
               diff_size.mantissa,diff_size.exponent);});
       if (diff_size.exponent >= diff_old_size.exponent ) {
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];}
-      DEBUG2(2,"iteration result too imprecise, trying a new iteration with %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"iteration result too imprecise, trying a new iteration with %d...\n",ACTUAL_STACK.actual_prec);
     } else {
-      DEBUG2(2,"getting result with local error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with local error %d*2^(%d)\n",
              diff_size.mantissa, diff_size.exponent);
       break;
     }}
     catch ( Iteration it){
       ACTUAL_STACK.prec_step+=2;
       ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-      DEBUG2(2,"iteration failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
+      iRRAM_DEBUG2(2,"iteration failed, increasing precision locally to %d...\n",ACTUAL_STACK.actual_prec);
     } }
       sizetype_half(diff_size_h,diff_size);
       lc=scale(lc+rc,-1);
       lc.adderror(diff_size_h);
       lc.geterror(error);
-  DEBUG0(2,{ fprintf(stderr,"end of iteration with error %d*2^(%d)\n",
+  iRRAM_DEBUG0(2,{ fprintf(stderr,"end of iteration with error %d*2^(%d)\n",
               error.mantissa,error.exponent);});
   return lc;
 }
@@ -872,13 +872,13 @@ REAL limit (const FUNCTION<REAL,int> & f )
 
   while (1) {
     try {
-    DEBUG2(2,"trying to compute limit_FUNCTION with precicion 2^(%d)...\n",element);
+    iRRAM_DEBUG2(2,"trying to compute limit_FUNCTION with precicion 2^(%d)...\n",element);
     limnew=f(element);
     sizetype_set(element_error,1,element);
     limnew.geterror(limnew_error);
     sizetype_inc(limnew_error,element_error);
     if (firsttime ==2 ) if ( limnew_error.exponent > iRRAM_prec_array[SAVED_STACK.data.prec_step-1]) {
-    DEBUG0(2,{cerr<<"computation not precise enough ("
+    iRRAM_DEBUG0(2,{cerr<<"computation not precise enough ("
                   << limnew_error.mantissa <<"*2^"<< limnew_error.exponent
                   <<"), trying normal p-sequence\n";});
        element_step=1;
@@ -888,10 +888,10 @@ REAL limit (const FUNCTION<REAL,int> & f )
     if ( firsttime != 0 || sizetype_less(limnew_error,lim_error) ) {
       lim=limnew;
       lim_error=limnew_error;
-      DEBUG2(2,"getting result with error %d*2^(%d)\n",
+      iRRAM_DEBUG2(2,"getting result with error %d*2^(%d)\n",
                lim_error.mantissa, lim_error.exponent);
       } else {
-      DEBUG1(2,"computation successful, but no improvement\n");
+      iRRAM_DEBUG1(2,"computation successful, but no improvement\n");
       }
     firsttime=0;
     if (element<=SAVED_STACK.data.actual_prec)break;
@@ -900,21 +900,21 @@ REAL limit (const FUNCTION<REAL,int> & f )
     }
     catch ( Iteration it) {
       if ( firsttime==0) {
-      DEBUG1(2,"computation failed, using best success\n");
+      iRRAM_DEBUG1(2,"computation failed, using best success\n");
       break;
       } else
       if ( firsttime==2) {
-      DEBUG1(2,"computation failed, trying normal p-sequence\n");
+      iRRAM_DEBUG1(2,"computation failed, trying normal p-sequence\n");
       element_step=1;
       element=4+iRRAM_prec_array[element_step];
       firsttime=1;
       } else {
-      DEBUG1(1,"computation of limit_FUNCTION failed totally\n");
+      iRRAM_DEBUG1(1,"computation of limit_FUNCTION failed totally\n");
       REITERATE(0);
       }}
   }
   lim.seterror(lim_error);
-  DEBUG0(2,{cerr<<"end of limit_FUNCTION with error "
+  iRRAM_DEBUG0(2,{cerr<<"end of limit_FUNCTION with error "
                 << lim_error.mantissa <<"*2^("<< lim_error.exponent<<")\n";});
   return lim;
 }

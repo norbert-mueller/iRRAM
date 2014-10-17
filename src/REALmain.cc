@@ -119,38 +119,38 @@ for (int i=0;i<argc;i+=1)
 if (!strncmp(argv[i],"-d",2)) 
 	{
 	iRRAM_debug=1;
-	DEBUG1(1,"Debugging Mode\n");
+	iRRAM_DEBUG1(1,"Debugging Mode\n");
 	}
 if (!strncmp(argv[i],"--debug=",8)) 
 	{
 	iRRAM_debug=atoi(&(argv[i][8]));
-	DEBUG2(1,"Debugging Level %d\n",iRRAM_debug);
+	iRRAM_DEBUG2(1,"Debugging Level %d\n",iRRAM_debug);
 	}
 if (!strncmp(argv[i],"--prec_init=",12)) 
 	{
 	iRRAM_starting_prec=atoi(&(argv[i][12]));
-	DEBUG2(1,"Initialising precision to 2^(%d)\n",iRRAM_starting_prec);
+	iRRAM_DEBUG2(1,"Initialising precision to 2^(%d)\n",iRRAM_starting_prec);
 	}
 if (!strncmp(argv[i],"--prec_inc=",11)) 
 	{
 	int hi;
 	hi=atoi(&(argv[i][11]));
 	if (hi>0) iRRAM_prec_inc=-hi;
-	DEBUG2(1,"Initialising precision increment to %d bits\n",-iRRAM_prec_inc);
+	iRRAM_DEBUG2(1,"Initialising precision increment to %d bits\n",-iRRAM_prec_inc);
 	}
 if (!strncmp(argv[i],"--prec_factor=",14)) 
 	{
 	double hd;
 	hd=atof(&(argv[i][14]));
 	if (hd>1.0) iRRAM_prec_factor=hd;
-	DEBUG2(1,"Initialising precision factor to %f\n",iRRAM_prec_factor);
+	iRRAM_DEBUG2(1,"Initialising precision factor to %f\n",iRRAM_prec_factor);
 	}
 if (!strncmp(argv[i],"--prec_skip=",12)) 
 	{
 	int hi;
 	hi=atoi(&(argv[i][12]));
 	if (hi>0) iRRAM_prec_skip=hi;
-	DEBUG2(1,"Changed heuristic for precision changes to skip at most %d steps\n",iRRAM_prec_skip);
+	iRRAM_DEBUG2(1,"Changed heuristic for precision changes to skip at most %d steps\n",iRRAM_prec_skip);
 	}
 
 if (!strncmp(argv[i],"--prec_start=",13)) 
@@ -158,7 +158,7 @@ if (!strncmp(argv[i],"--prec_start=",13))
 	int hi;
 	hi=atoi(&(argv[i][13]));
 	if (hi>0) iRRAM_prec_start=hi;
-	DEBUG2(1,"Changed inital precision step to %d \n",iRRAM_prec_start);
+	iRRAM_DEBUG2(1,"Changed inital precision step to %d \n",iRRAM_prec_start);
 	}
 
 

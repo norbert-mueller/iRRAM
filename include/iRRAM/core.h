@@ -59,17 +59,17 @@ extern __thread  int iRRAM_max_prec;
 extern __thread  int iRRAM_prec_start;
 
 #ifndef NODEBUG
-  #define DEBUG0(level,...)                                                     \
+  #define iRRAM_DEBUG0(level,...)                                                     \
 	do {                                                                    \
 		if (iRRAM_unlikely(iRRAM_debug>=ACTUAL_STACK.inlimit+(level))) {\
 			__VA_ARGS__;                                            \
 		}                                                               \
 	} while (0)
 #else
-  #define DEBUG0(level,p)
+  #define iRRAM_DEBUG0(level,...)
 #endif
-#define DEBUG1(level,p)		DEBUG0((level),cerr << p)
-#define DEBUG2(level,...)	DEBUG0((level),fprintf(stderr,__VA_ARGS__))
+#define iRRAM_DEBUG1(level,p)		iRRAM_DEBUG0((level),cerr << p)
+#define iRRAM_DEBUG2(level,...)	iRRAM_DEBUG0((level),fprintf(stderr,__VA_ARGS__))
 
 
 struct Iteration {int prec_diff; Iteration (int p){prec_diff=p;}; };
@@ -121,7 +121,7 @@ inline void sizetype_normalize( sizetype& e) {
   }
   if (iRRAM_unlikely( e.exponent >= MP_max ) ) 
   {
-    DEBUG1(1,"exponent too big in sizetype_normalize ");
+    iRRAM_DEBUG1(1,"exponent too big in sizetype_normalize ");
     REITERATE(0);
   }
 }
@@ -257,12 +257,12 @@ inline void sizetype_shift(sizetype& x,const sizetype& y,const int s)
   x.mantissa=y.mantissa;
 
   if (iRRAM_unlikely( x.exponent < MP_min ) ) {
-    DEBUG1(1,"warning: small exponent found in sizetype_shift\n");
+    iRRAM_DEBUG1(1,"warning: small exponent found in sizetype_shift\n");
     x.exponent = min_exponent;
 //    x.mantissa = 1;
   } else  if ( iRRAM_unlikely(x.exponent >= MP_max) ) 
   {
-    DEBUG1(1,"exponent too big in sizetype_shift ");
+    iRRAM_DEBUG1(1,"exponent too big in sizetype_shift ");
     REITERATE(0);
   }
 }

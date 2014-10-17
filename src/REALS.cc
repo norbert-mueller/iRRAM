@@ -186,7 +186,7 @@ std::string swrite(const REAL& x, const int w, const int form)
     int s=MP_size(x.value);
     int mantissa=(int)((s-x.error.exponent-GUARD_BITS)*.30103); 
     if (sizetype_less(psize,x.error)|| (s>p && mantissa+8 < width) ) {
-      DEBUG2(1,"insufficient precision %d*2^(%d) in conversion with precision 2^(%d)\n",
+      iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in conversion with precision 2^(%d)\n",
          x.error.mantissa,x.error.exponent,p);
       REITERATE(p-x.error.exponent);
     }
@@ -222,7 +222,7 @@ std::string swrite(const REAL& x, const int w, const int form)
      int s=MP_size(x.value);
      int mantissa=(int)((s-x.error.exponent-GUARD_BITS)*.30103); 
      if (sizetype_less(psize,x.error)|| (s>p && mantissa+8 < width) ) {
-       DEBUG2(1,"insufficient precision %d*2^(%d) in writing with precision 2^(%d)\n",
+       iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in writing with precision 2^(%d)\n",
          x.error.mantissa,x.error.exponent,p);
        REITERATE(p-x.error.exponent);
      }
@@ -359,7 +359,7 @@ REAL REAL::mp_division (const REAL& y)const
   int local_prec;
   sizetype_half(h1,y.vsize);
   if (sizetype_less(h1,y.error)) {
-      DEBUG2(1,"insufficient precision %d*2^(%d) in denominator of size %d*2^(%d)\n",
+      iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in denominator of size %d*2^(%d)\n",
               y.error.mantissa,y.error.exponent,y.vsize.mantissa,y.vsize.exponent);
       REITERATE(0);
     }
@@ -436,7 +436,7 @@ LAZY_BOOLEAN REAL::mp_less (const REAL& y)const
   MP_getsize(z.value,s);
   if (sizetype_less(s,z.error) )
 	{
-	DEBUG2(1,"insufficient precisions %d*2^(%d) and %d*2^(%d) in comparing\n",
+	iRRAM_DEBUG2(1,"insufficient precisions %d*2^(%d) and %d*2^(%d) in comparing\n",
               this->error.mantissa,this->error.exponent,
               y.error.mantissa,y.error.exponent);
         return LAZY_BOOLEAN::BOTTOM;
@@ -523,7 +523,7 @@ LAZY_BOOLEAN positive (const REAL& x, int k)
   sizetype_set(ksize,1,k);
   if (sizetype_less(ksize,x.error) && sizetype_less(x.vsize,x.error) ) 
     {
-      DEBUG2(1,"insufficient precision %d*2^(%d) in test on positive\n",
+      iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in test on positive\n",
 		x.error.mantissa,x.error.exponent);
       return LAZY_BOOLEAN::BOTTOM;
     }
@@ -544,7 +544,7 @@ DYADIC approx (const REAL& x, const int p) {
   sizetype_set(psize,1,p+1);
   if (sizetype_less(psize,x.error) )
      {
-       DEBUG2(1,"insufficient precision %d*2^(%d) in approx(%d)\n",
+       iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in approx(%d)\n",
            x.error.mantissa,x.error.exponent,p);
        REITERATE(p-x.error.exponent);
      }
@@ -580,7 +580,7 @@ int size (const REAL& x) {
   sizetype_inc(xsize,x.error);
   if (sizetype_less(x.vsize,xsize) )
 	{  
-	DEBUG2(1,"insufficient precision %d*2^(%d) in size %d*2^(%d)\n",
+	iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in size %d*2^(%d)\n",
            x.error.mantissa,x.error.exponent,x.vsize.mantissa,x.vsize.exponent);
 	REITERATE(0);
 	}
@@ -620,7 +620,7 @@ LAZY_BOOLEAN bound (const REAL& x, const int k) {
   sizetype_add(highsize,x.vsize,x.error);
   if (sizetype_less(x.vsize,lowsize) && sizetype_less(ksize,highsize) ) 
     {  
-      DEBUG2(1,"insufficient precision %d*2^(%d) in bounding by 2^(%d) for argument of size  %d*2^(%d)\n",
+      iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) in bounding by 2^(%d) for argument of size  %d*2^(%d)\n",
               x.error.mantissa,x.error.exponent,k,x.vsize.mantissa,x.vsize.exponent);
       return LAZY_BOOLEAN::BOTTOM;
     }
@@ -738,7 +738,7 @@ INTEGER REAL::as_INTEGER() const {
   y.mp_conv();
   if (sizetype_less(psize,y.error) )
      {
-       	DEBUG2(1,"insufficient precision %d*2^(%d) converting to integer\n",this->error.mantissa,this->error.exponent);
+       	iRRAM_DEBUG2(1,"insufficient precision %d*2^(%d) converting to integer\n",this->error.mantissa,this->error.exponent);
        	REITERATE(-y.error.exponent);
      }
   MP_int_init(value);
