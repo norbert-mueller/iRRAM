@@ -84,19 +84,18 @@ AC_MSG_RESULT(checking gmp header... )
 AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 
 if test -z "$gmp_lib" ;  then 
-	AC_TRY_RUN( [
+	AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 		#include <cstdio>
 		#include <gmp.h>
 		#include <cstring>
+		#if __GNU_MP_VERSION < 4 || __GNU_MP_VERSION == 4 && __GNU_MP_VERSION_MINOR < 1
+		# error installed GMP library header version too old
+		#endif
 		int main(int argc, char *argv[])
 		{ //if ( strcmp (gmp_version,"4.1") < 0 ) return 1;
-		  if ( __GNU_MP_VERSION < 4 ) return 1;
-		  if ( __GNU_MP_VERSION == 4 && __GNU_MP_VERSION_MINOR < 1 ) return 1;
 		  return 0;
 		}
-	],AC_MSG_RESULT([found recent GMP]),
-	AC_MSG_ERROR([found GMP < 4.1... GMP version too old]),
-	AC_MSG_ERROR( [cross compiling not supported! ] ) ) 
+	]])],[AC_MSG_RESULT([found recent GMP])],[AC_MSG_ERROR([found GMP < 4.1... GMP version too old])])
 fi
 if test -z "$gmp_lib" ;  then 
 	AC_MSG_RESULT( [GMP check successful! ] )
