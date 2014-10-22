@@ -30,9 +30,9 @@ MA 02111-1307, USA.
 #include <cfenv>
 #include <pthread.h>
 
-#include "iRRAM/lib.h"
-#include "iRRAM/version.h"
-#include "iRRAM/cache.h"
+#include <iRRAM/lib.h>
+#include <iRRAM/version.h>
+#include <iRRAM/cache.h>
 
 namespace iRRAM {
 

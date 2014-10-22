@@ -22,15 +22,15 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 MA 02111-1307, USA. 
 */
 #include <cmath>
-#include <stdlib.h>
-#include <stdarg.h>
+#include <cstdlib>
+#include <cstdarg>
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 #if iRRAM_BACKEND_MPFR
 	#include "MPFR_ext.h"
 #else
-	#include "Currently no further backends defined!"
+	#error "Currently no further backends defined!"
 #endif
 
 namespace iRRAM {

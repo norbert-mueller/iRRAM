@@ -23,7 +23,7 @@ MA 02111-1307, USA.
 */
 
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 #include <fstream>
 #include <iostream>

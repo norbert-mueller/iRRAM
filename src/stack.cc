@@ -23,11 +23,11 @@ MA 02111-1307, USA.
 */
 
 #include <cmath>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 
 namespace iRRAM {

@@ -34,11 +34,11 @@ Changelog: (initial version by Tom, all modifications by Norbert)
 
 */
 
-/*#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+/*#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 #define maxsint 2147483647
 #define maxint 2*(maxsint-1) */

@@ -1,12 +1,12 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 #if iRRAM_BACKEND_MPFR
 	#include "MPFR_ext.h"
 #else
-	#include "Currently no additional backend!"
+	#error "Currently no additional backend!"
 #endif
 
 namespace iRRAM {
