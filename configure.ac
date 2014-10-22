@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(iRRAM,2014_01,[],[],[iRRAM.uni-trier.de])
+AC_INIT(iRRAM,2014_01,[],[iRRAM],[iRRAM.uni-trier.de])
 
 iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
@@ -47,21 +47,21 @@ AC_PROG_CXX
 AC_PROG_MAKE_SET
 AC_PROG_LN_S
 
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 
-AC_CHECK_LIB(m, main,LIBS_INST="-lm")
+AC_CHECK_LIB(m,sin,LIBS_INST="-lm")
 
 dnl If compiler is gcc, then use some warning flags
 if test -n "$GCC"; then
-  CFLAGS="$CFLAGS -Wall -Wno-implicit -Wmissing-prototypes -pedantic"
-  CXXFLAGS="$CXXFLAGS -Wall -pedantic"
+  AM_CFLAGS="$AM_CFLAGS -Wall -Wno-implicit -Wmissing-prototypes -pedantic"
+  AM_CXXFLAGS="$AM_CXXFLAGS -Wall -pedantic"
 fi
 
 case "$host" in
 *-mingw*)
 	dnl Use ANSI printf modifiers in mingw32.
 	dnl See <http://sourceforge.net/p/mingw-w64/wiki2/gnu%20printf/>
-	CPPFLAGS="-D__USE_MINGW_ANSI_STDIO=1 $CPPFLAGS"
+	AM_CPPFLAGS="$AM_CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1"
 
 	dnl Do not use dynamic linking on Windows
 	AM_LDFLAGS="-all-static $AM_LDFLAGS"
@@ -85,12 +85,15 @@ if test "$with_lib_path" != "" ; then
 	LIBS="$LDADD $LIBS_INST"
 fi
 
-CPPFLAGS_INST="$CPPFLAGS $AM_CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $AM_CPPFLAGS"
+CPPFLAGS_INST="$AM_CPPFLAGS $CPPFLAGS"
 AS_BOX([checking GMP header...])
 AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 
-if test -z "$gmp_lib" ;  then 
+if test -z "$gmp_lib" ;  then
+	save_CPPFLAGS="$CPPFLAGS"
+	save_CXXFLAGS="$CXXFLAGS"
+	CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
+	CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 	AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 		#include <cstdio>
 		#include <gmp.h>
@@ -103,15 +106,24 @@ if test -z "$gmp_lib" ;  then
 		  return 0;
 		}
 	]])],[AC_MSG_RESULT([found recent GMP])],[AC_MSG_ERROR([found GMP < 4.1... GMP version too old])])
-fi
-if test -z "$gmp_lib" ;  then 
-	AC_MSG_RESULT( [GMP check successful! ] )
-else
-	AC_MSG_ERROR( [GMP not found! You need to install GMP first!], 100 ) 
+
+	save_LDFLAGS="$LDFLAGS"
+	LIBS="-lgmp $LIBS"
+	LDFLAGS="$AM_LDFLAGS $LDFLAGS"
+	AC_LINK_IFELSE([AC_LANG_SOURCE([[
+		#include <gmp.h>
+		int main() {
+			mpz_init(0);
+			return 0;
+		}
+	]])],[
+		LIBS_INST="-lgmp $LIBS_INST"
+		LIBS="$LDADD $LIBS_INST"],[AC_MSG_ERROR([Linking to GMP failed.])])
+	LDFLAGS="$save_LDFLAGS"
+	CPPFLAGS="$save_CPPFLAGS"
+	CXXFLAGS="$save_CXXFLAGS"
 fi
 
-LIBS_INST="$LIBS_INST -lgmp"
-LIBS="$LDADD $LIBS_INST"
 
 with_backends=`echo "$with_backends" | sed 's#,\+# #g' | tr '[[:lower:]]' '[[:upper:]]'`
 with_backends=`echo $with_backends`
