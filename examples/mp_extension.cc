@@ -4,10 +4,10 @@
 using namespace iRRAM;
 
 // iRRAM-routine to compute a DYADIC cosine
-DYADIC compute_cos(DYADIC x, int p) { return approx(cos(REAL(x)),p); }
+DYADIC compute_cos(const DYADIC &x, const int &p) { return approx(cos(REAL(x)),p); }
 
-template DYADIC iRRAM::iRRAM_exec <DYADIC,int,DYADIC>
-(DYADIC (*) (DYADIC,int),DYADIC,int);
+template DYADIC iRRAM::iRRAM_exec <DYADIC,DYADIC,int>
+(DYADIC (*) (const DYADIC &,const int &),const DYADIC &,const int &);
 
 
 

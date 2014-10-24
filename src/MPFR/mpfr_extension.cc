@@ -32,7 +32,7 @@ MA 02111-1307, USA.
 
 using namespace iRRAM;
 
-typedef  DYADIC (DYADIC_function) (DYADIC,int);
+typedef  DYADIC (DYADIC_function) (const DYADIC &,const int &);
 
 inline void mpfr_wrapper(DYADIC_function f, mpfr_ptr r, mpfr_srcptr u,int p){
   DYADIC arg,res;
@@ -44,7 +44,7 @@ inline void mpfr_wrapper(DYADIC_function f, mpfr_ptr r, mpfr_srcptr u,int p){
 }
 
 
-DYADIC compute_test(DYADIC x, int p) { return approx(sin(REAL(x)) ,p); }
+DYADIC compute_test(const DYADIC &x, const int &p) { return approx(sin(REAL(x)) ,p); }
 
 void mpfr_ext_test (mpfr_ptr y, mpfr_srcptr u, int p, mp_rnd_t rnd_mode)
    {
@@ -63,17 +63,17 @@ void mpfr_ext_test (mpfr_ptr y, mpfr_srcptr u, int p, mp_rnd_t rnd_mode)
      mpfr_clear(r);
    }
 
-DYADIC compute_exp(DYADIC x, int p) { return approx(exp(REAL(x)),p); }
+DYADIC compute_exp(const DYADIC &x, const int &p) { return approx(exp(REAL(x)),p); }
 void mpfr_ext_exp (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_exp,r,u,p);}
 
-DYADIC compute_log(DYADIC x, int p) { return approx(log(REAL(x)),p); }
+DYADIC compute_log(const DYADIC &x, const int &p) { return approx(log(REAL(x)),p); }
 void mpfr_ext_log (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_log,r,u,p);}
 
-DYADIC compute_sin(DYADIC x, int p) { return approx(sin(REAL(x)),p); }
+DYADIC compute_sin(const DYADIC &x, const int &p) { return approx(sin(REAL(x)),p); }
 void mpfr_ext_sin (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_sin,r,u,p);}
 
-DYADIC compute_cos(DYADIC x, int p) { return approx(cos(REAL(x)),p); }
+DYADIC compute_cos(const DYADIC &x, const int &p) { return approx(cos(REAL(x)),p); }
 void mpfr_ext_cos (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_cos,r,u,p);}
 
-DYADIC compute_tan(DYADIC x, int p) { return approx(tan(REAL(x)),p); }
+DYADIC compute_tan(const DYADIC &x, const int &p) { return approx(tan(REAL(x)),p); }
 void mpfr_ext_tan (mpfr_ptr r, mpfr_srcptr u,int p){mpfr_wrapper(compute_tan,r,u,p);}

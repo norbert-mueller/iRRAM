@@ -5,9 +5,7 @@ using namespace std;
 using namespace iRRAM;
 
 
-template int iRRAM::iRRAM_exec <string*,string*> (int (*) (string*,string*),string*, string*);
-
-int iRRAM_compute(string* in_par,string *out_par) {
+int iRRAM_compute(string*const &in_par,string *const &out_par) {
 
 REAL x1=in_par[0].c_str();
 REAL x2=in_par[1].c_str();
@@ -29,7 +27,7 @@ in[1]="2.3456";
 
 string out[2];
 
-iRRAM_exec(iRRAM_compute,in,out);
+iRRAM_exec<int,string*,string*>(iRRAM_compute,in,out);
 
 printf("%s %s %s %s\n",in[0].c_str(),in[1].c_str(),out[0].c_str(),out[1].c_str());
 }

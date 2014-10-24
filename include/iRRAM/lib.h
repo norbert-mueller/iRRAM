@@ -64,8 +64,8 @@ extern "C" void iRRAM_initialize(int argc,char** argv);
 
 namespace iRRAM{
 
-template <class ARGUMENT, class RESULT> 
- RESULT iRRAM_exec (RESULT f(const ARGUMENT&), const ARGUMENT&);
+template <class RESULT,class... ARGUMENT> 
+ RESULT iRRAM_exec (RESULT (*f)(const ARGUMENT&...), const ARGUMENT&...);
 
 
 // forward declaration of some classes

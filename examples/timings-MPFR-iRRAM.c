@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <gmp.h>
 #include <mpfr.h>
-#include "iRRAM/mpfr_extension.h"
+
+#include <iRRAM/mpfr_extension.h>
+
+void iRRAM_initialize(int argc,char** argv);
 
 int cputime (void);
 

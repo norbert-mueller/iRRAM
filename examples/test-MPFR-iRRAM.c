@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <gmp.h>
 #include <mpfr.h>
-#include "iRRAM/mpfr_extension.h"
+#include <iRRAM/mpfr_extension.h>
+
+void iRRAM_initialize(int,char**);
 
 int main(int argc, char *argv[])
 {
