@@ -4,7 +4,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = doc include obj tests
+SUBDIRS = doc include build tests
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
@@ -28,7 +28,7 @@ install-data-hook:
 
 examples: install
 	@echo -e "\n***  Compiling examples ***\n"
-	$(MAKE) -C examples
+	(cd examples && $(MAKE))
 
 # Still missing functionality:
 #LIBTOOLFLAGS+=--silent
@@ -37,10 +37,10 @@ install-data-local:
 	(cd examples; sed -e 's#\$${prefix}#${prefix}#' -e 's#\$${exec_prefix}#${exec_prefix}#' Makefile-pre > Makefile )
 
 clean-local:
-	$(MAKE) -C examples -f Makefile-pre clean
+	(cd examples && $(MAKE) -f Makefile-pre clean)
 
 distclean-local:
-#	rm -vfr installed
-	rm -vf examples/Makefile
-	rm -vf m4/libtool.m4  m4/lt~obsolete.m4  m4/ltoptions.m4  m4/ltsugar.m4  m4/ltversion.m4
-#	rm -vf test-driver missing install-sh ltmain.sh compile config.guess  config.sub depcomp
+#	rm -fr installed
+	rm -f examples/Makefile
+	rm -f m4/libtool.m4  m4/lt~obsolete.m4  m4/ltoptions.m4  m4/ltsugar.m4  m4/ltversion.m4
+#	rm -f test-driver missing install-sh ltmain.sh compile config.guess  config.sub depcomp

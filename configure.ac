@@ -155,7 +155,7 @@ done
 BACKENDS=`echo $BACKENDS`
 AC_SUBST(iRRAM_BACKEND_MPFR)
 AM_CONDITIONAL([WITH_BACKEND_MPFR],[test x$iRRAM_BACKEND_MPFR = x1])
-AC_SUBST(iRRAM_BACKENDS,[${BACKENDS// /,}])
+AC_SUBST(iRRAM_BACKENDS,[`echo ${BACKENDS} | tr ' ' ,`])
 
 AC_CHECK_HEADERS(pthread.h)
 AC_CHECK_LIB(pthread, pthread_create,LIBS_INST="$LIBS_INST -lpthread")
@@ -191,19 +191,20 @@ AC_SUBST(iRRAM_src)
 MAKEFILES=""
 
 for j in $iRRAM_src; do
-	AC_CONFIG_LINKS(obj/$j:$srcdir/src/$j)
+	AC_CONFIG_LINKS(build/$j:$srcdir/src/$j)
 done
 
 MPFR_src="MPFR_ext.c mpfr_extension.cc MPFR_ext.h"
 
 for be in $BACKENDS; do
 	be_src=${be}_src
-	for i in ${!be_src}; do
-		AC_CONFIG_LINKS(obj/$i:$srcdir/src/$be/$i)
+	be_src=`eval echo \\\$${be_src}`
+	for i in ${be_src}; do
+		AC_CONFIG_LINKS(build/$i:$srcdir/src/$be/$i)
 	done
 done
 
-AC_CONFIG_FILES([obj/Makefile])
+AC_CONFIG_FILES([build/Makefile])
 AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h] )
 
 AC_OUTPUT(Makefile include/Makefile tests/Makefile examples/Makefile-pre doc/Makefile )

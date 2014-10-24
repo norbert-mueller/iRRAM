@@ -1,6 +1,6 @@
 DEFAULT_INCLUDES=-I$(top_srcdir)/include -I$(top_builddir)/include
 
-LDADD=../obj/libiRRAM.la @LDADD@
+LDADD=$(top_builddir)/build/libiRRAM.la @LDADD@
 
 check_PROGRAMS = t_DYADIC t_INTEGER t_RATIONAL t_double_conv t_size t_string_conv t_FUNCTION
 
