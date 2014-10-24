@@ -93,20 +93,11 @@ if test -z "$gmp_lib" ;  then
 	save_CPPFLAGS="$CPPFLAGS"
 	save_CXXFLAGS="$CXXFLAGS"
 	CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
-	CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
-	AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-		#include <cstdio>
-		#include <gmp.h>
-		#include <cstring>
-		#if __GNU_MP_VERSION < 4 || __GNU_MP_VERSION == 4 && __GNU_MP_VERSION_MINOR < 1
-		# error installed GMP library header version too old
-		#endif
-		int main(int argc, char *argv[])
-		{ //if ( strcmp (gmp_version,"4.1") < 0 ) return 1;
-		  return 0;
-		}
-	]])],[AC_MSG_RESULT([found recent GMP])],[AC_MSG_ERROR([found GMP < 4.1... GMP version too old])])
+#	CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
 
+	IRRAM_GMP_VERSION_CHECK(4,1,0)
+
+	AC_MSG_CHECKING([whether linking against GMP works])
 	save_LDFLAGS="$LDFLAGS"
 	LIBS="-lgmp $LIBS"
 	LDFLAGS="$AM_LDFLAGS $LDFLAGS"
@@ -117,11 +108,12 @@ if test -z "$gmp_lib" ;  then
 			return 0;
 		}
 	]])],[
+		AC_MSG_RESULT([yes])
 		LIBS_INST="-lgmp $LIBS_INST"
 		LIBS="$LDADD $LIBS_INST"],[AC_MSG_ERROR([Linking to GMP failed.])])
 	LDFLAGS="$save_LDFLAGS"
 	CPPFLAGS="$save_CPPFLAGS"
-	CXXFLAGS="$save_CXXFLAGS"
+#	CXXFLAGS="$save_CXXFLAGS"
 fi
 
 
