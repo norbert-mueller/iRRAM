@@ -8,7 +8,7 @@ using std::endl;
  matrices of very bad condition.
 */
 
-orstream outfile("fileio.dat2",std::_S_out);
+orstream outfile("fileio.dat2",std::ios::out);
 
 
 void write  (const REALMATRIX& x){
