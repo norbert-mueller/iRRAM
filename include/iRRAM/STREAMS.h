@@ -69,11 +69,11 @@ public:
   unsigned int real_w;
   unsigned int real_f;
 
-  orstream(std::string s, std::_Ios_Openmode mod=std::_S_out);
+  orstream(std::string s, std::ios::openmode mod=std::ios::out);
   ~orstream();
 
   bool is_open();
-  void open(std::string s, std::_Ios_Openmode mod=std::_S_out);
+  void open(std::string s, std::ios::openmode mod=std::ios::out);
   void close();
 
   orstream& operator<<(const bool b);
@@ -94,13 +94,13 @@ public:
   orstream& operator<<(const INTEGER& r);
   orstream& operator<<(const DYADIC& d);
 
-  orstream& operator<<(std::_Setfill<char>);
-  orstream& operator<<(std::_Setiosflags);
+  orstream& operator<<(decltype(std::setw(0)));
+  orstream& operator<<(decltype(std::setprecision(0)));
+  orstream& operator<<(decltype(std::setfill('*')));
+  orstream& operator<<(decltype(std::setiosflags(std::ios_base::dec)));
+  orstream& operator<<(decltype(std::resetiosflags(std::ios_base::dec)));
+  orstream& operator<<(decltype(std::setbase(0)));
 
-  orstream& operator<<(std::_Resetiosflags);
-  orstream& operator<<(std::_Setbase);
-  orstream& operator<<(std::_Setprecision);
-  orstream& operator<<(std::_Setw);
   orstream& operator<<(_SetRwidth);
   orstream& operator<<(_SetRflags);
   orstream& operator<<(std::ostream&(std::ostream&) );
@@ -135,11 +135,11 @@ public:
   operator bool(); 
   friend  bool operator !(irstream&);
 
-  irstream(std::string s, std::_Ios_Openmode mod=std::_S_in);
+  irstream(std::string s, std::ios::openmode mod=std::ios::in);
   ~irstream();
 
   bool is_open();
-  void open(std::string s, std::_Ios_Openmode mod=std::_S_out);
+  void open(std::string s, std::ios::openmode mod=std::ios::in);
   void close();
 
   irstream& operator>>(bool& i);
@@ -158,12 +158,12 @@ public:
   irstream& operator>>(INTEGER& d);
   irstream& operator>>(DYADIC& d);
 
-  irstream& operator>>(std::_Setfill<char>);
-  irstream& operator>>(std::_Setiosflags);
-  irstream& operator>>(std::_Resetiosflags);
-  irstream& operator>>(std::_Setbase);
-  irstream& operator>>(std::_Setprecision);
-  irstream& operator>>(std::_Setw);
+  irstream& operator<<(decltype(std::setw(0)));
+  irstream& operator<<(decltype(std::setprecision(0)));
+  irstream& operator<<(decltype(std::setfill('*')));
+  irstream& operator<<(decltype(std::setiosflags(std::ios_base::dec)));
+  irstream& operator<<(decltype(std::resetiosflags(std::ios_base::dec)));
+  irstream& operator<<(decltype(std::setbase(0)));
 
 // the following should be "private:"
   irstream();
