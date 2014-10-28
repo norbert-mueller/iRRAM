@@ -531,7 +531,10 @@ inline bool operator != (const int      x, const INTEGER& y){ return !(x==y) ;}
 //*****************************************************************************
 
 inline std::string swrite(const INTEGER& x, const int w){
-   	return MP_int_swritee(x.value,w);    
+     char* erg= MP_int_swritee(x.value,w);
+     std::string result=erg;
+     free(erg);
+     return result;
 }
 
 //*****************************************************************************
@@ -541,7 +544,10 @@ inline std::string swrite(const INTEGER& x, const int w){
 //*****************************************************************************
 
 inline std::string swrite(const INTEGER& x){
-	return MP_int_sprintf(x.value);    
+     char* erg= MP_int_sprintf(x.value);
+     std::string result=erg;
+     free(erg);
+     return result;
 }
 
 } /* ! namespace iRRAM */

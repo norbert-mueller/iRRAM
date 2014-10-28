@@ -444,7 +444,10 @@ bool operator != (const int      y, const RATIONAL& x ){ return !(y==x); }
 //*****************************************************************************
 
 std::string swrite(const RATIONAL& x, const int w){
-  	return MP_rat_swritee(x.value,w);
+     char* erg= MP_rat_swritee(x.value,w);
+     std::string result=erg;
+     free(erg);
+     return result;
 }
 
 //****************************************************************************************
@@ -453,7 +456,10 @@ std::string swrite(const RATIONAL& x, const int w){
 //****************************************************************************************
 
 std::string swrite(const RATIONAL& x){
-	return MP_rat_sprintf(x.value);
+     char* erg= MP_rat_sprintf(x.value);
+     std::string result=erg;
+     free(erg);
+     return result;  
 }
 
 } // namespace iRRAM
