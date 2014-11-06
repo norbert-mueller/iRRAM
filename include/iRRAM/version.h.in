@@ -3,7 +3,9 @@
 #define iRRAM_VERSION_H
 
 namespace iRRAM {
-#define iRRAM_VERSION_ct "@iRRAM_VERSION@"
+#define iRRAM_VERSION_ct	"@iRRAM_VERSION@"
+#define iRRAM_BACKENDS		"@iRRAM_BACKENDS@"
+#define iRRAM_BACKEND_MPFR	@iRRAM_BACKEND_MPFR@
 extern const char* iRRAM_VERSION_rt;
 }
 

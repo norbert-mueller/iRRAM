@@ -5,6 +5,7 @@ iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
 
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_SRCDIR([sourcefile.list])
 
 LT_INIT
 AC_SUBST(LIBTOOL)
@@ -14,10 +15,16 @@ AC_SUBST(LD)
 AM_SILENT_RULES(yes)
 AM_INIT_AUTOMAKE()
 
-AC_ARG_WITH(backend,   [ --with-backend=MP       additional backend for MP arithmetic ], with_backend=$withval)
-AC_ARG_WITH(include_path,  [ --with-include-path=DIR  additional path for includes of GMP, MPFR or backends ], with_include_path=$withval)
-AC_ARG_WITH(lib_path,  [ --with-lib-path=DIR      additional path for libs of GMP, MPFR orbackends ], with_lib_path=$withval)
-
+dnl TODO: should be AC_ARG_ENABLE
+AC_ARG_WITH([backends],
+	[AS_HELP_STRING([--with-backends=MP],[additional backends for MP arithmetic @<:@available: MPFR, default: MPFR@:>@])],
+	[with_backends=$withval])
+AC_ARG_WITH(include_path,
+	[AS_HELP_STRING([--with-include-path=DIR],[additional path for includes of GMP, MPFR or backends])],
+	[with_include_path=$withval])
+AC_ARG_WITH(lib_path,
+	[AS_HELP_STRING([--with-lib-path=DIR],[additional path for libs of GMP, MPFR or backends])],
+	[with_lib_path=$withval])
 
 dnl Profiling
 AC_ARG_ENABLE(profiling,
@@ -68,7 +75,7 @@ esac
 dnl Test backends
 
 if test "$with_include_path" != "" ; then
-  INCLUDES="-I$with_include_path"
+	AM_CPPFLAGS="$AM_CPPFLAGS -I$with_include_path"
 fi
 
 if test "$with_lib_path" != "" ; then
@@ -78,9 +85,9 @@ if test "$with_lib_path" != "" ; then
 	LIBS="$LDADD $LIBS_INST"
 fi
 
-CPPFLAGS_INST="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $INCLUDES"
-AC_MSG_RESULT(checking gmp header... )
+CPPFLAGS_INST="$CPPFLAGS $AM_CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $AM_CPPFLAGS"
+AS_BOX([checking GMP header...])
 AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 
 if test -z "$gmp_lib" ;  then 
@@ -105,25 +112,38 @@ fi
 
 LIBS_INST="$LIBS_INST -lgmp"
 LIBS="$LDADD $LIBS_INST"
- 
-AC_MSG_RESULT(checking mpfr headers )
-AC_CHECK_HEADER(mpfr.h, ,mpfr_h=no)
 
-if test -z "$mpfr_h" ;  then 
-        AC_MSG_RESULT( MPFR backend: found )
-	BACKENDS="$BACKENDS obj/MPFR"
-	backends="$backends MPFR"
-	EXTRAEXAMPLES="$EXTRAEXAMPLES timings-MPFR-iRRAM test-MPFR-iRRAM"
-else 
-	AC_MSG_ERROR( [MPFR not found! You need to install MPFR first!],101 ) 
+with_backends=`echo "$with_backends" | sed 's#,\+# #g' | tr '[[:lower:]]' '[[:upper:]]'`
+with_backends=`echo $with_backends`
+if test -z "$with_backends"; then
+	AC_MSG_NOTICE([No backend given, defaulting to MPFR backend])
+	with_backends="MPFR"
 fi
-
-if test "$with_backend" != "" ; then
-	AC_MSG_RESULT(  )
-	AC_MSG_ERROR( [Currently, further backends do not exist! ] )
-fi
-
-LIBS_INST="-lmpfr $LIBS_INST"
+iRRAM_BACKEND_MPFR=0
+BACKENDS=""
+for be in $with_backends; do
+	if test $be == MPFR; then
+		if test $iRRAM_BACKEND_MPFR -ne 0; then
+			continue
+		fi
+		AS_BOX([checking MPFR headers])
+		AC_CHECK_HEADER([mpfr.h],[],
+			[AC_MSG_ERROR([MPFR headers not found! You need to install MPFR first!],101)])
+		AC_CHECK_LIB([mpfr],[mpfr_get_version],
+			[LIBS_INST="-lmpfr $LIBS_INST"],
+			[AC_MSG_ERROR([MPFR library not usable! Please check your installation of MPFR.],101)])
+		AC_MSG_RESULT([MPFR backend: found])
+		EXTRAEXAMPLES="$EXTRAEXAMPLES timings-MPFR-iRRAM test-MPFR-iRRAM"
+		iRRAM_BACKEND_MPFR=1
+		BACKENDS="$BACKENDS MPFR"
+	else
+		AC_MSG_ERROR([Backend '$be' is unavailable!])
+	fi
+done
+BACKENDS=`echo $BACKENDS`
+AC_SUBST(iRRAM_BACKEND_MPFR)
+AM_CONDITIONAL([WITH_BACKEND_MPFR],[test x$iRRAM_BACKEND_MPFR = x1])
+AC_SUBST(iRRAM_BACKENDS,[${BACKENDS// /,}])
 
 AC_CHECK_HEADERS(pthread.h)
 AC_CHECK_LIB(pthread, pthread_create,LIBS_INST="$LIBS_INST -lpthread")
@@ -136,7 +156,7 @@ AX_CXX_COMPILE_STDCXX_11([noext])
 AC_SUBST(CPPFLAGS)                                                           
 AC_SUBST(CPPFLAGS_INST)                                                           
 AC_SUBST(CXXFLAGS)                                                           
-AC_SUBST(INCLUDES)
+AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(LDADD)
 AC_SUBST(LDFLAGS)
 AC_SUBST(AM_LDFLAGS)
@@ -158,17 +178,20 @@ AC_SUBST(iRRAM_src)
 
 MAKEFILES=""
 
-for bg in obj/*/; do
- cd $bg
- for i in $iRRAM_src; do
- 	AC_MSG_RESULT( linking $bg/$i )
- 	$LN_S ../../src/$i $i
- done
- cd ../..
+for j in $iRRAM_src; do
+	AC_CONFIG_LINKS(obj/$j:$srcdir/src/$j)
 done
 
+MPFR_src="MPFR_ext.c mpfr_extension.cc MPFR_ext.h"
 
-AC_CONFIG_FILES([obj/MPFR/Makefile])
+for be in $BACKENDS; do
+	be_src=${be}_src
+	for i in ${!be_src}; do
+		AC_CONFIG_LINKS(obj/$i:$srcdir/src/$be/$i)
+	done
+done
+
+AC_CONFIG_FILES([obj/Makefile])
 AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h] )
 
 AC_OUTPUT(Makefile include/Makefile tests/Makefile examples/Makefile-pre doc/Makefile )

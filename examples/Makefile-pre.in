@@ -24,6 +24,7 @@ EXAMPLES_BIN = \
 
 all: $(EXAMPLES_BIN)
 
+maintainer-clean: distclean
 distclean: clean
 	rm -f Makefile
 
