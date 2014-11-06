@@ -26,7 +26,7 @@ MA 02111-1307, USA.
 
 #include <gmp.h>
 #include <mpfr.h>
-#include "GMP_intrat.h"
+#include <iRRAM/GMP_intrat.h>
 
 
 # ifndef BITS_PER_MP_LIMB

@@ -26,12 +26,12 @@ MA 02111-1307, USA.
 #include <cstdarg>
 #include <cstring>
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 #if iRRAM_BACKEND_MPFR
 	#include "MPFR_ext.h"
 #else
-	#include "Currently no further backends defined!"
+	#error "Currently no further backends defined!"
 #endif
 
 

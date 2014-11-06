@@ -24,7 +24,7 @@ MA 02111-1307, USA.
 #ifndef iRRAM_LIMIT_TEMPLATES_H
 #define iRRAM_LIMIT_TEMPLATES_H
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 namespace iRRAM {
 

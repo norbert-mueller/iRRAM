@@ -23,7 +23,7 @@ MA 02111-1307, USA.
 */
 
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 #include <fstream>
 #include <iostream>
@@ -52,7 +52,7 @@ orstream::orstream(){
   real_w = 20;
   real_f = iRRAM_float_absolute;
 }
-orstream::orstream(std::string s, std::_Ios_Openmode mod){
+orstream::orstream(std::string s, std::ios::openmode mod){
   if (ACTUAL_STACK.inlimit>0) {				
     iRRAM_DEBUG1(2,"I/O-handler: Operation illegal in continuous section!\n");	
     return;
@@ -87,7 +87,7 @@ irstream::irstream(){
    target = &std::cin;
 }
 
-irstream::irstream(std::string s, std::_Ios_Openmode mod){
+irstream::irstream(std::string s, std::ios::openmode mod){
   if (ACTUAL_STACK.inlimit>0) {
     iRRAM_DEBUG1(2,"I/O-handler: Operation illegal in continuous section!\n");	
     return;
@@ -175,12 +175,12 @@ orstream& orstream::operator<<(const DYADIC& x) {return iRRAM_out<>(this, swrite
 orstream& orstream::operator<<(const INTEGER& x) {return iRRAM_out<>(this, swrite(x,real_w));}
 orstream& orstream::operator<<(const RATIONAL& x) {return iRRAM_out<>(this, swrite(x,real_w));}
 
-orstream& orstream::operator<<( std::_Setw _f) {return  iRRAM_out<>(this, _f);}
-orstream& orstream::operator<<( std::_Setprecision _f) {return  iRRAM_out<>(this, _f);}
-orstream& orstream::operator<<( std::_Setfill<char> _f) {return  iRRAM_out<>(this, _f);}
-orstream& orstream::operator<<( std::_Setiosflags _f) {return  iRRAM_out<>(this, _f);}
-orstream& orstream::operator<<( std::_Resetiosflags _f) { return iRRAM_out<>(this, _f);}
-orstream& orstream::operator<<( std::_Setbase _f) {return  iRRAM_out<>(this, _f);}
+orstream& orstream::operator<<(decltype(std::setw(0)) _f) {return  iRRAM_out<>(this, _f);}
+orstream& orstream::operator<<(decltype(std::setprecision(0)) _f) {return  iRRAM_out<>(this, _f);}
+orstream& orstream::operator<<(decltype(std::setfill('*')) _f) {return  iRRAM_out<>(this, _f);}
+orstream& orstream::operator<<(decltype(std::setiosflags(std::ios_base::dec)) _f) {return  iRRAM_out<>(this, _f);}
+orstream& orstream::operator<<(decltype(std::resetiosflags(std::ios_base::dec)) _f) { return iRRAM_out<>(this, _f);}
+orstream& orstream::operator<<(decltype(std::setbase(0)) _f) {return  iRRAM_out<>(this, _f);}
 orstream& orstream::operator<<( std::ostream& _f (std::ostream&) ) {return  iRRAM_out<>(this, _f);}
 
 orstream& orstream::operator<<( _SetRwidth _f) { iRRAM_out2(real_w=_f._M_n);}

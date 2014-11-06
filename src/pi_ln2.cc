@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "iRRAM/core.h"
+#include <iRRAM/core.h>
 
 namespace iRRAM {
 

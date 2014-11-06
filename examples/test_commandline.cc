@@ -3,9 +3,9 @@
 
 using namespace iRRAM;
 
-template int iRRAM::iRRAM_exec <int, char **> (int (*) (int, char **),int, char **);
+template int iRRAM::iRRAM_exec <int,int,char **> (int (*) (const int &, char **const &),const int &, char **const &);
 
-int iRRAM_compute(int argc, char **argv) {
+int iRRAM_compute(const int &argc, char **const &argv) {
 
 REAL x1,x2;
 if (argc >=2 ) x1=argv[1];

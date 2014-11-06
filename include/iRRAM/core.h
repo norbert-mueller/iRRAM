@@ -30,9 +30,9 @@ MA 02111-1307, USA.
 #include <cfenv>
 #include <pthread.h>
 
-#include "iRRAM/lib.h"
-#include "iRRAM/version.h"
-#include "iRRAM/cache.h"
+#include <iRRAM/lib.h>
+#include <iRRAM/version.h>
+#include <iRRAM/cache.h>
 
 namespace iRRAM {
 
@@ -383,9 +383,10 @@ inline void sizetype_div(sizetype& x,const sizetype& y,const sizetype& z)
 /*****************************************/
 // iRRAM_exec template
 
-template <class ARGUMENT, class RESULT> RESULT iRRAM_exec 
-(RESULT iRRAM_compute(const ARGUMENT&), const ARGUMENT& x)
-{
+template <class RESULT,class... ARGUMENT>
+RESULT iRRAM_exec(
+	RESULT (*iRRAM_compute)(const ARGUMENT&...), const ARGUMENT&... x
+) {
 iRRAM_thread_data_address= new iRRAM_thread_data_class;
 
 ITERATION_STACK SAVED_STACK;
@@ -417,7 +418,7 @@ while (true) {
   iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
 
   int p_end=0;
-  try { result=iRRAM_compute(x);   if ( iRRAM_likely(!iRRAM_infinite) ) break;}
+  try { result=iRRAM_compute(x...);   if ( iRRAM_likely(!iRRAM_infinite) ) break;}
   catch ( Iteration it)  { p_end=ACTUAL_STACK.actual_prec+it.prec_diff; }
   catch ( const iRRAM_Numerical_Exception exc)
     {
@@ -433,82 +434,6 @@ while (true) {
     	} while ( (ACTUAL_STACK.actual_prec > p_end) && (prec_skip != iRRAM_prec_skip) ); 
 
   ACTUAL_STACK.inlimit=0;    	
-  if ( iRRAM_unlikely(iRRAM_debug>0) ) {
-	show_statistics();
-         if (iRRAM_max_prec <= ACTUAL_STACK.prec_step) 
-		iRRAM_max_prec  = ACTUAL_STACK.prec_step;
-	cerr << "increasing precision bound to "<<ACTUAL_STACK.actual_prec<<"["<<ACTUAL_STACK.prec_step<<"]\n";
-    	}
-  }
-
-iRRAM::cout.reset();
-for (int n=0;n<max_active;n++){cache_active->id[n]->clear();}
-
-max_active=0;
-ACTUAL_STACK.inlimit=-1;
-delete cache_active;
-delete iRRAM_thread_data_address;
-
-if ( iRRAM_unlikely (iRRAM_debug>0) ) {
-	show_statistics();
-	cerr << "iRRAM ending \n";
-}
-
-return result;
-}
-
-
-
-
-template <class ARGUMENTA, class ARGUMENTB, class RESULT> RESULT iRRAM_exec 
-(RESULT iRRAM_compute(ARGUMENTA, ARGUMENTB), ARGUMENTA x, ARGUMENTB y)
-{
-iRRAM_thread_data_address= new iRRAM_thread_data_class;
-
-ITERATION_STACK SAVED_STACK;
-
-ACTUAL_STACK.prec_step=iRRAM_prec_start;
-ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-fesetround(FE_DOWNWARD);
-// set the correct rounding mode for REAL using double intervals):
-
-cache_active = new cachelist;
-
-RESULT result;
-
-if ( iRRAM_unlikely(iRRAM_debug>0) ) {
-	cerr <<"\niRRAM (version "<<iRRAM_VERSION_rt
-		<<", backend "<<iRRAM_BACKENDS<<") starting...\n";
-	iRRAM_max_prec=ACTUAL_STACK.prec_step;
-}
-
-while (true) {
-
-  iRRAM::cout.rewind();
-  for (int n=0;n<max_active;n++){cache_active->id[n]->rewind();}
-  inReiterate = false;
-  ACTUAL_STACK.inlimit=0;
-
-  iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
-
-  int p_end=0;
-  try { result=iRRAM_compute(x,y);   if ( iRRAM_likely (!iRRAM_infinite) ) break;}
-  catch ( Iteration it)  { p_end=ACTUAL_STACK.actual_prec+it.prec_diff; }
-  catch (const iRRAM_Numerical_Exception exc)
-    {
-      fprintf(stderr,"iRRAM exception: %s\n",iRRAM_error_msg[exc.type]);
-      throw iRRAM_Numerical_Exception (exc);
-    }
-
-	int prec_skip=0;
-    	do {
-		prec_skip++;
-		ACTUAL_STACK.prec_step +=4;
-		ACTUAL_STACK.actual_prec=iRRAM_prec_array[ACTUAL_STACK.prec_step];
-    	} while ( (ACTUAL_STACK.actual_prec > p_end) && (prec_skip != iRRAM_prec_skip) ); 
- 
-  ACTUAL_STACK.inlimit=0;
   if ( iRRAM_unlikely(iRRAM_debug>0) ) {
 	show_statistics();
          if (iRRAM_max_prec <= ACTUAL_STACK.prec_step) 

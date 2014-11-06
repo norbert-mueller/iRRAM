@@ -27,7 +27,7 @@ MA 02111-1307, USA.
 #define iRRAM_H
 
 
-#include "iRRAM/lib.h"
+#include <iRRAM/lib.h>
 
 void compute(void); 
 

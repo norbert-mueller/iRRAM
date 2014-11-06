@@ -55,17 +55,17 @@ Authors:  all by Norbert, except:
 #endif
 
 #if iRRAM_BACKEND_MPFR
-# include "iRRAM/MPFR_interface.h"
+# include <iRRAM/MPFR_interface.h>
 #else
-# include "Currently no additional backend!"
+# error "Currently no additional backend!"
 #endif
 
 extern "C" void iRRAM_initialize(int argc,char** argv);
 
 namespace iRRAM{
 
-template <class ARGUMENT, class RESULT> 
- RESULT iRRAM_exec (RESULT f(const ARGUMENT&), const ARGUMENT&);
+template <class RESULT,class... ARGUMENT> 
+ RESULT iRRAM_exec (RESULT (*f)(const ARGUMENT&...), const ARGUMENT&...);
 
 
 // forward declaration of some classes
@@ -126,18 +126,18 @@ inline  ITERATION_STACK::~ITERATION_STACK(){
 
 } // namespace iRRAM
 
-#include "iRRAM/LAZYBOOLEAN.h"
-#include "iRRAM/REAL.h"
-#include "iRRAM/DYADIC.h"
-#include "iRRAM/INTEGER.h"
-#include "iRRAM/RATIONAL.h"
-#include "iRRAM/REALMATRIX.h"
-#include "iRRAM/SPARSEREALMATRIX.h"
-#include "iRRAM/COMPLEX.h"
-#include "iRRAM/INTERVAL.h"
-#include "iRRAM/STREAMS.h"
-#include "iRRAM/SWITCHES.h"
-#include "iRRAM/FUNCTION.h"
+#include <iRRAM/LAZYBOOLEAN.h>
+#include <iRRAM/REAL.h>
+#include <iRRAM/DYADIC.h>
+#include <iRRAM/INTEGER.h>
+#include <iRRAM/RATIONAL.h>
+#include <iRRAM/REALMATRIX.h>
+#include <iRRAM/SPARSEREALMATRIX.h>
+#include <iRRAM/COMPLEX.h>
+#include <iRRAM/INTERVAL.h>
+#include <iRRAM/STREAMS.h>
+#include <iRRAM/SWITCHES.h>
+#include <iRRAM/FUNCTION.h>
 
 
 namespace iRRAM {
