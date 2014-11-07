@@ -158,12 +158,13 @@ public:
   irstream& operator>>(INTEGER& d);
   irstream& operator>>(DYADIC& d);
 
-  irstream& operator<<(decltype(std::setw(0)));
-  irstream& operator<<(decltype(std::setprecision(0)));
-  irstream& operator<<(decltype(std::setfill('*')));
-  irstream& operator<<(decltype(std::setiosflags(std::ios_base::dec)));
-  irstream& operator<<(decltype(std::resetiosflags(std::ios_base::dec)));
-  irstream& operator<<(decltype(std::setbase(0)));
+  /* these are not implemented: */
+  irstream& operator>>(decltype(std::setw(0)));
+  irstream& operator>>(decltype(std::setprecision(0)));
+  irstream& operator>>(decltype(std::setfill('*')));
+  irstream& operator>>(decltype(std::setiosflags(std::ios_base::dec)));
+  irstream& operator>>(decltype(std::resetiosflags(std::ios_base::dec)));
+  irstream& operator>>(decltype(std::setbase(0)));
 
 // the following should be "private:"
   irstream();
