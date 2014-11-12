@@ -3,6 +3,8 @@ AC_INIT(iRRAM,2014_01,[],[iRRAM],[iRRAM.uni-trier.de])
 
 iRRAM_VERSION=2014_01
 iRRAM_shared_version=14:1:0
+AC_SUBST(iRRAM_VERSION)
+AC_SUBST(iRRAM_shared_version)
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([sourcefile.list])
@@ -35,21 +37,20 @@ no|gprof) ;;
 *) AC_MSG_ERROR([bad value $enableval for --enable-profiling, need no/gprof]) ;;
 esac],
 [enable_profiling=no])
+
+dnl Checks for programs.
+AC_PROG_CC_C99
+AC_PROG_CXX
+AX_CXX_COMPILE_STDCXX_11([noext])
+AC_PROG_MAKE_SET
+
 if test "$enable_profiling" != "no" ; then
   CFLAGS="$CFLAGS -pg -fno-inline"
   CXXFLAGS="$CXXFLAGS -pg -fno-inline"
   LDFLAGS="$LDFLAGS -pg -fno-inline"
 fi
 
-dnl Checks for programs.
-AC_PROG_CC_C99
-AC_PROG_CXX
-AC_PROG_MAKE_SET
-AC_PROG_LN_S
-
 AC_LANG([C++])
-
-AC_CHECK_LIB(m,sin,LIBS_INST="-lm")
 
 dnl If compiler is gcc, then use some warning flags
 if test -n "$GCC"; then
@@ -64,7 +65,7 @@ case "$host" in
 	AM_CPPFLAGS="$AM_CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1"
 
 	dnl Do not use dynamic linking on Windows
-	AM_LDFLAGS="-all-static $AM_LDFLAGS"
+	#AM_LDFLAGS="-all-static $AM_LDFLAGS"
 
 	dnl GetProcessMemoryInfo() library psapi
 	LIBS_INST="$LIBS_INST -lpsapi"
@@ -76,6 +77,7 @@ dnl Test backends
 
 if test "$with_include_path" != "" ; then
 	AM_CPPFLAGS="$AM_CPPFLAGS -I$with_include_path"
+	AC_MSG_RESULT([new AM_CPPFLAGS=$AM_CPPFLAGS])
 fi
 
 if test "$with_lib_path" != "" ; then
@@ -86,38 +88,49 @@ if test "$with_lib_path" != "" ; then
 fi
 
 CPPFLAGS_INST="$AM_CPPFLAGS $CPPFLAGS"
-AS_BOX([checking GMP header...])
-AC_CHECK_HEADER(gmp.h, ,gmp_lib=no)
 
-if test -z "$gmp_lib" ;  then
-	save_CPPFLAGS="$CPPFLAGS"
-	save_CXXFLAGS="$CXXFLAGS"
-	CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
-#	CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
+save_CPPFLAGS="$CPPFLAGS"
+save_CFLAGS="$CFLAGS"
+save_CXXFLAGS="$CXXFLAGS"
+save_LDFLAGS="$LDFLAGS"
+CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS"
+CFLAGS="$AM_CFLAGS $CFLAGS"
+CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
+LDFLAGS="$AM_LDFLAGS $LDFLAGS"
 
-	IRRAM_GMP_VERSION_CHECK(4,1,0)
+AC_CHECK_LIB(m,sin,LIBS_INST="-lm")
 
-	AC_MSG_CHECKING([whether linking against GMP works])
-	save_LDFLAGS="$LDFLAGS"
-	LIBS="-lgmp $LIBS"
-	LDFLAGS="$AM_LDFLAGS $LDFLAGS"
+AC_CHECK_HEADERS(pthread.h)
+AC_CHECK_LIB(pthread, pthread_create,LIBS_INST="$LIBS_INST -lpthread")
+LIBS="$LDADD $LIBS_INST"
+
+
+AS_BOX([Checking GMP headers/lib...])
+AC_CHECK_HEADER(gmp.h,,[AC_MSG_ERROR([GNU Multiple Precision Arithmetic library (<https://gmplib.org/>) is required.])])
+
+IRRAM_GMP_VERSION_CHECK(4,1,0)
+
+LIBS="-lgmp $LIBS"
+
+AC_DEFUN([gmp_link_check],[
+	AC_LANG_PUSH([$1])
+	AC_MSG_CHECKING([whether $1-linking against GMP works])
 	AC_LINK_IFELSE([AC_LANG_SOURCE([[
-		#include <gmp.h>
-		int main() {
-			mpz_init(0);
-			return 0;
-		}
-	]])],[
-		AC_MSG_RESULT([yes])
-		LIBS_INST="-lgmp $LIBS_INST"
-		LIBS="$LDADD $LIBS_INST"],[AC_MSG_ERROR([Linking to GMP failed.])])
-	LDFLAGS="$save_LDFLAGS"
-	CPPFLAGS="$save_CPPFLAGS"
-#	CXXFLAGS="$save_CXXFLAGS"
-fi
+#include <gmp.h>
+int main() {
+	mpz_init(NULL);
+	return 0;
+}]])],[AC_MSG_RESULT([yes])],[AC_MSG_ERROR([$1-linking to GMP failed.])])
+	AC_LANG_POP([$1])
+])
+gmp_link_check([C])
+gmp_link_check([C++])
+
+LIBS_INST="-lgmp $LIBS_INST"
+LIBS="$LDADD $LIBS_INST"
 
 
-with_backends=`echo "$with_backends" | sed 's#,\+# #g' | tr '[[:lower:]]' '[[:upper:]]'`
+with_backends=`echo "$with_backends" | $SED 's#,\+# #g' | LC_ALL=C tr 'a-z' 'A-Z'`
 with_backends=`echo $with_backends`
 if test -z "$with_backends"; then
 	AC_MSG_NOTICE([No backend given, defaulting to MPFR backend])
@@ -130,7 +143,7 @@ for be in $with_backends; do
 		if test $iRRAM_BACKEND_MPFR -ne 0; then
 			continue
 		fi
-		AS_BOX([checking MPFR headers])
+		AS_BOX([Checking MPFR headers/lib])
 		AC_CHECK_HEADER([mpfr.h],[],
 			[AC_MSG_ERROR([MPFR headers not found! You need to install MPFR first!],101)])
 		AC_CHECK_LIB([mpfr],[mpfr_get_version],
@@ -149,28 +162,28 @@ AC_SUBST(iRRAM_BACKEND_MPFR)
 AM_CONDITIONAL([WITH_BACKEND_MPFR],[test x$iRRAM_BACKEND_MPFR = x1])
 AC_SUBST(iRRAM_BACKENDS,[`echo ${BACKENDS} | tr ' ' ,`])
 
-AC_CHECK_HEADERS(pthread.h)
-AC_CHECK_LIB(pthread, pthread_create,LIBS_INST="$LIBS_INST -lpthread")
+CPPFLAGS="$save_CPPFLAGS"
+CFLAGS="$save_CFLAGS"
+CXXFLAGS="$save_CXXFLAGS"
+LDFLAGS="$save_LDFLAGS"
 
-LIBS="$LDADD $LIBS_INST"
-
-AC_LANG_CPLUSPLUS
-AX_CXX_COMPILE_STDCXX_11([noext])
-
-AC_SUBST(CPPFLAGS)                                                           
-AC_SUBST(CPPFLAGS_INST)                                                           
-AC_SUBST(CXXFLAGS)                                                           
+AC_SUBST(CPPFLAGS_INST)
 AC_SUBST(AM_CPPFLAGS)
+AC_SUBST(AM_CFLAGS)
+AC_SUBST(AM_CXXFLAGS)
 AC_SUBST(LDADD)
-AC_SUBST(LDFLAGS)
 AC_SUBST(AM_LDFLAGS)
-AC_SUBST(LIBS)
 AC_SUBST(LIBS_INST)
-AC_SUBST(CFLAGS)
 AC_SUBST(RPATH)
+
+dnl These are always set automatically
+#AC_SUBST(CPPFLAGS)
+#AC_SUBST(CFLAGS)
+#AC_SUBST(CXXFLAGS)
+#AC_SUBST(LDFLAGS)
+#AC_SUBST(LIBS)
+
 AC_SUBST(EXTRAEXAMPLES)
-AC_SUBST(iRRAM_VERSION)
-AC_SUBST(iRRAM_shared_version)
 
 iRRAM_src="REALS.cc REALmain.cc REALLIB.cc \
 limits.cc errno.cc convert.cc stack.cc STREAMS.cc \
