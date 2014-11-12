@@ -9,7 +9,7 @@ using namespace iRRAM;
 // tests of alternative implemenations for sine and cosine
 
 REAL one_minus_cos_approx (int prec, int wd, const REAL& x){
-precision_policy(RELATIVE);
+precision_policy(iRRAM_RELATIVE);
   REAL x2=square(x);
   std::vector<REAL> xpow(wd);
   REAL xf=power(x2,wd),z;
@@ -33,7 +33,7 @@ precision_policy(RELATIVE);
     }
     e*=xp;     z+=e;
   }
-precision_policy(ABSOLUTE);
+precision_policy(iRRAM_ABSOLUTE);
   return z;
 }
 
@@ -57,14 +57,14 @@ REAL cos_new_2 (int prec,const REAL& x){
   }  
   REAL y=x;
 
-precision_policy(RELATIVE);
+precision_policy(iRRAM_RELATIVE);
   y=scale(y,-it);
 
   y=one_minus_cos_approx(prec,wd,y);
-precision_policy(RELATIVE);
+precision_policy(iRRAM_RELATIVE);
 
   for (int i=1;i<=it;i+=1) y=scale(y,2)+scale(square(y),1);
-precision_policy(ABSOLUTE);
+precision_policy(iRRAM_ABSOLUTE);
 
   return 1+y;
 }
@@ -117,14 +117,14 @@ REAL cos_new_alternative_2 (int prec,const REAL& x){
   }  
   REAL y=x;
 
-precision_policy(RELATIVE);
+precision_policy(iRRAM_RELATIVE);
   y=scale(y,-it);
 
   y=one_minus_cos_approx(prec,wd,y)+1;
-precision_policy(RELATIVE);
+precision_policy(iRRAM_RELATIVE);
 
   for (int i=1;i<=it;i+=1) y=scale(square(y),1)-1;
-precision_policy(ABSOLUTE);
+precision_policy(iRRAM_ABSOLUTE);
 
   return y;
 }

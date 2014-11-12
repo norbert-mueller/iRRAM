@@ -142,8 +142,8 @@ inline  ITERATION_STACK::~ITERATION_STACK(){
 
 namespace iRRAM {
 
-#define ABSOLUTE 0
-#define RELATIVE 1
+#define iRRAM_ABSOLUTE 0
+#define iRRAM_RELATIVE 1
 void precision_policy (int policy);
 
 REAL atoREAL(const char* s);

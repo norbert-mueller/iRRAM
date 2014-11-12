@@ -405,8 +405,8 @@ void   rshow   (const REAL& x, const int w){ iRRAM::cout << swrite(x,w,iRRAM_flo
 
 
 
-#define ABSOLUTE 0
-#define RELATIVE 1
+#define iRRAM_ABSOLUTE 0
+#define iRRAM_RELATIVE 1
 void precision_policy (int policy){ACTUAL_STACK.prec_policy=policy;}
 
 REAL REAL::mp_square ()const

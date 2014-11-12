@@ -6,7 +6,7 @@
 namespace iRRAM {
 
 REAL exp_approx (int prec, const REAL& x){
-precision_policy(RELATIVE);
+precision_policy(iRRAM_RELATIVE);
   REAL xs=x/ln2();
   REAL z;
 
