@@ -9,14 +9,6 @@ AC_SUBST(iRRAM_shared_version)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([sourcefile.list])
 
-LT_INIT
-AC_SUBST(LIBTOOL)
-AC_SUBST(LIBTOOL_DEPS)
-AC_SUBST(LD)
-
-AM_SILENT_RULES(yes)
-AM_INIT_AUTOMAKE()
-
 GMPLDFLAGS=
 GMPCPPFLAGS=
 MPFRLDFLAGS=
@@ -47,9 +39,6 @@ AC_ARG_WITH([mpfr-lib],
 	[AS_HELP_STRING([--with-mpfr-lib=DIR],[MPFR lib directory])],
 	[MPFRLDFLAGS="-L$withval"])
 
-AM_CPPFLAGS="$AM_CPPFLAGS $GMPCPPFLAGS $MPFRCPPFLAGS"
-AM_LDFLAGS="$AM_LDFLAGS $GMPLDFLAGS $MPFRLDFLAGS"
-
 dnl Profiling
 AC_ARG_ENABLE([profiling],
 	[AS_HELP_STRING([--enable-profiling],[build with profiler support @<:@available: gprof, default: no@:>@])],
@@ -57,6 +46,17 @@ AC_ARG_ENABLE([profiling],
 		[no|gprof],[],
 		[AC_MSG_ERROR([bad value $enableval for --enable-profiling, need no/gprof])])],
 	[enable_profiling=no])
+
+AM_SILENT_RULES(yes)
+AM_INIT_AUTOMAKE()
+
+AM_CPPFLAGS="$AM_CPPFLAGS $GMPCPPFLAGS $MPFRCPPFLAGS"
+AM_LDFLAGS="$AM_LDFLAGS $GMPLDFLAGS $MPFRLDFLAGS"
+
+LT_INIT
+AC_SUBST(LIBTOOL)
+AC_SUBST(LIBTOOL_DEPS)
+AC_SUBST(LD)
 
 dnl Checks for programs.
 AC_PROG_MAKE_SET
