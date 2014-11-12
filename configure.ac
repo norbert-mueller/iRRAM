@@ -17,37 +17,66 @@ AC_SUBST(LD)
 AM_SILENT_RULES(yes)
 AM_INIT_AUTOMAKE()
 
+GMPLDFLAGS=
+GMPCPPFLAGS=
+MPFRLDFLAGS=
+MPFRCPPFLAGS=
+
 dnl TODO: should be AC_ARG_ENABLE
 AC_ARG_WITH([backends],
 	[AS_HELP_STRING([--with-backends=MP],[additional backends for MP arithmetic @<:@available: MPFR, default: MPFR@:>@])],
 	[with_backends=$withval])
-AC_ARG_WITH(include_path,
-	[AS_HELP_STRING([--with-include-path=DIR],[additional path for includes of GMP, MPFR or backends])],
-	[with_include_path=$withval])
-AC_ARG_WITH(lib_path,
-	[AS_HELP_STRING([--with-lib-path=DIR],[additional path for libs of GMP, MPFR or backends])],
-	[with_lib_path=$withval])
+AC_ARG_WITH([gmp],
+	[AS_HELP_STRING([--with-gmp=DIR],[GMP install directory])],
+	[GMPCPPFLAGS="-I$withval/include"
+	 GMPLDFLAGS="-L$withval/lib"])
+AC_ARG_WITH([gmp-include],
+	[AS_HELP_STRING([--with-gmp-include=DIR],[GMP include directory])],
+	[GMPCPPFLAGS="-I$withval"])
+AC_ARG_WITH([gmp-lib],
+	[AS_HELP_STRING([--with-gmp-lib=DIR],[GMP lib directory])],
+	[GMPLDFLAGS="-L$withval"])
+AC_ARG_WITH([mpfr],
+	[AS_HELP_STRING([--with-mfpr=DIR],[MPFR install directory])],
+	[MPFRCPPFLAGS="-I$withval/include"
+	 MPFRLDFLAGS="-L$withval/lib"])
+AC_ARG_WITH([mpfr-include],
+	[AS_HELP_STRING([--with-mpfr-include=DIR],[MPFR include directory])],
+	[MPFRCPPFLAGS="-I$withval"])
+AC_ARG_WITH([mpfr-lib],
+	[AS_HELP_STRING([--with-mpfr-lib=DIR],[MPFR lib directory])],
+	[MPFRLDFLAGS="-L$withval"])
+
+AM_CPPFLAGS="$AM_CPPFLAGS $GMPCPPFLAGS $MPFRCPPFLAGS"
+AM_LDFLAGS="$AM_LDFLAGS $GMPLDFLAGS $MPFRLDFLAGS"
 
 dnl Profiling
-AC_ARG_ENABLE(profiling,
-AC_HELP_STRING([--enable-profiling],
-               [build with profiler support [[default=no]]]),
-[case $enableval in
-no|gprof) ;;
-*) AC_MSG_ERROR([bad value $enableval for --enable-profiling, need no/gprof]) ;;
-esac],
-[enable_profiling=no])
+AC_ARG_ENABLE([profiling],
+	[AS_HELP_STRING([--enable-profiling],[build with profiler support @<:@available: gprof, default: no@:>@])],
+	[AS_CASE([$enableval],
+		[no|gprof],[],
+		[AC_MSG_ERROR([bad value $enableval for --enable-profiling, need no/gprof])])],
+	[enable_profiling=no])
 
 dnl Checks for programs.
-AC_PROG_CC_C99
-AC_PROG_CXX
-AX_CXX_COMPILE_STDCXX_11([noext])
 AC_PROG_MAKE_SET
+AC_PROG_CXX
+# these macros (may) modify *FLAGS, so we'll save those
+save_CFLAGS=$CFLAGS
+save_CXXFLAGS=$CXXFLAGS
+CFLAGS=
+CXXFLAGS=
+AC_PROG_CC_C99
+AX_CXX_COMPILE_STDCXX_11([noext])
+AM_CFLAGS="$AM_CFLAGS $CFLAGS"
+AM_CXXFLAGS="$AM_CXXFLAGS $CXXFLAGS"
+CFLAGS=$save_CFLAGS
+CXXFLAGS=$save_CXXFLAGS
 
 if test "$enable_profiling" != "no" ; then
-  CFLAGS="$CFLAGS -pg -fno-inline"
-  CXXFLAGS="$CXXFLAGS -pg -fno-inline"
-  LDFLAGS="$LDFLAGS -pg -fno-inline"
+  AM_CFLAGS="$AM_CFLAGS -pg -fno-inline"
+  AM_CXXFLAGS="$AM_CXXFLAGS -pg -fno-inline"
+  AM_LDFLAGS="$AM_LDFLAGS -pg -fno-inline"
 fi
 
 AC_LANG([C++])
@@ -58,8 +87,8 @@ if test -n "$GCC"; then
   AM_CXXFLAGS="$AM_CXXFLAGS -Wall -pedantic"
 fi
 
-case "$host" in
-*-mingw*)
+AS_CASE([$host],
+	[*-mingw*],[
 	dnl Use ANSI printf modifiers in mingw32.
 	dnl See <http://sourceforge.net/p/mingw-w64/wiki2/gnu%20printf/>
 	AM_CPPFLAGS="$AM_CPPFLAGS -D__USE_MINGW_ANSI_STDIO=1"
@@ -67,11 +96,13 @@ case "$host" in
 	dnl Do not use dynamic linking on Windows
 	#AM_LDFLAGS="-all-static $AM_LDFLAGS"
 
-	dnl GetProcessMemoryInfo() library psapi
-	LIBS_INST="$LIBS_INST -lpsapi"
-	LIBS="$LDADD $LIBS_INST"
-	;;
-esac
+	save_LIBS=$LIBS
+	LIBS=
+	AC_SEARCH_LIBS([GetProcessMemoryInfo],[psapi kernel32],,
+		[AC_MSG_ERROR([unable to find library containing GetProcessMemoryInfo().])])
+	LIBS_INST="$LIBS_INST $LIBS"
+	LIBS="$LDADD $save_LIBS $LIBS_INST"
+])
 
 dnl Test backends
 
@@ -213,3 +244,15 @@ AC_CONFIG_FILES([build/Makefile])
 AC_CONFIG_FILES([iRRAM_VERSION include/iRRAM/version.h] )
 
 AC_OUTPUT(Makefile include/Makefile tests/Makefile examples/Makefile-pre doc/Makefile )
+
+AC_MSG_NOTICE([
+
+CC      : $CC
+CXX     : $CXX
+CPPFLAGS: $AM_CPPFLAGS $CPPFLAGS
+CFLAGS  : $AM_CFLAGS $CFLAGS
+CXXFLAGS: $AM_CXXFLAGS $CXXFLAGS
+LDFLAGS : $AM_LDFLAGS $LDFLAGS
+shared  : $enable_shared
+static  : $enable_static
+])
