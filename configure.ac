@@ -180,6 +180,7 @@ for be in $with_backends; do
 		AC_CHECK_LIB([mpfr],[mpfr_get_version],
 			[LIBS_INST="-lmpfr $LIBS_INST"],
 			[AC_MSG_ERROR([MPFR library not usable! Please check your installation of MPFR.],101)])
+		LIBS="$LDADD $LIBS_INST"
 		AC_MSG_RESULT([MPFR backend: found])
 		EXTRAEXAMPLES="$EXTRAEXAMPLES timings-MPFR-iRRAM test-MPFR-iRRAM"
 		iRRAM_BACKEND_MPFR=1
