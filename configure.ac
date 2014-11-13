@@ -149,7 +149,7 @@ AC_DEFUN([gmp_link_check],[
 	AC_LINK_IFELSE([AC_LANG_SOURCE([[
 #include <gmp.h>
 int main() {
-	mpz_init(NULL);
+	mpz_init(0);
 	return 0;
 }]])],[AC_MSG_RESULT([yes])],[AC_MSG_ERROR([$1-linking to GMP failed.])])
 	AC_LANG_POP([$1])
