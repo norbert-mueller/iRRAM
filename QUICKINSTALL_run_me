@@ -391,7 +391,7 @@ answer=""
   fi
   
 else 
-  installed="--with-include-path=${GMP_H_DIR} --with-lib-path=${LIBGMPDIR}"
+  installed="--with-gmp-include=${GMP_H_DIR} --with-gmp-lib=${LIBGMPDIR}"
   INST_PREF="prefix=$INST"
   echo -e "
 This skript will install the iRRAM package at the same location as before, that is in:

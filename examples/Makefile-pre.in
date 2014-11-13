@@ -3,12 +3,12 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 
-CC = @CC@
+CC = @CC@ -std=c11
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS_INST@ -I@includedir@
-CXX = @CXX@
-CXXCPP = @CXXCPP@
+CXX = @CXX@ -std=c++11
+CXXCPP = @CXXCPP@ -std=c++11
 CXXFLAGS = @CXXFLAGS@
 LDFLAGS = -Xlinker -rpath -Xlinker @libdir@
 LDLIBS =  -L@libdir@ -liRRAM @LIBS_INST@
