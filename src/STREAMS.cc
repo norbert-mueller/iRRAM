@@ -124,10 +124,7 @@ void orstream::reset() { requests = 0; outputs = 0; }
   }\
   if (ACTUAL_STACK.inlimit==0){\
   ACTUAL_STACK.inlimit++;\
-  if ((++requests) > outputs){\
-    x;\
-    outputs++;\
-  }\
+  x;\
   ACTUAL_STACK.inlimit--;}else{ x;}
 
 template <class PARAM>
