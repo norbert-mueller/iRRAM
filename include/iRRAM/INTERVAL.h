@@ -40,22 +40,42 @@ public:
 
 // Constructors: -------------------------------
 
+// value: point interval [0,0]
 INTERVAL();
 
+// value: point interval [x,x]
 INTERVAL(const REAL& x);
+
+// value: interval [ min(l,r), max(l,r) ]
 INTERVAL(const REAL& l, const REAL& r);
+
+// value: point interval [x,x], for types that can be cast to REAL 
+template <class T>
+INTERVAL(const T& x):INTERVAL(REAL(x)){}
+
+// value: interval [ min(l,r), max(l,r) ], for types that can be cast to REAL 
+template <class T1,class T2>
+INTERVAL(const T1& l,const T2& r):INTERVAL(REAL(l),REAL(r)){}
+
+//  Fast construction of an interval from an ordered(!) pair of reals
+INTERVAL(const REAL& l, const REAL& r, bool dummy){ low=l;  upp=r;}
+
 
 // Standard Arithmetic: ------------------------
 
-friend INTERVAL  operator +  (const INTERVAL& x,
-                             const INTERVAL& y);
-friend INTERVAL  operator -  (const INTERVAL& x,
-                             const INTERVAL& y);
+friend INTERVAL  operator +  (const INTERVAL& x,  const INTERVAL& y);
+friend INTERVAL& operator += (INTERVAL& x, const INTERVAL& y){x=x+y; return x;}
+
+friend INTERVAL  operator -  (const INTERVAL& x,  const INTERVAL& y);
+friend INTERVAL& operator -= (INTERVAL& x, const INTERVAL& y){x=x-y; return x;}
+
 friend INTERVAL  operator -  (const INTERVAL& x);
-friend INTERVAL  operator *  (const INTERVAL& x,
-                             const INTERVAL& y);
-friend INTERVAL  operator /  (const INTERVAL& x,
-                             const INTERVAL& y);
+
+friend INTERVAL  operator *  (const INTERVAL& x, const INTERVAL& y);
+friend INTERVAL& operator *= (INTERVAL& x, const INTERVAL& y){x=x*y; return x;}
+
+friend INTERVAL  operator /  (const INTERVAL& x, const INTERVAL& y);
+friend INTERVAL& operator /= (INTERVAL& x, const INTERVAL& y){x=x/y; return x;}
 
 friend REAL wid(const INTERVAL& x);
 friend REAL inf(const INTERVAL& x);
@@ -86,6 +106,8 @@ friend INTERVAL intersect (const INTERVAL& x,
 
 friend INTERVAL fabs(const INTERVAL& x);
 
+friend INTERVAL power(const INTERVAL& x,int n);
+friend INTERVAL square(const INTERVAL& x);
 friend INTERVAL exp(const INTERVAL& x);
 friend INTERVAL log(const INTERVAL& x);
 friend INTERVAL sin(const INTERVAL& x);

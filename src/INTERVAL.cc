@@ -44,17 +44,16 @@ INTERVAL::INTERVAL(const REAL& x, const REAL& y)
   upp=maximum(x,y);
 }
 
-
 INTERVAL operator + (const INTERVAL & x, const INTERVAL & y){
-	return INTERVAL( x.low+y.low, x.upp+y.upp );
+	return INTERVAL( x.low+y.low, x.upp+y.upp, true);
 }
 
 INTERVAL operator - (const INTERVAL  & x, const INTERVAL  & y){
-	return INTERVAL( x.low-y.upp, x.upp-y.low );
+	return INTERVAL( x.low-y.upp, x.upp-y.low, true);
 }
 
 INTERVAL operator - (const INTERVAL  & x){
-	return INTERVAL( -x.upp, -x.low);
+	return INTERVAL( -x.upp, -x.low, true);
 }
 
 INTERVAL operator * (const INTERVAL  & x, const INTERVAL  & y){
@@ -67,7 +66,7 @@ INTERVAL operator * (const INTERVAL  & x, const INTERVAL  & y){
 	REAL maxa=maximum(aa,ab);
 	REAL maxb=maximum(bb,ba);
 
-	return INTERVAL(minimum(mina,minb),maximum(maxa,maxb));
+	return INTERVAL(minimum(mina,minb),maximum(maxa,maxb), true);
 
 }
 
@@ -105,17 +104,34 @@ return maximum(REAL(0),x.low)-minimum(REAL(0),x.upp);
 
 INTERVAL fabs(const INTERVAL& x){
 return INTERVAL(maximum(x.low,REAL(0))-minimum(x.upp,REAL(0)),
-                maximum(abs(x.low),abs(x.upp)));
+                maximum(abs(x.low),abs(x.upp)), true);
+}
+
+INTERVAL square(const INTERVAL& x){
+return INTERVAL(x.low*maximum(x.low,REAL(0)) + x.upp*minimum(x.upp,REAL(0)),
+                square(maximum(abs(x.low),abs(x.upp))), true);
+}
+
+INTERVAL power(const INTERVAL& x,int n){
+  if (n==0)  return 1;
+  if (n==1)  return x;
+  if (n==2)  return square(x);
+  if (n<0)   return power(1/x,-n);
+  if (n%2==1)return INTERVAL(power(x.low,n),power(x.upp,n), true);
+  REAL l=power(x.low,n-1);
+  REAL u=power(x.upp,n-1);
+  return INTERVAL(l*maximum(x.low,REAL(0)) + u*minimum(x.upp,REAL(0)),
+                maximum(abs(l*x.low),abs(u*x.upp)), true);
 }
 
 INTERVAL exp(const INTERVAL& x){
 // exp is monotonic increasing, so the following is sufficient:
-return INTERVAL(exp(x.low),exp(x.upp));
+return INTERVAL(exp(x.low),exp(x.upp), true);
 }
 
 INTERVAL log(const INTERVAL& x){
 // log is monotonic increasing, so the following is sufficient:
-return INTERVAL(log(x.low),log(x.upp));
+return INTERVAL(log(x.low),log(x.upp), true);
 }
 
 INTERVAL sin(const INTERVAL& x){
