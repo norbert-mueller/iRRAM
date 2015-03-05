@@ -297,4 +297,23 @@ iRRAM::cout << "\nPart 3, filled: "<< chain.filled <<"\n";
   iRRAM::cout <<"Part 4...\n";
 }
 
+
+
+
+//********************************************************************************
+// Absolute value of vector in Euclidean space
+//********************************************************************************
+
+REAL abs(const std::vector<REAL>& x)
+{
+	unsigned int n=x.size();
+	REAL sqrsum=0;
+	for (unsigned i=0;i<n;i++) {
+		sqrsum += square(x[i]);
+	}
+	return sqrt(sqrsum);
+}
+
+
+
 } // namespace iRRAM
