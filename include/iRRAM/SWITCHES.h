@@ -93,7 +93,7 @@ class stiff
 	static inline void set_prec_step(int n)
 	{
 		if (n<1) n=1;
-		if (iRRAM_prec_steps < n) n = iRRAM_prec_steps;
+		if (iRRAM_prec_steps <= n) n = iRRAM_prec_steps-1;
 		ACTUAL_STACK.prec_step = n;
 		ACTUAL_STACK.actual_prec = iRRAM_prec_array[ACTUAL_STACK.prec_step];
 		iRRAM_highlevel = (ACTUAL_STACK.prec_step > 1);
